@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>¡Nivel 10: Desbloqueado! Art 🎨🎂</title>
+    <style>
+        :root {
+            --blue: #00d4ff;
+            --purple: #9d00ff;
+            --pink: #ff007f;
+            --yellow: #ffff00;
+            --dark: #0a0b1e;
+        }
+
+        body {
+            margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif;
+            background: var(--dark); color: white; overflow-x: hidden; text-align: center;
+        }
+
+        /* --- FASE 1: EL JUEGO (Mantenemos la lógica pero pulimos visualmente) --- */
+        #game-screen {
+            height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+
+        .counter {
+            font-size: 1.5rem; font-weight: bold; color: var(--blue);
+            margin-bottom: 20px; text-shadow: 0 0 10px var(--blue);
+        }
+
+        .falling-item {
+            position: fixed; font-size: 40px; cursor: pointer;
+            user-select: none; z-index: 100;
+            transition: transform 0.1s;
+        }
+
+        /* --- FASE 2: EL MENSAJE Y FOTOS ARTÍSTICAS --- */
+        #celebration-screen {
+            display: none; opacity: 0; padding: 40px 20px; transition: opacity 1.5s ease;
+        }
+
+        .birthday-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--purple);
+            border-radius: 20px; padding: 30px;
+            margin-bottom: 60px; backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px rgba(157, 0, 255, 0.3);
+        }
+
+        .birthday-card h1 {
+            color: var(--blue); font-size: 2.2rem; margin-top: 0;
+            text-shadow: 0 0 15px var(--blue);
+        }
+
+        .message-text {
+            font-size: 1.2rem; line-height: 1.6; color: #e0e0e0;
+            font-style: italic; margin: 20px 0;
+        }
+
+        /* Galería Artística */
+        .photo-timeline {
+            display: flex; flex-direction: column; align-items: center; gap: 50px;
+        }
+
+        .age-card {
+            position: relative; width: 300px; height: 300px;
+            opacity: 0; transform: translateY(50px);
+            transition: 0.8s all cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 0 15px var(--border-color));
+        }
+
+        .age-card.show { opacity: 1; transform: translateY(0); }
+
+        /* La foto recortada como mancha */
+        .age-card img {
+            width: 100%; height: 100%; object-fit: cover;
+            clip-path: var(--blob-shape); /* Esta es la magia del recorte */
+            border: 5px solid var(--border-color); /* Borde neón */
+        }
+
+        /* Título de la foto */
+        .age-card h3 {
+            position: absolute; bottom: -30px; left: 50%;
+            transform: translateX(-50%); width: 90%;
+            margin: 0; font-family: 'Courier New', Courier, monospace; 
+            font-size: 1.2rem; color: var(--border-color);
+            text-shadow: 0 0 8px var(--border-color);
+        }
+
+        /* Confeti */
+        .confeti {
+            position: fixed; width: 10px; height: 10px; pointer-events: none;
+        }
+
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div id="game-screen">
+        <h1>🎮 Misión: Cumple #10 🎮</h1>
+        <p>¡Atrapa 10 objetos mágicos para desbloquear tu sorpresa!</p>
+        <div class="counter">Puntos: <span id="score">0</span> / 10</div>
+        <div id="spawn-area"></div>
+    </div>
+
+    <div id="celebration-screen">
+        <div class="birthday-card">
+            <h1>¡FELIZ CUMPLEAÑOS, CAMPEÓN! 🎂</h1>
+            <div class="message-text">
+                "Hoy hace 10 años llegaste a nuestras vidas para llenarlas de risas, juegos y aventuras. 
+                Verte crecer ha sido nuestro mejor regalo. Eres valiente, inteligente y tienes el corazón más grande del mundo. 
+                ¡Sigue brillando y nunca dejes de jugar! Te amamos más de lo que las palabras pueden decir."
+            </div>
+            <p style="color: var(--pink); font-weight: bold;">❤️ Papá y Mamá ❤️</p>
+        </div>
+
+        <div class="photo-timeline" id="timeline">
+            </div>
+    </div>
+
+    <script>
+        let score = 0;
+        const scoreDisplay = document.getElementById('score');
+        const gameScreen = document.getElementById('game-screen');
+        const celebScreen = document.getElementById('celebration-screen');
+        const items = ['🎁', '🎈', '⭐️', '🍕', '🎮', '🚀'];
+
+        // Lógica del Juego (Sin cambios)
+        function createItem() {
+            if (score >= 10) return;
+
+            const item = document.createElement('div');
+            item.className = 'falling-item';
+            item.innerText = items[Math.floor(Math.random() * items.length)];
+            item.style.left = Math.random() * (window.innerWidth - 50) + 'px';
+            item.style.top = '-50px';
+            
+            let pos = -50;
+            const speed = Math.random() * 2 + 2;
+
+            const fallInterval = setInterval(() => {
+                pos += speed;
+                item.style.top = pos + 'px';
+
+                if (pos > window.innerHeight) {
+                    clearInterval(fallInterval);
+                    item.remove();
+                    if (score < 10) createItem();
+                }
+            }, 20);
+
+            item.onclick = () => {
+                score++;
+                scoreDisplay.innerText = score;
+                clearInterval(fallInterval);
+                item.style.transform = 'scale(2)';
+                item.style.opacity = '0';
+                setTimeout(() => item.remove(), 100);
+                
+                if (score >= 10) {
+                    finalizarJuego();
+                } else {
+                    createItem();
+                }
+            };
+
+            document.body.appendChild(item);
+        }
+
+        for(let i=0; i<3; i++) setTimeout(createItem, i * 800);
+
+        function finalizarJuego() {
+            gameScreen.style.display = 'none';
+            celebScreen.style.display = 'block';
+            setTimeout(() => {
+                celebScreen.style.opacity = '1';
+                lanzarConfeti();
+                mostrarFotos();
+            }, 100);
+        }
+
+        // --- GALERÍA ARTÍSTICA MEJORADA ---
+        // Lista de formas de manchas de pintura (abstract blob shapes) usando clip-path
+        const blobShapes = [
+            "polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%)", // Octágono suavizado
+            "path('M150 0 C 250 50, 300 150, 150 300 C 0 150, 50 50, 150 0 Z')", // Mancha Corazón
+            "path('M100 0 C 200 100, 300 -100, 250 150 C 300 300, 100 400, 50 200 C -50 100, 100 -50, 100 0 Z')", // Mancha Abstracta 1
+            "path('M200 50 C 300 0, 400 100, 300 200 C 400 300, 200 400, 100 300 C 0 200, 100 0, 200 50 Z')" // Mancha Abstracta 2
+        ];
+
+        // Colores neón para los bordes de las manchas
+        const neonColors = [
+            'var(--blue)',
+            'var(--purple)',
+            'var(--pink)',
+            'var(--yellow)'
+        ];
+
+        const fotos = [
+            { t: "Recién nacido 👶", url: "img/bb.jpeg" },
+            { t: "Primeros pasos 👣", url: "img/estudio.jpeg" },
+            { t: "Tu primer día de clase 🎒", url: "img/jugando.jpeg" },
+            { t: "¡Hoy cumples 10! 🥳", url: "img/tab.jpeg" }
+        ];
+
+        function mostrarFotos() {
+            const timeline = document.getElementById('timeline');
+            fotos.forEach((f, i) => {
+                setTimeout(() => {
+                    const card = document.createElement('div');
+                    card.className = 'age-card';
+                    
+                    // Asignamos una forma de mancha y un color neón diferente a cada foto
+                    const shapeIndex = i % blobShapes.length;
+                    const colorIndex = i % neonColors.length;
+                    
+                    card.style.setProperty('--blob-shape', blobShapes[shapeIndex]);
+                    card.style.setProperty('--border-color', neonColors[colorIndex]);
+                    
+                    card.innerHTML = `<img src="${f.url}"><h3>${f.t}</h3>`;
+                    timeline.appendChild(card);
+                    setTimeout(() => card.classList.add('show'), 100);
+                }, i * 1500); // Espaciado de aparición de 1.5 segundos
+            });
+        }
+
+        function lanzarConfeti() {
+            const colors = ['#00d4ff', '#9d00ff', '#ff007f', '#ffff00'];
+            setInterval(() => {
+                const c = document.createElement('div');
+                c.className = 'confeti';
+                c.style.left = Math.random() * 100 + 'vw';
+                c.style.top = '-10px';
+                c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                c.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
+                document.body.appendChild(c);
+                setTimeout(() => c.remove(), 5000);
+            }, 150);
+        }
+    </script>
+</body>
+</html>

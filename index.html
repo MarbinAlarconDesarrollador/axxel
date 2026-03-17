@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0b1e">
+
+    <title>🎮 Nivel 10 - Axxel Jhael</title>
+
+    <style>
+        :root {
+            --blue: #00d4ff;
+            --purple: #9d00ff;
+            --pink: #ff007f;
+            --yellow: #ffff00;
+            --dark: #0a0b1e;
+        }
+
+        body {
+            margin: 0;
+            font-family: Segoe UI;
+            background: radial-gradient(circle at bottom, #0a0b1e, #000);
+            color: white;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        /* CANVAS */
+
+        #fireworksCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* GAME */
+
+        #game-screen {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            text-shadow: 0 0 15px var(--pink);
+        }
+
+        .counter {
+            font-size: 1.8rem;
+            color: var(--blue);
+            text-shadow: 0 0 15px var(--blue);
+        }
+
+        .falling-item {
+            position: fixed;
+            font-size: 50px;
+            cursor: pointer;
+            user-select: none;
+            z-index: 100;
+            transition: transform .2s, opacity .2s;
+        }
+
+        /* CELEBRACION */
+
+        #celebration-screen {
+            display: none;
+            opacity: 0;
+            padding: 40px;
+            transition: opacity 2s;
+            position: relative;
+            z-index: 2;
+        }
+
+        .level-up {
+            font-size: 3rem;
+            color: var(--yellow);
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px yellow;
+            }
+
+            to {
+                text-shadow: 0 0 40px yellow, 0 0 80px orange;
+            }
+        }
+
+        .birthday-card {
+            background: rgba(255, 255, 255, .05);
+            padding: 30px;
+            border-radius: 20px;
+            border: 2px solid var(--purple);
+            box-shadow: 0 0 40px rgba(157, 0, 255, .3);
+            margin-bottom: 70px;
+        }
+
+        /* GALERIA */
+
+        .photo-timeline {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 100px;
+        }
+
+        .age-card {
+            width: 350px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: 1.5s;
+        }
+
+        .age-card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .age-card img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 0 25px rgba(0, 0, 0, .6);
+        }
+
+        .age-card h3 {
+            color: var(--blue);
+            margin-top: 10px;
+        }
+
+        .confeti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
+
+        .final-message {
+            font-size: 2rem;
+            color: var(--pink);
+            margin-top: 80px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1)
+            }
+
+            50% {
+                transform: scale(1.1)
+            }
+
+            100% {
+                transform: scale(1)
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="fireworksCanvas"></canvas>
+
+    <audio id="popSound" src="sound/pop.mp3"></audio>
+
+    <div id="game-screen">
+
+        <h1>🎮 MISIÓN NIVEL 10 🎮</h1>
+        <p>¡Atrapa 10 objetos mágicos!</p>
+
+        <div class="counter">
+            Puntos: <span id="score">0</span> / 10
+        </div>
+
+    </div>
+
+    <div id="celebration-screen">
+
+        <h1 class="level-up">
+            🚀 AXXEL JHAEL NIVEL 10 🚀
+        </h1>
+
+        <div class="birthday-card">
+
+            <h1>🎂 FELIZ CUMPLEAÑOS 🎂</h1>
+
+            <p>
+                Hoy hace 10 años llegó nuestro héroe favorito.<br>
+                Valiente, increíble y lleno de sueños.
+            </p>
+
+            <p style="color:var(--pink);font-size:1.3rem">
+                ❤️ Papá y Mamá ❤️
+            </p>
+
+        </div>
+
+        <div class="photo-timeline" id="timeline"></div>
+
+        <div class="final-message">
+            🎁 Tu regalo te está esperando...
+        </div>
+
+    </div>
+
+    <script>
+
+        /* GAME */
+
+        let score = 0
+
+        const scoreDisplay = document.getElementById("score")
+        const gameScreen = document.getElementById("game-screen")
+        const celebScreen = document.getElementById("celebration-screen")
+        const sound = document.getElementById("popSound")
+
+        function createItem() {
+
+            if (score >= 10) return
+
+            const items = ["🎁", "🎮", "🚀", "⭐", "🍕", "🎈"]
+
+            const item = document.createElement("div")
+            item.className = "falling-item"
+
+            item.innerText = items[Math.floor(Math.random() * items.length)]
+
+            item.style.left = Math.random() * (window.innerWidth - 60) + "px"
+            item.style.top = "-60px"
+
+            let pos = -60
+            const speed = Math.random() * 2 + 3
+
+            const fall = setInterval(() => {
+
+                pos += speed
+                item.style.top = pos + "px"
+
+                if (pos > window.innerHeight) {
+                    clearInterval(fall)
+                    item.remove()
+                    createItem()
+                }
+
+            }, 20)
+
+            item.onclick = () => {
+
+                score++
+                scoreDisplay.innerText = score
+
+                sound.currentTime = 0
+                sound.play()
+
+                item.style.transform = "scale(1.8) rotate(360deg)"
+                item.style.opacity = "0"
+
+                setTimeout(() => item.remove(), 200)
+
+                clearInterval(fall)
+
+                if (score >= 10) {
+                    finishGame()
+                } else {
+                    createItem()
+                }
+
+            }
+
+            document.body.appendChild(item)
+
+        }
+
+        for (let i = 0; i < 3; i++)setTimeout(createItem, i * 800)
+
+        /* FIN JUEGO */
+
+        function finishGame() {
+
+            gameScreen.style.display = "none"
+            celebScreen.style.display = "block"
+
+            setTimeout(() => {
+
+                celebScreen.style.opacity = "1"
+
+                launchConfetti()
+                showPhotos()
+                startFireworks()
+
+            }, 300)
+
+        }
+
+        /* CONFETTI */
+
+        function launchConfetti() {
+
+            const colors = ["#00d4ff", "#9d00ff", "#ff007f", "#ffff00"]
+
+            setInterval(() => {
+
+                const c = document.createElement("div")
+
+                c.className = "confeti"
+
+                c.style.left = Math.random() * 100 + "vw"
+                c.style.top = "-10px"
+
+                c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)]
+
+                c.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`
+
+                document.body.appendChild(c)
+
+                setTimeout(() => c.remove(), 5000)
+
+            }, 120)
+
+        }
+
+        /* FOTOS */
+
+        const fotos = [
+
+            { t: "Recién nacido 👶", url: "img/bb.jpeg" },
+            { t: "Primeros pasos 👣", url: "img/estudio.jpeg" },
+            { t: "Aventuras 🧭", url: "img/jugando.jpeg" },
+            { t: "Nivel 10 desbloqueado 🥳", url: "img/tab.jpeg" }
+
+        ]
+
+        function showPhotos() {
+
+            const timeline = document.getElementById("timeline")
+
+            fotos.forEach((f, i) => {
+
+                setTimeout(() => {
+
+                    const card = document.createElement("div")
+
+                    card.className = "age-card"
+
+                    card.innerHTML = `
+<img src="${f.url}">
+<h3>${f.t}</h3>
+`
+
+                    timeline.appendChild(card)
+
+                    setTimeout(() => card.classList.add("show"), 100)
+
+                }, i * 2000)
+
+            })
+
+        }
+
+        /* =======================
+        FUEGOS ARTIFICIALES PRO
+        ======================= */
+
+        const canvas = document.getElementById("fireworksCanvas")
+        const ctx = canvas.getContext("2d")
+
+        canvas.width = window.innerWidth
+        canvas.height = window.innerHeight
+
+        window.addEventListener("resize", () => {
+            canvas.width = window.innerWidth
+            canvas.height = window.innerHeight
+        })
+
+        let particles = []
+
+        function explode(x, y) {
+
+            for (let i = 0; i < 80; i++) {
+
+                particles.push({
+
+                    x: x,
+                    y: y,
+                    vx: (Math.random() - 0.5) * 8,
+                    vy: (Math.random() - 0.5) * 8,
+                    life: 100,
+                    color: `hsl(${Math.random() * 360},100%,60%)`
+
+                })
+
+            }
+
+        }
+
+        function launchRocket() {
+
+            const x = Math.random() * canvas.width
+            const y = canvas.height
+
+            let rocketY = y
+
+            const rocket = setInterval(() => {
+
+                rocketY -= 8
+
+                ctx.fillStyle = "white"
+                ctx.fillRect(x, rocketY, 2, 10)
+
+                if (rocketY < canvas.height / 3) {
+
+                    clearInterval(rocket)
+                    explode(x, rocketY)
+
+                }
+
+            }, 16)
+
+        }
+
+        function startFireworks() {
+
+            setInterval(() => {
+
+                launchRocket()
+
+            }, 800)
+
+            animate()
+
+            setTimeout(drawTextFirework, 3000)
+
+        }
+
+        function animate() {
+
+            ctx.fillStyle = "rgba(0,0,0,0.2)"
+            ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+            particles.forEach((p, i) => {
+
+                p.x += p.vx
+                p.y += p.vy
+
+                p.life--
+
+                ctx.beginPath()
+                ctx.arc(p.x, p.y, 2, 0, Math.PI * 2)
+                ctx.fillStyle = p.color
+                ctx.fill()
+
+                if (p.life <= 0) particles.splice(i, 1)
+
+            })
+
+            requestAnimationFrame(animate)
+
+        }
+
+        /* TEXTO AXXEL */
+
+        function drawTextFirework() {
+
+            const temp = document.createElement("canvas")
+            const t = temp.getContext("2d")
+
+            temp.width = canvas.width
+            temp.height = canvas.height
+
+            t.fillStyle = "white"
+            t.font = "bold 140px Arial"
+            t.textAlign = "center"
+
+            t.fillText("AXXEL 10", canvas.width / 2, canvas.height / 3)
+
+            const data = t.getImageData(0, 0, temp.width, temp.height)
+
+            for (let y = 0; y < data.height; y += 6) {
+                for (let x = 0; x < data.width; x += 6) {
+
+                    const index = (y * data.width + x) * 4
+
+                    if (data.data[index + 3] > 150) {
+
+                        explode(x, y)
+
+                    }
+
+                }
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>
