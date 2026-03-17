@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nivel10-cache-v1';
+const CACHE_NAME = 'nivel10-cache-v2';
 
 // Aquí ponemos TODOS los archivos que queremos que se guarden sin conexión
 const urlsToCache = [
