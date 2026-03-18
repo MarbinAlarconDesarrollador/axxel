@@ -24,7 +24,8 @@
             color: white;
             text-align: center;
             overflow-x: hidden;
-            touch-action: manipulation; /* Mejora la respuesta táctil en móviles */
+            touch-action: manipulation;
+            /* Mejora la respuesta táctil en móviles */
         }
 
         /* CANVAS */
@@ -69,7 +70,7 @@
             user-select: none;
             z-index: 100;
             transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
         }
 
         /* CELEBRACION */
@@ -90,8 +91,13 @@
         }
 
         @keyframes glow {
-            from { text-shadow: 0 0 10px var(--yellow); }
-            to { text-shadow: 0 0 30px var(--yellow), 0 0 60px #ff8c00; }
+            from {
+                text-shadow: 0 0 10px var(--yellow);
+            }
+
+            to {
+                text-shadow: 0 0 30px var(--yellow), 0 0 60px #ff8c00;
+            }
         }
 
         /* Glassmorphism para la tarjeta */
@@ -174,7 +180,9 @@
         }
 
         @keyframes fall {
-            to { transform: translateY(110vh) rotate(720deg); }
+            to {
+                transform: translateY(110vh) rotate(720deg);
+            }
         }
 
         .final-message {
@@ -186,9 +194,58 @@
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.08); text-shadow: 0 0 20px var(--pink); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.08);
+                text-shadow: 0 0 20px var(--pink);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* --- ESTILO DEL BOTÓN DE AUDIO GAMER --- */
+        .mute-control {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 50px;
+            height: 50px;
+            background: rgba(10, 11, 30, 0.8);
+            /* Fondo oscuro semitransparente */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 2px solid var(--blue);
+            /* Borde azul neón por defecto */
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 2000;
+            padding: 10px;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* Animación con rebote */
+            outline: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mute-control:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.8);
+        }
+
+        .mute-control:active {
+            transform: scale(0.9);
+        }
+
+        .mute-control svg {
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
@@ -196,8 +253,9 @@
 <body>
 
     <canvas id="fireworksCanvas"></canvas>
-    
-    <audio id="popSound" src="sound/pop.mp3" preload="auto"></audio>
+
+    <audio id="popSound" src="audio/pop.mp3" preload="auto"></audio>
+    <audio id="victoryMusic" src="audio/axxel_jhael.mp3" preload="auto" loop></audio>
 
     <div id="game-screen">
         <h1>🎮 MISIÓN NIVEL 10 🎮</h1>
@@ -206,6 +264,16 @@
             Puntos: <span id="score">0</span> / 10
         </div>
     </div>
+    <button id="mute-btn" class="mute-control" onclick="toggleMute()" aria-label="Silenciar música">
+        <svg id="icon-sound-on" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.5 10H1.5v4h4l5 5V5l-5 5z" />
+        </svg>
+        <svg id="icon-sound-off" viewBox="0 0 24 24" fill="none" stroke="var(--pink)" stroke-width="2"
+            style="display:none;">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5L6 9H2v6h4l5 4V5zM22 9l-6 6m0-6l6 6" />
+        </svg>
+    </button>
 
     <div id="celebration-screen">
         <h1 class="level-up">🚀 ¡NIVEL 10 DESBLOQUEADO! 🚀</h1>
@@ -213,10 +281,13 @@
         <div class="birthday-card">
             <h2>🎂 FELIZ CUMPLEAÑOS 🎂</h2>
             <p>
-                <strong>Axxel Jhael</strong>, hace exactamente una década llegaste para convertirte en el jugador estrella de mi vida.
+                <strong>Axxel Jhael</strong>, hace exactamente una década llegaste para convertirte en el jugador
+                estrella de mi vida.
             </p>
             <p>
-                Eres mi héroe favorito: valiente, inteligente y con un corazón gigante. Nunca dejes de soñar ni de explorar, porque tienes todo el talento para ganar en este gran juego que es la vida. ¡Sigue subiendo de nivel, campeón!
+                Eres mi héroe favorito: valiente, inteligente y con un corazón gigante. Nunca dejes de soñar ni de
+                explorar, porque tienes todo el talento para ganar en este gran juego que es la vida. ¡Sigue subiendo de
+                nivel, campeón!
             </p>
             <p class="parents-sign">❤️ TE AMA Papá ❤️</p>
         </div>
@@ -255,7 +326,7 @@
 
             let pos = -80;
             // Velocidad adaptada
-            const speed = Math.random() * 3 + 3; 
+            const speed = Math.random() * 3 + 3;
 
             const fall = setInterval(() => {
                 pos += speed;
@@ -265,13 +336,13 @@
                     clearInterval(fall);
                     item.remove();
                     // Si cae y no lo tocó, crear otro
-                    if(score < maxScore) createItem(); 
+                    if (score < maxScore) createItem();
                 }
             }, 20);
 
             item.onmousedown = item.ontouchstart = (e) => {
                 e.preventDefault(); // Evitar doble toque en móviles
-                
+
                 score++;
                 scoreDisplay.innerText = score;
 
@@ -279,7 +350,7 @@
                 try {
                     sound.currentTime = 0;
                     sound.play().catch(e => console.log("Sonido silenciado por el navegador"));
-                } catch(e) {}
+                } catch (e) { }
 
                 item.style.transform = "scale(2) rotate(360deg)";
                 item.style.opacity = "0";
@@ -309,6 +380,12 @@
             gameScreen.style.display = "none";
             celebScreen.style.display = "block";
 
+            const victoryMusic = document.getElementById("victoryMusic");
+            try {
+                victoryMusic.volume = 0.6; // Un volumen agradable
+                victoryMusic.play().catch(e => console.log("Autoplay bloqueado:", e));
+            } catch (e) { }
+
             // Asegurarnos de que el scroll vuelva arriba
             window.scrollTo(0, 0);
 
@@ -325,14 +402,14 @@
            ======================= */
         function launchConfetti() {
             const colors = ["#00d4ff", "#9d00ff", "#ff007f", "#ffff00", "#00ff00"];
-            
+
             const confetiInterval = setInterval(() => {
                 const c = document.createElement("div");
                 c.className = "confeti";
                 c.style.left = Math.random() * 100 + "vw";
                 c.style.top = "-20px";
                 c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                
+
                 // Animación variable
                 const duration = Math.random() * 3 + 2;
                 c.style.animation = `fall ${duration}s linear forwards`;
@@ -407,7 +484,7 @@
 
             const rocket = setInterval(() => {
                 rocketY -= 12; // Cohete más rápido
-                
+
                 // Dibujar estela del cohete
                 ctx.fillStyle = "rgba(255, 200, 100, 0.8)";
                 ctx.beginPath();
@@ -425,7 +502,7 @@
             // Lanzar cohetes aleatorios
             const fireworkInterval = setInterval(launchRocket, 1000);
             animate();
-            
+
             // Mostrar texto de fuegos artificiales a los 3.5 segundos
             setTimeout(drawTextFirework, 3500);
             // Mostrar texto de nuevo a los 10 segundos
@@ -463,7 +540,7 @@
 
             t.fillStyle = "white";
             // Texto responsivo: Más pequeño en celulares, grande en PC
-            const fontSize = Math.min(canvas.width / 5, 120); 
+            const fontSize = Math.min(canvas.width / 5, 120);
             t.font = `bold ${fontSize}px Arial`;
             t.textAlign = "center";
             t.textBaseline = "middle";
@@ -471,7 +548,7 @@
             t.fillText("AXXEL 10", canvas.width / 2, canvas.height * 0.3);
 
             const data = t.getImageData(0, 0, temp.width, temp.height);
-            
+
             // Recorrer los píxeles (con un salto más grande para menos partículas)
             for (let y = 0; y < data.height; y += 8) {
                 for (let x = 0; x < data.width; x += 8) {
@@ -492,6 +569,37 @@
                 }
             }
         }
+
+        /* =======================
+           CONTROL DE AUDIO
+           ======================= */
+        const onIcon = document.getElementById('icon-sound-on');
+        const offIcon = document.getElementById('icon-sound-off');
+        const muteBtn = document.getElementById('mute-btn');
+
+        function toggleMute() {
+            // Asegúrate de que el id sea el mismo que le pusiste a la música de victoria
+            const victoryMusic = document.getElementById("victoryMusic");
+
+            if (!victoryMusic) return;
+
+            if (victoryMusic.muted) {
+                // ACTIVAR SONIDO (Azul Neón)
+                victoryMusic.muted = false;
+                onIcon.style.display = 'block';
+                offIcon.style.display = 'none';
+                muteBtn.style.borderColor = 'var(--blue)';
+                muteBtn.style.boxShadow = '0 0 15px rgba(0, 212, 255, 0.4)';
+            } else {
+                // SILENCIAR SONIDO (Rosa Neón)
+                victoryMusic.muted = true;
+                onIcon.style.display = 'none';
+                offIcon.style.display = 'block';
+                muteBtn.style.borderColor = 'var(--pink)';
+                muteBtn.style.boxShadow = '0 0 15px rgba(255, 0, 127, 0.4)';
+            }
+        }
     </script>
 </body>
+
 </html>

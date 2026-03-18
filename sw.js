@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nivel10-cache-v4';
+const CACHE_NAME = 'nivel10-cache-v5';
 
 // Aquí ponemos TODOS los archivos que queremos que se guarden sin conexión
 const urlsToCache = [
@@ -15,7 +15,9 @@ const urlsToCache = [
   './img/jugando.jpeg',
   './img/tab.jpeg',
   './img/pwa-icon-192.png',
-  './img/pwa-icon-512.png'
+  './img/pwa-icon-512.png',
+  './audio/axxel_jhael.mp3',
+  './audio/pop.mp3'
 ];
 
 // INSTALACIÓN: Guarda los archivos en el teléfono
