@@ -134,92 +134,6 @@
             text-shadow: 0 0 10px var(--pink);
         }
 
-       /* =======================
-           VISOR HOLOGRÁFICO GAMER (CERO LAG)
-           ======================= */
-      /*  .visor-container {
-            width: 100%;
-            max-width: 400px;
-            margin: 0 auto 50px auto;
-            padding: 0 20px;
-            box-sizing: border-box;
-        }
-
-        .neon-frame {
-            background: rgba(10, 11, 30, 0.9);
-            border-radius: 15px;
-            border: 3px solid var(--blue);
-            box-shadow: 0 0 25px rgba(0, 212, 255, 0.5);
-            overflow: hidden;
-            transition: all 0.3s ease; /* Animación ultra suave 
-            opacity: 0; /* Inicia oculto para la animación 
-            transform: scale(0.9);
-        }
-
-        .neon-frame.visible {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .neon-frame img {
-            width: 100%;
-            height: 350px;
-            object-fit: cover; /* Hace que la foto llene el espacio sin deformarse 
-            display: block;
-            background: #000;
-        }
-
-        .caption-box {
-            padding: 20px 15px;
-            min-height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .caption-box h3 {
-            margin: 0;
-            font-size: 1.3rem;
-            color: #fff;
-            text-shadow: 0 0 10px var(--blue);
-        }
-
-      
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        .btn-control {
-            background: transparent;
-            border: 2px solid;
-            color: white;
-            padding: 12px 20px;
-            font-size: 1.2rem;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.2s;
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .btn-prev { border-color: var(--pink); box-shadow: 0 0 15px rgba(255, 0, 127, 0.4); text-shadow: 0 0 5px var(--pink); }
-        .btn-next { border-color: var(--blue); box-shadow: 0 0 15px rgba(0, 212, 255, 0.4); text-shadow: 0 0 5px var(--blue); }
-
-        .btn-control:active {
-            transform: scale(0.9);
-        }
-
-        .counter-gamer {
-            font-size: 1.1rem;
-            color: var(--yellow);
-            text-shadow: 0 0 8px var(--yellow);
-            font-weight: bold;
-        }*/
-
         /* =======================
            SLIDER TÁCTIL NATIVO (CSS SNAP) - CERO LAG
            ======================= */
@@ -638,109 +552,14 @@
             { t: "¡Nivel 10 desbloqueado! Juntos somos el mejor equipo 🥳", url: "img/axxel-y-papa.jpeg" }
         ];
 
-       /* function showPhotos() {
-            const timeline = document.getElementById("timeline");
-            timeline.innerHTML = ''; // Limpiamos por si acaso
-
-            // Creamos un "vigilante" para saber cuándo la foto entra en pantalla
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    // Si la tarjeta entra en la pantalla
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('show');
-                        // Opcional: Descomenta la siguiente línea si quieres que la animación se repita si sube y baja el scroll
-                        // observer.unobserve(entry.target); 
-                    } else {
-                        // Hace que la animación vuelva a ocurrir si hace scroll hacia arriba
-                        entry.target.classList.remove('show');
-                    }
-                });
-            }, {
-                threshold: 0.1, // Se activa cuando el 10% de la foto es visible
-                rootMargin: "0px 0px -50px 0px" // Margen para que se active un poco antes de tocar el borde inferior
-            });
-
-            fotos.forEach((f, i) => {
-                const card = document.createElement("div");
-                card.className = "age-card";
-
-                // Le damos una inclinación aleatoria (entre -3 y 3 grados) para estilo "polaroid lanzada"
-                const rotacionAleatoria = (i % 2 === 0 ? 1 : -1) * (Math.random() * 3 + 1);
-                card.style.setProperty('--rot', `${rotacionAleatoria}deg`);
-
-                // ATENCIÓN: Agregamos loading="lazy" para que el cel no descargue todas de golpe (Excelente para PWA)
-                card.innerHTML = `
-                    <img src="${f.url}" alt="Recuerdo de Axxel" loading="lazy">
-                    <h3>${f.t}</h3>
-                `;
-
-                timeline.appendChild(card);
-
-                // Le decimos al vigilante que observe esta tarjeta
-                observer.observe(card);
-            });
-        }*/
-
-        /* =======================
-           LÓGICA DEL VISOR HOLOGRÁFICO
+       
+      /* =======================
+           LÓGICA DEL SLIDER TÁCTIL NATIVO
            ======================= */
         let indiceFoto = 0;
         const marcoFoto = document.getElementById("marco-foto");
         const imgElement = document.getElementById("foto-actual");
         const textoElement = document.getElementById("texto-actual");
-       // const contadorElement = document.getElementById("contador-fotos");
-       // const coloresNeon = ['var(--blue)', 'var(--pink)', 'var(--yellow)', 'var(--purple)'];
-/*
-        function showPhotos() {
-            // Mostramos el contenedor cuando el juego termina
-            document.getElementById("visor-holografico").style.display = "block";
-            // Cargamos la primera foto
-            actualizarVisor();
-        }*/
-
-
-        /*
-
-        function cambiarFoto(direccion) {
-            // Ocultamos la foto actual (efecto de salida)
-            marcoFoto.classList.remove("visible");
-
-            setTimeout(() => {
-                // Calculamos la nueva foto asegurando que dé la vuelta si llega al final o al inicio
-                indiceFoto = (indiceFoto + direccion + fotos.length) % fotos.length;
-                actualizarVisor();
-            }, 300); // 300ms es lo que dura la animación CSS de ocultarse
-        }
-
-        function actualizarVisor() {
-            const foto = fotos[indiceFoto];
-            
-            // Asignamos la nueva imagen y texto
-            imgElement.src = foto.url;
-            textoElement.innerText = foto.t;
-            contadorElement.innerText = `${indiceFoto + 1} / ${fotos.length}`;
-
-            // Cambiamos el color del neón para que sea dinámico y gamer
-            const colorGamer = coloresNeon[indiceFoto % coloresNeon.length];
-            marcoFoto.style.borderColor = colorGamer;
-            marcoFoto.style.boxShadow = `0 0 25px ${colorGamer}`;
-            textoElement.style.textShadow = `0 0 10px ${colorGamer}`;
-
-            // Pre-cargar la foto siguiente para que no haya pantalla negra al dar 'Siguiente'
-            const siguienteIndice = (indiceFoto + 1) % fotos.length;
-            const imgPrecarga = new Image();
-            imgPrecarga.src = fotos[siguienteIndice].url;
-
-            // Mostramos la nueva foto (efecto de entrada)
-            setTimeout(() => {
-                marcoFoto.classList.add("visible");
-            }, 50);
-        }*/
-
-
-/* =======================
-           LÓGICA DEL SLIDER TÁCTIL NATIVO
-           ======================= */
         const wrapper = document.getElementById("slider-wrapper");
         const contadorElement = document.getElementById("contador-fotos");
         const coloresNeon = ['var(--blue)', 'var(--pink)', 'var(--yellow)', 'var(--purple)'];
