@@ -137,7 +137,7 @@
        /* =======================
            VISOR HOLOGRÁFICO GAMER (CERO LAG)
            ======================= */
-        .visor-container {
+      /*  .visor-container {
             width: 100%;
             max-width: 400px;
             margin: 0 auto 50px auto;
@@ -151,8 +151,8 @@
             border: 3px solid var(--blue);
             box-shadow: 0 0 25px rgba(0, 212, 255, 0.5);
             overflow: hidden;
-            transition: all 0.3s ease; /* Animación ultra suave */
-            opacity: 0; /* Inicia oculto para la animación */
+            transition: all 0.3s ease; /* Animación ultra suave 
+            opacity: 0; /* Inicia oculto para la animación 
             transform: scale(0.9);
         }
 
@@ -164,7 +164,7 @@
         .neon-frame img {
             width: 100%;
             height: 350px;
-            object-fit: cover; /* Hace que la foto llene el espacio sin deformarse */
+            object-fit: cover; /* Hace que la foto llene el espacio sin deformarse 
             display: block;
             background: #000;
         }
@@ -184,7 +184,7 @@
             text-shadow: 0 0 10px var(--blue);
         }
 
-        /* Controles Gamer */
+      
         .controls {
             display: flex;
             justify-content: space-between;
@@ -215,6 +215,113 @@
 
         .counter-gamer {
             font-size: 1.1rem;
+            color: var(--yellow);
+            text-shadow: 0 0 8px var(--yellow);
+            font-weight: bold;
+        }*/
+
+        /* =======================
+           SLIDER TÁCTIL NATIVO (CSS SNAP) - CERO LAG
+           ======================= */
+        .visor-container {
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto 50px auto;
+            padding: 0 10px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .slider-wrapper {
+            display: flex;
+            overflow-x: auto; /* Habilita el scroll horizontal */
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory; /* Fuerza a que la foto se pegue al centro */
+            scroll-behavior: smooth; /* Deslizamiento suave al usar botones */
+            gap: 15px; /* Espacio entre fotos */
+            padding: 10px 0 20px 0;
+            
+            /* Ocultar barra de scroll (Webkit) */
+            &::-webkit-scrollbar { display: none; }
+            -ms-overflow-style: none;  /* IE/Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        .slide {
+            min-width: 85vw; /* Cada foto ocupa casi todo el ancho de la pantalla */
+            max-width: 380px;
+            scroll-snap-align: center; /* Se alinea al centro al soltar el dedo */
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .neon-frame {
+            background: rgba(10, 11, 30, 0.9);
+            border-radius: 20px;
+            border: 3px solid var(--blue);
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        .slide.active .neon-frame {
+            transform: scale(1.03); /* Pequeño resalte a la foto centrada */
+            box-shadow: 0 0 35px rgba(0, 212, 255, 0.6);
+        }
+
+        .neon-frame img {
+            width: 100%;
+            height: 380px; /* Alto fijo para que todas luzcan igual */
+            object-fit: cover;
+            display: block;
+        }
+
+        .caption-box {
+            padding: 15px;
+            min-height: 70px;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .caption-box h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #fff;
+            text-shadow: 0 0 10px var(--blue);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* Controles Gamer (Opcionales, pero buenos para PC) */
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .btn-control {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-control:active { transform: scale(0.9); background: rgba(255,255,255,0.2); }
+
+        .counter-gamer {
+            font-size: 1rem;
             color: var(--yellow);
             text-shadow: 0 0 8px var(--yellow);
             font-weight: bold;
@@ -347,17 +454,13 @@
         </div>
 
         <div class="visor-container" id="visor-holografico" style="display: none;">
-            <div class="neon-frame" id="marco-foto">
-                <img id="foto-actual" src="" alt="Recuerdo">
-                <div class="caption-box">
-                    <h3 id="texto-actual"></h3>
+            <div class="slider-wrapper" id="slider-wrapper">
                 </div>
-            </div>
             
             <div class="controls">
-                <button class="btn-control btn-prev" onclick="cambiarFoto(-1)">◀ Atrás</button>
+                <button class="btn-control btn-prev" onclick="cambiarFotoCSS(-1)">◀</button>
                 <div class="counter-gamer" id="contador-fotos">1 / 40</div>
-                <button class="btn-control btn-next" onclick="cambiarFoto(1)">Siguiente ▶</button>
+                <button class="btn-control btn-next" onclick="cambiarFotoCSS(1)">▶</button>
             </div>
         </div>
 
@@ -585,15 +688,18 @@
         const marcoFoto = document.getElementById("marco-foto");
         const imgElement = document.getElementById("foto-actual");
         const textoElement = document.getElementById("texto-actual");
-        const contadorElement = document.getElementById("contador-fotos");
-        const coloresNeon = ['var(--blue)', 'var(--pink)', 'var(--yellow)', 'var(--purple)'];
-
+       // const contadorElement = document.getElementById("contador-fotos");
+       // const coloresNeon = ['var(--blue)', 'var(--pink)', 'var(--yellow)', 'var(--purple)'];
+/*
         function showPhotos() {
             // Mostramos el contenedor cuando el juego termina
             document.getElementById("visor-holografico").style.display = "block";
             // Cargamos la primera foto
             actualizarVisor();
-        }
+        }*/
+
+
+        /*
 
         function cambiarFoto(direccion) {
             // Ocultamos la foto actual (efecto de salida)
@@ -629,7 +735,84 @@
             setTimeout(() => {
                 marcoFoto.classList.add("visible");
             }, 50);
+        }*/
+
+
+/* =======================
+           LÓGICA DEL SLIDER TÁCTIL NATIVO
+           ======================= */
+        const wrapper = document.getElementById("slider-wrapper");
+        const contadorElement = document.getElementById("contador-fotos");
+        const coloresNeon = ['var(--blue)', 'var(--pink)', 'var(--yellow)', 'var(--purple)'];
+
+        function showPhotos() {
+            // Mostramos el contenedor cuando el juego termina
+            document.getElementById("visor-holografico").style.display = "block";
+            
+            wrapper.innerHTML = ""; // Limpiar por seguridad
+
+            fotos.forEach((f, i) => {
+                const slide = document.createElement("div");
+                slide.className = `slide ${i === 0 ? 'active' : ''}`;
+                slide.id = `slide-${i}`;
+
+                // Color neón dinámico
+                const colorGamer = coloresNeon[i % coloresNeon.length];
+
+                slide.innerHTML = `
+                    <div class="neon-frame" style="border-color: ${colorGamer}; box-shadow: 0 0 20px ${colorGamer}55">
+                        <img src="${f.url}" alt="Recuerdo" loading="lazy">
+                        <div class="caption-box">
+                            <h3 style="text-shadow: 0 0 10px ${colorGamer}">${f.t}</h3>
+                        </div>
+                    </div>
+                `;
+                wrapper.appendChild(slide);
+            });
+
+            // Detectar cuál foto está centrada al hacer SWIPE
+            wrapper.addEventListener('scroll', debounce(() => {
+                const slideWidth = wrapper.querySelector('.slide').offsetWidth + 15; // Ancho + Gap
+                const currentIdx = Math.round(wrapper.scrollLeft / slideWidth);
+                
+                actualizarContador(currentIdx);
+            }, 50)); // Debounce para no saturar al procesador
         }
+
+        // Lógica para los botones (por si acaso o para PC)
+        function cambiarFotoCSS(direccion) {
+            const slideWidth = wrapper.querySelector('.slide').offsetWidth + 15;
+            const currentIdx = Math.round(wrapper.scrollLeft / slideWidth);
+            const nuevoIdx = (currentIdx + direccion + fotos.length) % fotos.length;
+            
+            // Hacemos scroll programático (el CSS smooth se encarga de la animación)
+            wrapper.scrollLeft = nuevoIdx * slideWidth;
+            
+            actualizarContador(nuevoIdx);
+        }
+
+        function actualizarContador(idx) {
+            contadorElement.innerText = `${idx + 1} / ${fotos.length}`;
+            
+            // Resaltar la foto activa
+            document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+            const activeSlide = document.getElementById(`slide-${idx}`);
+            if(activeSlide) activeSlide.classList.add('active');
+        }
+
+        // Función auxiliar para optimizar el evento scroll
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
 
         /* =======================
            FUEGOS ARTIFICIALES PRO (Optimizado)
