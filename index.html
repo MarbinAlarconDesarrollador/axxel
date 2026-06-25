@@ -301,35 +301,59 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px;
+            gap: 16px;
             margin-top: 10px;
+            flex-wrap: wrap;
+            width: 100%;
         }
 
         .btn-control {
-            background: rgba(57, 255, 106, 0.12);
-            border: 2px solid rgba(57, 255, 106, 0.4);
-            color: white;
+            background: radial-gradient(circle at 35% 30%, rgba(80, 255, 140, 0.35), rgba(57, 255, 106, 0.10) 70%);
+            border: 1px solid rgba(57, 255, 106, 0.55);
+            /*color: #eafff0;*/
             width: 42px;
             height: 42px;
+            min-width: 42px;
+            min-height: 42px;
+            flex-shrink: 0;
             border-radius: 50%;
             font-size: 1.2rem;
+            line-height: 1;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 10px rgba(57, 255, 106, 0.25), inset 0 0 8px rgba(57, 255, 106, 0.15);
             transition: all 0.2s;
             -webkit-tap-highlight-color: transparent;
+            color: #39ff6a;
+        }
+
+        .btn-control:hover {
+            border-color: rgba(57, 255, 106, 0.9);
+            box-shadow: 0 0 16px rgba(57, 255, 106, 0.45), inset 0 0 10px rgba(57, 255, 106, 0.25);
         }
 
         .btn-control:active {
-            transform: scale(0.9);
-            background: rgba(57, 255, 106, 0.3);
-            box-shadow: 0 0 15px rgba(57, 255, 106, 0.6);
+            transform: scale(0.88);
+            background: radial-gradient(circle at 35% 30%, rgba(120, 255, 170, 0.5), rgba(57, 255, 106, 0.25) 70%);
+            box-shadow: 0 0 20px rgba(57, 255, 106, 0.7), inset 0 0 12px rgba(57, 255, 106, 0.3);
+        }
+
+        .btn-control svg {
+            filter: drop-shadow(0 0 4px rgba(57, 255, 106, 0.7));
         }
 
         .counter-gamer {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.85rem;
-            color: var(--hulk-green);
-            text-shadow: 0 0 8px var(--hulk-green);
-            font-weight: bold;
+            color: #39ff6a;
+            font-family: monospace;
+            font-size: 14px;
+            letter-spacing: 1px;
+            padding: 6px 16px;
+            border: 1px solid rgba(57, 255, 106, 0.35);
+            border-radius: 20px;
+            background: rgba(57, 255, 106, 0.06);
+            white-space: nowrap;
         }
 
         .confeti {
@@ -485,9 +509,19 @@
             </div>
 
             <div class="controls">
-                <button class="btn-control btn-prev" onclick="cambiarFotoCSS(-1)">◀</button>
+                <button class="btn-control btn-prev" onclick="cambiarFotoCSS(-1)" aria-label="Anterior">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                </button>
                 <div class="counter-gamer" id="contador-fotos">1 / 40</div>
-                <button class="btn-control btn-next" onclick="cambiarFotoCSS(1)">▶</button>
+                <button class="btn-control btn-next" onclick="cambiarFotoCSS(1)" aria-label="Siguiente">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 18l6-6-6-6" />
+                    </svg>
+                </button>
             </div>
         </div>
 
@@ -630,7 +664,7 @@
            FOTOS
            ======================= */
         // Asegúrate de que estas rutas de imagen existan en tu carpeta
-       const fotos = [
+        const fotos = [
             { t: "Tus primeros meses: el inicio de nuestra gran aventura 👶", url: "img/axxelbb1-primeros-meses-jugando.jpeg" },
             { t: "Tus primeros gateos, descubriendo el mundo paso a paso 👣", url: "img/axxelbb1gateando.jpeg" },
             { t: "Esa sonrisa que ilumina hasta mis días más oscuros 🌟", url: "img/axxelbb1sonrisa.jpeg" },
