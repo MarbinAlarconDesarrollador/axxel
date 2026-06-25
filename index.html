@@ -511,7 +511,7 @@
         function createItem() {
             if (score >= maxScore) return;
 
-            const items = ["icons/puno.png", "icons/juego.png", "icons/cohete.png", "icons/estrella.png", "icons/bloque.png", "icons/dado.png", "icons/alien.png", "icons/trofeo.png", "icons/mk1.png", "icons/mk2.png", "icons/mk3.png", "icons/mk4.png", "icons/mk5.png"];
+            const items = ["icons/puno.png", "icons/juego.png", "icons/cohete.png", "icons/dado.png", "icons/alien.png", "icons/trofeo.png", "icons/mk1.png", "icons/mk2.png", "icons/mk3.png", "icons/mk4.png", "icons/mk5.png"];
             const item = document.createElement("div");
             const chosen = items[Math.floor(Math.random() * items.length)];
             // Detectamos si es un ícono "mk"
@@ -630,7 +630,7 @@
            FOTOS
            ======================= */
         // Asegúrate de que estas rutas de imagen existan en tu carpeta
-        const fotos = [
+       const fotos = [
             { t: "Tus primeros meses: el inicio de nuestra gran aventura 👶", url: "img/axxelbb1-primeros-meses-jugando.jpeg" },
             { t: "Tus primeros gateos, descubriendo el mundo paso a paso 👣", url: "img/axxelbb1gateando.jpeg" },
             { t: "Esa sonrisa que ilumina hasta mis días más oscuros 🌟", url: "img/axxelbb1sonrisa.jpeg" },
@@ -647,28 +647,28 @@
             { t: "Un desayuno sorpresa para un niño que se merece todo 🍽️", url: "img/axxelbb10-desayuno-sorpresa.jpeg" },
             { t: "Devorando un algodón de azúcar y disfrutando la dulzura de la niñez 🍬", url: "img/axxelbb11-comiendo-algodon-de-azucar.jpeg" },
             { t: "Te amo con todas mis fuerzas, hijo mío 🤗", url: "img/axxelbb11-te-amo.jpeg" },
-            { t: "Ese momento divertido cuando intentabas asustarme... ¡Casi lo logras!", url: "img/axxelbb12-me-queria-asustar.jpeg" },
-            { t: "Simplemente decirte que te amo es poco para lo que siento", url: "img/axxelbb12-te-amo.jpeg" },
-            { t: "Enfocado y estudioso, construyendo tus sueños desde pequeño", url: "img/axxelbb13-estudiso.jpeg" },
-            { t: "¡Uy, qué miedo! Jejeje... Siempre sacándome una carcajada", url: "img/axxelbb14uyyy-miedo-jejej.jpeg" },
-            { t: "Mi Spiderman y su hermanita, la Mujer Maravilla: mi equipo de héroes", url: "img/axxelbb15-mi-spider-su-hermanita-mujer-maravilla.jpeg" },
-            { t: "Mi Spiderman favorito junto a su mayor fan: su papá", url: "img/axxelbb15-mi-spiderman-y-papa.jpeg" },
-            { t: "Esa sonrisa auténtica que refleja la pureza de tu corazón", url: "img/axxelbb16sonrisa-autentica.jpeg" },
-            { t: "No hay nada mejor que un helado y una buena charla con Papi", url: "img/axxelbb17-comiendo-helado-con-papi.jpeg" },
-            { t: "La felicidad completa: compartiendo con Papi y tu hermana", url: "img/axxelbb18-compartiendo-con-papi-y-hermana1.jpeg" },
-            { t: "Creando recuerdos que guardaremos siempre en el alma", url: "img/axxelbb18-compartiendo-con-papi-y-hermana-2.jpeg" },
-            { t: "Verlos juntos es mi mayor recompensa en la vida", url: "img/axxelbb18-compartiendo-con-papi-y-hermana-3.jpeg" },
-            { t: "Días de risas, juegos y mucho amor en familia", url: "img/axxelbb18-compartiendo-con-papi-y-hermana-4.jpeg" },
-            { t: "Haciendo lo que más le gusta: ¡disfrutar de un buen helado!", url: "img/axxelbb19comiendo-helado-le-encanta.jpeg" },
-            { t: "Aprendiendo a rodar por la vida en tu monopatín", url: "img/axxelbb20aprendiendo-monopatin.jpeg" },
-            { t: "Disfrutando de un lindo paseito y de la brisa en la cara", url: "img/axxelbb20paseito.jpeg" },
-            { t: "Porque un solo helado nunca es suficiente para tanta alegría", url: "img/axxelbb21-comiendo-mas-helado.jpeg" },
+            { t: "Ese momento divertido cuando intentabas asustarme... ¡Casi lo logras! 👻", url: "img/axxelbb12-me-queria-asustar.jpeg" },
+            { t: "Simplemente decirte que te amo es poco para lo que siento ❤️", url: "img/axxelbb12-te-amo.jpeg" },
+            { t: "Enfocado y estudioso, construyendo tus sueños desde pequeño 📚", url: "img/axxelbb13-estudiso.jpeg" },
+            { t: "¡Uy, qué miedo! Jejeje... Siempre sacándome una carcajada 😂", url: "img/axxelbb14uyyy-miedo-jejej.jpeg" },
+            { t: "Mi Spiderman y su hermanita, la Mujer Maravilla: mi equipo de héroes 🕷️", url: "img/axxelbb15-mi-spider-su-hermanita-mujer-maravilla.jpeg" },
+            { t: "Mi Spiderman favorito junto a su mayor fan: su papá 🕸️", url: "img/axxelbb15-mi-spiderman-y-papa.jpeg" },
+            { t: "Esa sonrisa auténtica que refleja la pureza de tu corazón 💖", url: "img/axxelbb16sonrisa-autentica.jpeg" },
+            { t: "No hay nada mejor que un helado y una buena charla con Papi 🍦", url: "img/axxelbb17-comiendo-helado-con-papi.jpeg" },
+            { t: "La felicidad completa: compartiendo con Papi y tu hermana 👨‍👧‍👦", url: "img/axxelbb18-compartiendo-con-papi-y-hermana1.jpeg" },
+            { t: "Creando recuerdos que guardaremos siempre en el alma 📸", url: "img/axxelbb18-compartiendo-con-papi-y-hermana-2.jpeg" },
+            { t: "Verlos juntos es mi mayor recompensa en la vida 🥰", url: "img/axxelbb18-compartiendo-con-papi-y-hermana-3.jpeg" },
+            { t: "Días de risas, juegos y mucho amor en familia 😄", url: "img/axxelbb18-compartiendo-con-papi-y-hermana-4.jpeg" },
+            { t: "Haciendo lo que más le gusta: ¡disfrutar de un buen helado! 🍨", url: "img/axxelbb19comiendo-helado-le-encanta.jpeg" },
+            { t: "Aprendiendo a rodar por la vida en tu monopatín 🛹", url: "img/axxelbb20aprendiendo-monopatin.jpeg" },
+            { t: "Disfrutando de un lindo paseito y de la brisa en la cara 🌬️", url: "img/axxelbb20paseito.jpeg" },
+            { t: "Porque un solo helado nunca es suficiente para tanta alegría 🍧", url: "img/axxelbb21-comiendo-mas-helado.jpeg" },
             { t: "Amo cada una de tus locuras; tú le das color a mi vida 🧭", url: "img/axxelbb22amo-tus-locuras.jpeg" },
             { t: "Tus ocurrencias son el motor que me hace sonreír cada día 🧭", url: "img/axxelbb22amo-tus-locuras-1.jpeg" },
-            { t: "Él es inmensamente feliz con su súper helado", url: "img/axxelbb23-el-feliz-con-su-super-helado.jpeg" },
-            { t: "Me detengo a mirar cómo has crecido, mi chiquitín hermoso", url: "img/axxelbb24-como-has-crecido.jpeg" },
-            { t: "Nunca dejes de sonreír, el mundo necesita tu luz", url: "img/axxelbb26-nunca-dejes-de-reir.jpeg" },
-            { t: "Te estás haciendo grande, pero siempre serás mi niño", url: "img/axxelbb26-te-estas-creciendo.jpeg" },
+            { t: "Él es inmensamente feliz con su súper helado 🍦", url: "img/axxelbb23-el-feliz-con-su-super-helado.jpeg" },
+            { t: "Me detengo a mirar cómo has crecido, mi chiquitín hermoso 🥹", url: "img/axxelbb24-como-has-crecido.jpeg" },
+            { t: "Nunca dejes de sonreír, el mundo necesita tu luz ☀️", url: "img/axxelbb26-nunca-dejes-de-reir.jpeg" },
+            { t: "Te estás haciendo grande, pero siempre serás mi niño 🌱", url: "img/axxelbb26-te-estas-creciendo.jpeg" },
             { t: "¡Nivel 10 desbloqueado! Juntos somos el mejor equipo 🥳", url: "img/axxel-y-papa.jpeg" }
         ];
 
