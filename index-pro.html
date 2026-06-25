@@ -98,21 +98,11 @@
         .falling-item {
             position: fixed;
             font-size: 55px;
-            width: 60px;
-            height: 60px;
             cursor: pointer;
             user-select: none;
             z-index: 100;
             transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
             filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
-        }
-
-        .falling-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            pointer-events: none;
-            /* el click se captura en el div padre, no en la imagen */
         }
 
         /* CELEBRACION */
@@ -222,21 +212,15 @@
 
         .slider-wrapper {
             display: flex;
-            overflow-x: auto;
-            /* Habilita el scroll horizontal */
+            overflow-x: auto; /* Habilita el scroll horizontal */
             overflow-y: hidden;
-            scroll-snap-type: x mandatory;
-            /* Fuerza a que la foto se pegue al centro */
-            scroll-behavior: smooth;
-            /* Deslizamiento suave al usar botones */
-            gap: 15px;
-            /* Espacio entre fotos */
+            scroll-snap-type: x mandatory; /* Fuerza a que la foto se pegue al centro */
+            scroll-behavior: smooth; /* Deslizamiento suave al usar botones */
+            gap: 15px; /* Espacio entre fotos */
             padding: 10px 0 20px 0;
 
-            -ms-overflow-style: none;
-            /* IE/Edge */
-            scrollbar-width: none;
-            /* Firefox */
+            -ms-overflow-style: none;  /* IE/Edge */
+            scrollbar-width: none;  /* Firefox */
         }
 
         /* Ocultar barra de scroll (Webkit) - fuera del anidamiento para compatibilidad */
@@ -245,10 +229,8 @@
         }
 
         .slide {
-            width: min(85vw, 360px);
-            /* Nunca más grande que el contenedor de la tarjeta */
-            scroll-snap-align: center;
-            /* Se alinea al centro al soltar el dedo */
+            width: min(85vw, 360px); /* Nunca más grande que el contenedor de la tarjeta */
+            scroll-snap-align: center; /* Se alinea al centro al soltar el dedo */
             flex-shrink: 0;
             position: relative;
         }
@@ -266,15 +248,13 @@
         }
 
         .slide.active .neon-frame {
-            transform: scale(1.03);
-            /* Pequeño resalte a la foto centrada */
+            transform: scale(1.03); /* Pequeño resalte a la foto centrada */
             box-shadow: 0 0 35px rgba(57, 255, 106, 0.6);
         }
 
         .neon-frame img {
             width: 100%;
-            height: 380px;
-            /* Alto fijo para que todas luzcan igual */
+            height: 380px; /* Alto fijo para que todas luzcan igual */
             object-fit: cover;
             display: block;
         }
@@ -414,23 +394,6 @@
             width: 100%;
             height: 100%;
         }
-
-        .falling-item {
-            width: 60px;
-            /* el tamaño normal que ya tengas */
-            height: 60px;
-        }
-
-        .mk-item {
-            width: 200px;
-            /* ajusta al tamaño que quieras */
-            height: 200px;
-        }
-
-        .falling-item img {
-            width: 100%;
-            height: 100%;
-        }
     </style>
 </head>
 
@@ -482,8 +445,8 @@
 
         <div class="visor-container" id="visor-holografico" style="display: none;">
             <div class="slider-wrapper" id="slider-wrapper">
-            </div>
-
+                </div>
+            
             <div class="controls">
                 <button class="btn-control btn-prev" onclick="cambiarFotoCSS(-1)">◀</button>
                 <div class="counter-gamer" id="contador-fotos">1 / 40</div>
@@ -511,17 +474,10 @@
         function createItem() {
             if (score >= maxScore) return;
 
-            const items = ["icons/puno.png", "icons/juego.png", "icons/cohete.png", "icons/estrella.png", "icons/bloque.png", "icons/dado.png", "icons/alien.png", "icons/trofeo.png", "icons/mk1.png", "icons/mk2.png", "icons/mk3.png", "icons/mk4.png", "icons/mk5.png"];
+            const items = ["👊", "🎮", "🚀", "⭐", "🟩", "🎲", "👾", "🏆"];
             const item = document.createElement("div");
-            const chosen = items[Math.floor(Math.random() * items.length)];
-            // Detectamos si es un ícono "mk"
-            const isMk = chosen.includes("/mk");
-
-
-            //item.className = "falling-item";
-            //item.innerHTML = `<img src="${items[Math.floor(Math.random() * items.length)]}" alt="objeto" draggable="false">`;
-            item.className = "falling-item" + (isMk ? " mk-item" : "");
-            item.innerHTML = `<img src="${chosen}" alt="objeto" draggable="false">`;
+            item.className = "falling-item";
+            item.innerText = items[Math.floor(Math.random() * items.length)];
 
             // Asegurar que no se salgan de la pantalla en móviles
             const startX = Math.random() * (window.innerWidth - 80) + 10;
@@ -672,10 +628,10 @@
             { t: "¡Nivel 10 desbloqueado! Juntos somos el mejor equipo 🥳", url: "img/axxel-y-papa.jpeg" }
         ];
 
-
-        /* =======================
-             LÓGICA DEL SLIDER TÁCTIL NATIVO
-             ======================= */
+       
+      /* =======================
+           LÓGICA DEL SLIDER TÁCTIL NATIVO
+           ======================= */
         let indiceFoto = 0;
         const marcoFoto = document.getElementById("marco-foto");
         const imgElement = document.getElementById("foto-actual");
@@ -687,7 +643,7 @@
         function showPhotos() {
             // Mostramos el contenedor cuando el juego termina
             document.getElementById("visor-holografico").style.display = "block";
-
+            
             wrapper.innerHTML = ""; // Limpiar por seguridad
 
             fotos.forEach((f, i) => {
@@ -713,7 +669,7 @@
             wrapper.addEventListener('scroll', debounce(() => {
                 const slideWidth = wrapper.querySelector('.slide').offsetWidth + 15; // Ancho + Gap
                 const currentIdx = Math.round(wrapper.scrollLeft / slideWidth);
-
+                
                 actualizarContador(currentIdx);
             }, 50)); // Debounce para no saturar al procesador
         }
@@ -723,20 +679,20 @@
             const slideWidth = wrapper.querySelector('.slide').offsetWidth + 15;
             const currentIdx = Math.round(wrapper.scrollLeft / slideWidth);
             const nuevoIdx = (currentIdx + direccion + fotos.length) % fotos.length;
-
+            
             // Hacemos scroll programático (el CSS smooth se encarga de la animación)
             wrapper.scrollLeft = nuevoIdx * slideWidth;
-
+            
             actualizarContador(nuevoIdx);
         }
 
         function actualizarContador(idx) {
             contadorElement.innerText = `${idx + 1} / ${fotos.length}`;
-
+            
             // Resaltar la foto activa
             document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
             const activeSlide = document.getElementById(`slide-${idx}`);
-            if (activeSlide) activeSlide.classList.add('active');
+            if(activeSlide) activeSlide.classList.add('active');
         }
 
         // Función auxiliar para optimizar el evento scroll

@@ -7,9 +7,6 @@
     <meta name="theme-color" content="#0a0b1e">
     <link rel="manifest" href="manifest.json">
     <title>🎮 Nivel 10 - Axxel Jhael</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Press+Start+2P&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -18,16 +15,12 @@
             --pink: #ff007f;
             --yellow: #ffff00;
             --dark: #0a0b1e;
-            --hulk-green: #39ff6a;
-            --hulk-deep: #0b5d1e;
-            --mk-gold: #ffcc00;
-            --mk-red: #ff2d2d;
         }
 
         body {
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: radial-gradient(circle at bottom, #0e1f12, #000 70%);
+            background: radial-gradient(circle at bottom, #1a1c3a, #000);
             color: white;
             text-align: center;
             overflow-x: hidden;
@@ -58,61 +51,26 @@
         }
 
         h1 {
-            font-family: 'Bangers', 'Segoe UI', cursive;
-            font-size: 2.4rem;
-            letter-spacing: 2px;
-            color: #fff;
-            text-shadow:
-                0 0 10px var(--hulk-green),
-                0 0 25px var(--hulk-green),
-                3px 3px 0 var(--purple);
+            text-shadow: 0 0 15px var(--pink);
             padding: 0 20px;
-            transform: rotate(-2deg);
-        }
-
-        #game-screen h1 {
-            position: relative;
-        }
-
-        #game-screen h1::before {
-            content: "";
-            position: absolute;
-            inset: -25px -10px;
-            z-index: -1;
-            background:
-                radial-gradient(circle, rgba(57, 255, 106, 0.25) 0%, transparent 70%);
-            clip-path: polygon(50% 0%, 61% 35%, 95% 20%, 75% 50%, 98% 65%, 65% 65%, 50% 100%, 38% 65%, 5% 70%, 25% 45%, 2% 20%, 40% 35%);
-            filter: blur(2px);
         }
 
         .counter {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 1.1rem;
-            color: var(--hulk-green);
-            text-shadow: 0 0 15px var(--hulk-green);
-            margin-top: 25px;
+            font-size: 2rem;
+            color: var(--blue);
+            text-shadow: 0 0 15px var(--blue);
+            margin-top: 20px;
             font-weight: bold;
-            line-height: 1.8;
         }
 
         .falling-item {
             position: fixed;
             font-size: 55px;
-            width: 60px;
-            height: 60px;
             cursor: pointer;
             user-select: none;
             z-index: 100;
             transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
             filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
-        }
-
-        .falling-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            pointer-events: none;
-            /* el click se captura en el div padre, no en la imagen */
         }
 
         /* CELEBRACION */
@@ -126,72 +84,40 @@
         }
 
         .level-up {
-            font-family: 'Bangers', cursive;
-            font-size: 2.6rem;
-            letter-spacing: 2px;
-            background: linear-gradient(180deg, #fff48a 0%, var(--mk-gold) 35%, var(--mk-red) 75%, #8a0000 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            filter: drop-shadow(0 0 12px var(--mk-red));
+            font-size: 2.5rem;
+            color: var(--yellow);
             animation: glow 1.5s infinite alternate;
             margin-bottom: 40px;
         }
 
         @keyframes glow {
             from {
-                filter: drop-shadow(0 0 8px var(--mk-gold));
+                text-shadow: 0 0 10px var(--yellow);
             }
 
             to {
-                filter: drop-shadow(0 0 28px var(--mk-red)) drop-shadow(0 0 45px #ff8c00);
+                text-shadow: 0 0 30px var(--yellow), 0 0 60px #ff8c00;
             }
         }
 
         /* Glassmorphism para la tarjeta */
         .birthday-card {
-            background: rgba(10, 25, 15, 0.65);
+            background: rgba(20, 20, 40, 0.6);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             padding: 40px 25px;
             border-radius: 25px;
-            border: 1px solid rgba(57, 255, 106, 0.5);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 40px rgba(57, 255, 106, 0.25), 0 0 70px rgba(157, 0, 255, 0.15);
+            border: 1px solid rgba(157, 0, 255, 0.5);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 40px rgba(157, 0, 255, 0.2);
             margin: 0 auto 70px auto;
             max-width: 600px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .birthday-card::before {
-            content: "👊";
-            position: absolute;
-            top: -10px;
-            left: -10px;
-            font-size: 2.5rem;
-            opacity: 0.5;
-            transform: rotate(-20deg);
-            filter: drop-shadow(0 0 10px var(--hulk-green));
-        }
-
-        .birthday-card::after {
-            content: "🎮";
-            position: absolute;
-            bottom: -10px;
-            right: -5px;
-            font-size: 2.5rem;
-            opacity: 0.5;
-            transform: rotate(15deg);
-            filter: drop-shadow(0 0 10px var(--purple));
         }
 
         .birthday-card h2 {
-            font-family: 'Bangers', cursive;
-            color: var(--hulk-green);
-            font-size: 2.2rem;
-            letter-spacing: 1px;
+            color: var(--blue);
+            font-size: 2rem;
             margin-top: 0;
-            text-shadow: 0 0 12px var(--hulk-green);
+            text-shadow: 0 0 10px var(--blue);
         }
 
         .birthday-card p {
@@ -222,33 +148,23 @@
 
         .slider-wrapper {
             display: flex;
-            overflow-x: auto;
-            /* Habilita el scroll horizontal */
+            overflow-x: auto; /* Habilita el scroll horizontal */
             overflow-y: hidden;
-            scroll-snap-type: x mandatory;
-            /* Fuerza a que la foto se pegue al centro */
-            scroll-behavior: smooth;
-            /* Deslizamiento suave al usar botones */
-            gap: 15px;
-            /* Espacio entre fotos */
+            scroll-snap-type: x mandatory; /* Fuerza a que la foto se pegue al centro */
+            scroll-behavior: smooth; /* Deslizamiento suave al usar botones */
+            gap: 15px; /* Espacio entre fotos */
             padding: 10px 0 20px 0;
-
-            -ms-overflow-style: none;
-            /* IE/Edge */
-            scrollbar-width: none;
-            /* Firefox */
-        }
-
-        /* Ocultar barra de scroll (Webkit) - fuera del anidamiento para compatibilidad */
-        .slider-wrapper::-webkit-scrollbar {
-            display: none;
+            
+            /* Ocultar barra de scroll (Webkit) */
+            &::-webkit-scrollbar { display: none; }
+            -ms-overflow-style: none;  /* IE/Edge */
+            scrollbar-width: none;  /* Firefox */
         }
 
         .slide {
-            width: min(85vw, 360px);
-            /* Nunca más grande que el contenedor de la tarjeta */
-            scroll-snap-align: center;
-            /* Se alinea al centro al soltar el dedo */
+            min-width: 85vw; /* Cada foto ocupa casi todo el ancho de la pantalla */
+            max-width: 380px;
+            scroll-snap-align: center; /* Se alinea al centro al soltar el dedo */
             flex-shrink: 0;
             position: relative;
         }
@@ -256,8 +172,8 @@
         .neon-frame {
             background: rgba(10, 11, 30, 0.9);
             border-radius: 20px;
-            border: 3px solid var(--hulk-green);
-            box-shadow: 0 0 25px rgba(57, 255, 106, 0.3);
+            border: 3px solid var(--blue);
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.3);
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -266,15 +182,13 @@
         }
 
         .slide.active .neon-frame {
-            transform: scale(1.03);
-            /* Pequeño resalte a la foto centrada */
-            box-shadow: 0 0 35px rgba(57, 255, 106, 0.6);
+            transform: scale(1.03); /* Pequeño resalte a la foto centrada */
+            box-shadow: 0 0 35px rgba(0, 212, 255, 0.6);
         }
 
         .neon-frame img {
             width: 100%;
-            height: 380px;
-            /* Alto fijo para que todas luzcan igual */
+            height: 380px; /* Alto fijo para que todas luzcan igual */
             object-fit: cover;
             display: block;
         }
@@ -292,7 +206,7 @@
             margin: 0;
             font-size: 1.2rem;
             color: #fff;
-            text-shadow: 0 0 10px var(--hulk-green);
+            text-shadow: 0 0 10px var(--blue);
             font-family: 'Segoe UI', sans-serif;
         }
 
@@ -306,11 +220,11 @@
         }
 
         .btn-control {
-            background: rgba(57, 255, 106, 0.12);
-            border: 2px solid rgba(57, 255, 106, 0.4);
+            background: rgba(255,255,255,0.1);
+            border: none;
             color: white;
-            width: 42px;
-            height: 42px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             font-size: 1.2rem;
             cursor: pointer;
@@ -318,17 +232,12 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        .btn-control:active {
-            transform: scale(0.9);
-            background: rgba(57, 255, 106, 0.3);
-            box-shadow: 0 0 15px rgba(57, 255, 106, 0.6);
-        }
+        .btn-control:active { transform: scale(0.9); background: rgba(255,255,255,0.2); }
 
         .counter-gamer {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.85rem;
-            color: var(--hulk-green);
-            text-shadow: 0 0 8px var(--hulk-green);
+            font-size: 1rem;
+            color: var(--yellow);
+            text-shadow: 0 0 8px var(--yellow);
             font-weight: bold;
         }
 
@@ -348,15 +257,10 @@
         }
 
         .final-message {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: var(--hulk-green);
+            font-size: 1.8rem;
+            color: var(--pink);
             margin: 60px 0;
             font-weight: bold;
-            text-shadow:
-                2px 2px 0 var(--purple),
-                4px 4px 0 #00000088;
             animation: pulse 2s infinite;
         }
 
@@ -366,8 +270,8 @@
             }
 
             50% {
-                transform: scale(1.06);
-                text-shadow: 2px 2px 0 var(--pink), 4px 4px 0 #00000088, 0 0 20px var(--hulk-green);
+                transform: scale(1.08);
+                text-shadow: 0 0 20px var(--pink);
             }
 
             100% {
@@ -411,23 +315,6 @@
         }
 
         .mute-control svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        .falling-item {
-            width: 60px;
-            /* el tamaño normal que ya tengas */
-            height: 60px;
-        }
-
-        .mk-item {
-            width: 200px;
-            /* ajusta al tamaño que quieras */
-            height: 200px;
-        }
-
-        .falling-item img {
             width: 100%;
             height: 100%;
         }
@@ -482,8 +369,8 @@
 
         <div class="visor-container" id="visor-holografico" style="display: none;">
             <div class="slider-wrapper" id="slider-wrapper">
-            </div>
-
+                </div>
+            
             <div class="controls">
                 <button class="btn-control btn-prev" onclick="cambiarFotoCSS(-1)">◀</button>
                 <div class="counter-gamer" id="contador-fotos">1 / 40</div>
@@ -511,17 +398,10 @@
         function createItem() {
             if (score >= maxScore) return;
 
-            const items = ["icons/puno.png", "icons/juego.png", "icons/cohete.png", "icons/estrella.png", "icons/bloque.png", "icons/dado.png", "icons/alien.png", "icons/trofeo.png", "icons/mk1.png", "icons/mk2.png", "icons/mk3.png", "icons/mk4.png", "icons/mk5.png"];
+            const items = ["🎁", "🎮", "🚀", "⭐", "🍕", "🎈", "👾", "🏆"];
             const item = document.createElement("div");
-            const chosen = items[Math.floor(Math.random() * items.length)];
-            // Detectamos si es un ícono "mk"
-            const isMk = chosen.includes("/mk");
-
-
-            //item.className = "falling-item";
-            //item.innerHTML = `<img src="${items[Math.floor(Math.random() * items.length)]}" alt="objeto" draggable="false">`;
-            item.className = "falling-item" + (isMk ? " mk-item" : "");
-            item.innerHTML = `<img src="${chosen}" alt="objeto" draggable="false">`;
+            item.className = "falling-item";
+            item.innerText = items[Math.floor(Math.random() * items.length)];
 
             // Asegurar que no se salgan de la pantalla en móviles
             const startX = Math.random() * (window.innerWidth - 80) + 10;
@@ -605,7 +485,7 @@
            CONFETI
            ======================= */
         function launchConfetti() {
-            const colors = ["#39ff6a", "#9d00ff", "#ff007f", "#ffcc00", "#00d4ff"];
+            const colors = ["#00d4ff", "#9d00ff", "#ff007f", "#ffff00", "#00ff00"];
 
             const confetiInterval = setInterval(() => {
                 const c = document.createElement("div");
@@ -672,22 +552,22 @@
             { t: "¡Nivel 10 desbloqueado! Juntos somos el mejor equipo 🥳", url: "img/axxel-y-papa.jpeg" }
         ];
 
-
-        /* =======================
-             LÓGICA DEL SLIDER TÁCTIL NATIVO
-             ======================= */
+       
+      /* =======================
+           LÓGICA DEL SLIDER TÁCTIL NATIVO
+           ======================= */
         let indiceFoto = 0;
         const marcoFoto = document.getElementById("marco-foto");
         const imgElement = document.getElementById("foto-actual");
         const textoElement = document.getElementById("texto-actual");
         const wrapper = document.getElementById("slider-wrapper");
         const contadorElement = document.getElementById("contador-fotos");
-        const coloresNeon = ['var(--hulk-green)', 'var(--pink)', 'var(--mk-gold)', 'var(--purple)', 'var(--blue)'];
+        const coloresNeon = ['var(--blue)', 'var(--pink)', 'var(--yellow)', 'var(--purple)'];
 
         function showPhotos() {
             // Mostramos el contenedor cuando el juego termina
             document.getElementById("visor-holografico").style.display = "block";
-
+            
             wrapper.innerHTML = ""; // Limpiar por seguridad
 
             fotos.forEach((f, i) => {
@@ -713,7 +593,7 @@
             wrapper.addEventListener('scroll', debounce(() => {
                 const slideWidth = wrapper.querySelector('.slide').offsetWidth + 15; // Ancho + Gap
                 const currentIdx = Math.round(wrapper.scrollLeft / slideWidth);
-
+                
                 actualizarContador(currentIdx);
             }, 50)); // Debounce para no saturar al procesador
         }
@@ -723,20 +603,20 @@
             const slideWidth = wrapper.querySelector('.slide').offsetWidth + 15;
             const currentIdx = Math.round(wrapper.scrollLeft / slideWidth);
             const nuevoIdx = (currentIdx + direccion + fotos.length) % fotos.length;
-
+            
             // Hacemos scroll programático (el CSS smooth se encarga de la animación)
             wrapper.scrollLeft = nuevoIdx * slideWidth;
-
+            
             actualizarContador(nuevoIdx);
         }
 
         function actualizarContador(idx) {
             contadorElement.innerText = `${idx + 1} / ${fotos.length}`;
-
+            
             // Resaltar la foto activa
             document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
             const activeSlide = document.getElementById(`slide-${idx}`);
-            if (activeSlide) activeSlide.classList.add('active');
+            if(activeSlide) activeSlide.classList.add('active');
         }
 
         // Función auxiliar para optimizar el evento scroll
