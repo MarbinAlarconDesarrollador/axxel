@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#07080f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>Nivel 10 · Axxel Jhael</title>
+<style>
+:root{
+  --red:#ff1f2d; --red-dark:#8a0010; --white:#f4f6ff; --gold:#ffc62e;
+  --cyan:#35d6ff; --space:#07080f; --panel:rgba(14,16,30,.72);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--space);color:var(--white);
+  font-family:'Segoe UI',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+  overflow-x:hidden;touch-action:manipulation}
+body{background:radial-gradient(ellipse at 50% 120%,#3a0610 0%,#0b0c1c 45%,#04050a 100%) fixed}
+
+#stars,#fireworksCanvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+#stars{z-index:0}
+#fireworksCanvas{z-index:1}
+.vignette{position:fixed;inset:0;pointer-events:none;z-index:1;
+  background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.65) 100%)}
+.scanlines{position:fixed;inset:0;pointer-events:none;z-index:3;opacity:.06;
+  background:repeating-linear-gradient(0deg,#fff 0 1px,transparent 1px 3px)}
+
+/* ---------- pantallas ---------- */
+.screen{position:relative;z-index:2;min-height:100vh;min-height:100dvh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 18px}
+.hidden{display:none!important}
+
+/* HUD esquinas */
+.hud{position:fixed;z-index:4;width:46px;height:46px;pointer-events:none;border:2px solid var(--red);opacity:.85}
+.hud.tl{top:10px;left:10px;border-right:0;border-bottom:0}
+.hud.tr{top:10px;right:10px;border-left:0;border-bottom:0}
+.hud.bl{bottom:10px;left:10px;border-right:0;border-top:0}
+.hud.br{bottom:10px;right:10px;border-left:0;border-top:0}
+
+/* Emblema original (hexágono con X10) */
+.emblem{width:130px;height:130px;margin-bottom:10px;filter:drop-shadow(0 0 18px rgba(255,31,45,.8));
+  animation:float 3.5s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-10px)}}
+
+h1.title{font-size:clamp(2rem,9vw,3.6rem);margin:6px 0;letter-spacing:.12em;text-transform:uppercase;font-weight:900;
+  background:linear-gradient(180deg,#fff 20%,#ff4b57 60%,#a30012);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 14px rgba(255,31,45,.55))}
+.subtitle{color:#c9cde6;font-size:1.05rem;letter-spacing:.06em;max-width:520px;line-height:1.5}
+.tag{display:inline-block;margin-top:6px;padding:4px 14px;border:1px solid var(--red);color:var(--red);
+  font-size:.78rem;letter-spacing:.3em;text-transform:uppercase;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%)}
+
+.btn{margin-top:28px;position:relative;border:0;cursor:pointer;color:#fff;font-weight:900;letter-spacing:.2em;
+  text-transform:uppercase;font-size:1.05rem;padding:16px 38px;
+  background:linear-gradient(135deg,var(--red),var(--red-dark));
+  clip-path:polygon(14px 0,100% 0,calc(100% - 14px) 100%,0 100%);
+  box-shadow:0 0 30px rgba(255,31,45,.6);animation:pulseBtn 1.6s infinite}
+.btn:active{transform:scale(.95)}
+@keyframes pulseBtn{50%{filter:brightness(1.35)}}
+.btn.ghost{background:rgba(255,255,255,.08);box-shadow:none;animation:none;font-size:.8rem;padding:12px 24px;margin-top:14px}
+
+/* ---------- juego ---------- */
+#game-screen{overflow:hidden}
+.hud-top{position:fixed;top:0;left:0;right:0;z-index:5;padding:18px 66px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.score-box{font-weight:900;letter-spacing:.1em;font-size:1.1rem}
+.score-box b{color:var(--gold);text-shadow:0 0 12px var(--gold);font-size:1.5rem}
+.combo{color:var(--cyan);font-weight:800;letter-spacing:.1em;min-width:80px;text-align:right;text-shadow:0 0 10px var(--cyan)}
+.progress{position:fixed;left:66px;right:66px;top:62px;height:8px;z-index:5;background:rgba(255,255,255,.12);
+  clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%)}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--red-dark),var(--red),var(--gold));
+  box-shadow:0 0 14px var(--red);transition:width .35s cubic-bezier(.2,1.4,.4,1)}
+.game-center{pointer-events:none;opacity:.9}
+.game-center h2{margin:0 0 8px;font-size:1.3rem;letter-spacing:.2em;text-transform:uppercase;color:var(--red)}
+.game-center p{margin:0;color:#aab;font-size:1rem}
+
+.falling-item{position:fixed;z-index:100;font-size:56px;line-height:1;cursor:pointer;user-select:none;
+  -webkit-user-select:none;will-change:transform;filter:drop-shadow(0 0 12px rgba(255,80,90,.9));
+  padding:8px}
+.shock{position:fixed;z-index:99;width:20px;height:20px;border-radius:50%;pointer-events:none;
+  border:3px solid var(--gold);box-shadow:0 0 20px var(--red);transform:translate(-50%,-50%);animation:shock .55s ease-out forwards}
+@keyframes shock{to{width:200px;height:200px;opacity:0;border-width:1px}}
+.plus{position:fixed;z-index:101;pointer-events:none;font-weight:900;color:var(--gold);font-size:1.6rem;
+  text-shadow:0 0 12px var(--red);animation:plus .8s ease-out forwards}
+@keyframes plus{to{transform:translateY(-70px);opacity:0}}
+.shake{animation:shake .25s}
+@keyframes shake{25%{transform:translate(4px,-3px)}50%{transform:translate(-4px,3px)}75%{transform:translate(3px,2px)}}
+
+/* ---------- celebración ---------- */
+#celebration-screen{justify-content:flex-start;padding-top:50px;opacity:0;transition:opacity 1.2s}
+.unlocked{font-size:clamp(1.6rem,7vw,2.6rem);font-weight:900;letter-spacing:.14em;text-transform:uppercase;margin:6px 0 28px;
+  color:var(--gold);animation:glow 1.5s infinite alternate}
+@keyframes glow{from{text-shadow:0 0 10px var(--gold)}to{text-shadow:0 0 30px var(--gold),0 0 60px var(--red)}}
+
+.big10{font-size:clamp(6rem,34vw,12rem);font-weight:900;line-height:.9;margin:0;
+  background:linear-gradient(180deg,#fff,#ff3b49 55%,#7c000e);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 25px rgba(255,31,45,.7));animation:float 4s ease-in-out infinite}
+
+.card{background:var(--panel);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1px solid rgba(255,31,45,.55);padding:34px 24px;margin:18px auto 50px;max-width:620px;width:100%;
+  box-shadow:0 18px 40px rgba(0,0,0,.55),0 0 40px rgba(255,31,45,.2);position:relative;
+  clip-path:polygon(22px 0,100% 0,100% calc(100% - 22px),calc(100% - 22px) 100%,0 100%,0 22px)}
+.card h2{margin-top:0;color:var(--white);font-size:1.7rem;letter-spacing:.04em;text-shadow:0 0 12px var(--red)}
+.card p{font-size:1.15rem;line-height:1.65;color:#e4e7fa}
+.sign{color:var(--red)!important;font-weight:900;font-size:1.4rem!important;text-shadow:0 0 12px var(--red);letter-spacing:.05em}
+
+/* stats estilo guerrero */
+.stats{width:100%;max-width:620px;margin:0 auto 50px;display:grid;gap:12px;text-align:left}
+.stat{background:var(--panel);border-left:4px solid var(--red);padding:10px 14px}
+.stat span{display:flex;justify-content:space-between;font-weight:800;letter-spacing:.08em;font-size:.85rem;text-transform:uppercase}
+.stat em{font-style:normal;color:var(--gold)}
+.bar{height:8px;background:rgba(255,255,255,.12);margin-top:8px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--red-dark),var(--red),var(--gold));transition:width 1.6s cubic-bezier(.2,.8,.2,1)}
+
+/* slot de personaje (imagen propia del usuario) */
+.hero-slot{display:none;margin:0 auto 36px;max-width:340px;border:2px solid var(--red);box-shadow:0 0 30px rgba(255,31,45,.5);
+  background:rgba(0,0,0,.5);overflow:hidden}
+.hero-slot img{width:100%;display:block}
+
+/* slider */
+.visor{width:100%;max-width:440px;margin:0 auto 50px;padding:0 6px}
+.visor h3.sec{letter-spacing:.25em;text-transform:uppercase;font-size:.9rem;color:var(--red);margin:0 0 6px}
+.slider{display:flex;overflow-x:auto;overflow-y:hidden;gap:16px;padding:14px 4px 22px;
+  scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none}
+.slider::-webkit-scrollbar{display:none}
+.slide{flex:0 0 min(80vw,340px);scroll-snap-align:center}
+.frame{background:rgba(8,9,20,.92);border:3px solid var(--c,var(--red));overflow:hidden;display:flex;flex-direction:column;height:100%;
+  box-shadow:0 0 22px color-mix(in srgb,var(--c,var(--red)) 45%,transparent);
+  transition:transform .3s,box-shadow .3s;
+  clip-path:polygon(16px 0,100% 0,100% calc(100% - 16px),calc(100% - 16px) 100%,0 100%,0 16px)}
+.slide.active .frame{transform:scale(1.03);box-shadow:0 0 38px var(--c,var(--red))}
+.frame img{width:100%;height:370px;object-fit:cover;display:block;background:#111}
+.cap{padding:14px;min-height:74px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.55)}
+.cap h3{margin:0;font-size:1.05rem;line-height:1.35;text-shadow:0 0 10px var(--c,var(--red))}
+.controls{display:flex;justify-content:center;align-items:center;gap:20px}
+.cbtn{width:46px;height:46px;border-radius:50%;border:2px solid var(--red);background:rgba(255,31,45,.15);color:#fff;font-size:1.2rem;cursor:pointer}
+.cbtn:active{transform:scale(.9)}
+.counter{color:var(--gold);font-weight:900;text-shadow:0 0 8px var(--gold);min-width:70px}
+
+.final{font-size:clamp(1.4rem,6vw,2rem);color:var(--red);margin:30px 0 90px;font-weight:900;letter-spacing:.06em;
+  animation:pulse 2s infinite;text-shadow:0 0 18px rgba(255,31,45,.6)}
+@keyframes pulse{50%{transform:scale(1.07)}}
+
+.confeti{position:fixed;width:11px;height:11px;pointer-events:none;z-index:999;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(112vh) rotate(720deg)}}
+
+/* botones fijos */
+.fab{position:fixed;right:18px;z-index:2000;width:50px;height:50px;border-radius:50%;cursor:pointer;
+  background:rgba(7,8,15,.85);border:2px solid var(--red);display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 15px rgba(255,31,45,.5);color:#fff;font-size:1.3rem;padding:0}
+#mute-btn{bottom:22px}
+#install-btn{bottom:84px;font-size:.7rem;font-weight:900;border-color:var(--gold);box-shadow:0 0 15px rgba(255,198,46,.5)}
+.fab:active{transform:scale(.9)}
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<canvas id="fireworksCanvas"></canvas>
+<div class="vignette"></div><div class="scanlines"></div>
+<div class="hud tl"></div><div class="hud tr"></div><div class="hud bl"></div><div class="hud br"></div>
+
+<audio id="popSound" src="audio/pop.mp3" preload="auto"></audio>
+<audio id="victoryMusic" src="audio/axxel_jhael.mp3" preload="auto" loop></audio>
+
+<!-- INTRO -->
+<section id="intro-screen" class="screen">
+  <svg class="emblem" viewBox="0 0 120 120" aria-hidden="true">
+    <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff4b57"/><stop offset="1" stop-color="#7c000e"/></linearGradient></defs>
+    <polygon points="60,4 108,32 108,88 60,116 12,88 12,32" fill="#0b0c1c" stroke="url(#g)" stroke-width="5"/>
+    <polygon points="60,18 96,39 96,81 60,102 24,81 24,39" fill="none" stroke="#f4f6ff" stroke-width="1.5" opacity=".5"/>
+    <text x="60" y="73" text-anchor="middle" font-family="Arial Black,Arial" font-weight="900" font-size="38" fill="#f4f6ff">X10</text>
+  </svg>
+  <span class="tag">Transmisión espacial entrante</span>
+  <h1 class="title">Misión<br>Nivel 10</h1>
+  <p class="subtitle">Guerrero <b>Axxel Jhael</b>, el imperio galáctico te ha preparado una prueba final.<br>¿Estás listo para desbloquear tus 10 años?</p>
+  <button class="btn" id="start-btn">▶ Iniciar misión</button>
+</section>
+
+<!-- JUEGO -->
+<section id="game-screen" class="screen hidden">
+  <div class="hud-top">
+    <div class="score-box">PUNTOS <b id="score">0</b> / 10</div>
+    <div class="combo" id="combo"></div>
+  </div>
+  <div class="progress"><i id="prog"></i></div>
+  <div class="game-center">
+    <h2>Misión: Nivel 10</h2>
+    <p>¡Toca los 10 objetos antes de que escapen!</p>
+  </div>
+</section>
+
+<!-- CELEBRACIÓN -->
+<section id="celebration-screen" class="screen hidden">
+  <span class="tag">Desafío completado</span>
+  <h1 class="unlocked">⚔ Nivel 10 desbloqueado ⚔</h1>
+  <div class="big10">10</div>
+
+  <div class="card">
+    <h2>🎂 ¡FELIZ CUMPLEAÑOS, MI CAMPEÓN! 🎂</h2>
+    <p><strong>Axxel Jhael</strong>, mi príncipe, mi lokito hermoso. Hoy desbloqueas uno de los niveles más importantes del juego: <strong>¡tus 10 añitos!</strong></p>
+    <p>Hace una década empezaste esta gran aventura y cada día me sorprendes más con tus habilidades. Eres valiente, súper inteligente y tienes el corazón más noble de toda la galaxia. Sigue riendo, sigue jugando y nunca dejes de ser ese niño extraordinario que ilumina mi vida.</p>
+    <p>¡Prepárate, porque los siguientes niveles vienen con gráficos increíbles y aventuras épicas! Siempre estaré aquí, siendo tu Jugador 2, listo para apoyarte en cada partida.</p>
+    <p class="sign">❤️ TE AMO INFINITAMENTE ❤️</p>
+  </div>
+
+  <div class="stats" id="stats">
+    <div class="stat"><span>Valentía <em>∞</em></span><div class="bar"><i data-w="100"></i></div></div>
+    <div class="stat"><span>Inteligencia <em>MAX</em></span><div class="bar"><i data-w="96"></i></div></div>
+    <div class="stat"><span>Corazón noble <em>MAX</em></span><div class="bar"><i data-w="100"></i></div></div>
+    <div class="stat"><span>Fuerza de guerrero <em>NIVEL 10</em></span><div class="bar"><i data-w="90"></i></div></div>
+    <div class="stat"><span>Amor de papá <em>∞∞∞</em></span><div class="bar"><i data-w="100"></i></div></div>
+  </div>
+
+  <!-- Opcional: pon tu propia imagen en img/heroe.jpg (por ejemplo, un arte que a Axxel le guste) -->
+  <div class="hero-slot" id="hero-slot"><img id="hero-img" alt="Mi héroe favorito"></div>
+
+  <div class="visor hidden" id="visor">
+    <h3 class="sec">Archivo de recuerdos</h3>
+    <div class="slider" id="slider"></div>
+    <div class="controls">
+      <button class="cbtn" onclick="cambiarFoto(-1)" aria-label="Anterior">◀</button>
+      <div class="counter" id="contador">1 / 1</div>
+      <button class="cbtn" onclick="cambiarFoto(1)" aria-label="Siguiente">▶</button>
+    </div>
+  </div>
+
+  <div class="final">🎁 ¡FELIZ CUMPLEAÑOS, MI CAMPEÓN! 🎁</div>
+</section>
+
+<button id="mute-btn" class="fab hidden" aria-label="Silenciar música">🔊</button>
+<button id="install-btn" class="fab hidden" aria-label="Instalar app">APP</button>
+
+<script>
+/* =========== helpers =========== */
+const $ = id => document.getElementById(id);
+const vib = ms => { try{ navigator.vibrate && navigator.vibrate(ms) }catch(e){} };
+
+/* =========== fondo de estrellas =========== */
+(function stars(){
+  const c = $('stars'), x = c.getContext('2d');
+  let W,H,S=[];
+  function init(){
+    W=c.width=innerWidth; H=c.height=innerHeight;
+    S=Array.from({length:Math.min(160,Math.floor(W*H/6000))},()=>({
+      x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.6+.2,v:Math.random()*.35+.05,t:Math.random()*6}));
+  }
+  addEventListener('resize',init); init();
+  (function loop(){
+    x.clearRect(0,0,W,H);
+    for(const s of S){
+      s.y+=s.v; s.t+=.03; if(s.y>H){s.y=-2;s.x=Math.random()*W}
+      x.globalAlpha=.4+Math.abs(Math.sin(s.t))*.6;
+      x.fillStyle = s.r>1.3 ? '#ffb3b8' : '#fff';
+      x.beginPath(); x.arc(s.x,s.y,s.r,0,6.283); x.fill();
+    }
+    requestAnimationFrame(loop);
+  })();
+})();
+
+/* =========== audio =========== */
+const sound = $('popSound'), music = $('victoryMusic');
+let muted = false;
+function setMuted(m){
+  muted = m; music.muted = m; sound.muted = m;
+  $('mute-btn').textContent = m ? '🔇' : '🔊';
+  $('mute-btn').style.borderColor = m ? '#ff007f' : 'var(--red)';
+}
+$('mute-btn').onclick = () => setMuted(!muted);
+
+/* =========== INTRO -> JUEGO =========== */
+$('start-btn').onclick = () => {
+  // el toque del usuario desbloquea el audio en móviles
+  try{ music.volume = 0; music.play().then(()=>{music.pause();music.currentTime=0;music.volume=.6}).catch(()=>{}) }catch(e){}
+  try{ sound.play().then(()=>sound.pause()).catch(()=>{}) }catch(e){}
+  $('intro-screen').classList.add('hidden');
+  $('game-screen').classList.remove('hidden');
+  $('mute-btn').classList.remove('hidden');
+  for(let i=0;i<3;i++) setTimeout(createItem, i*700);
+};
+
+/* =========== JUEGO =========== */
+const maxScore = 10;
+let score = 0, combo = 0, lastHit = 0, ended = false;
+const ITEMS = ["🎁","🎮","🚀","⭐","🍕","🎈","👾","🏆","💎","☄️"];
+
+function createItem(){
+  if(ended || score >= maxScore) return;
+  const el = document.createElement('div');
+  el.className = 'falling-item';
+  el.textContent = ITEMS[Math.floor(Math.random()*ITEMS.length)];
+  const x = Math.random()*(innerWidth-90)+10;
+  let y = -90, done = false;
+  const speed = (Math.random()*1.6+2.2) * (1 + score*.05);
+  const drift = (Math.random()-.5)*1.2;
+  let cx = x;
+  el.style.left = x+'px'; el.style.top = '0px';
+  document.body.appendChild(el);
+
+  function step(){
+    if(done) return;
+    y += speed; cx += drift;
+    el.style.transform = `translate(${cx-x}px,${y}px) rotate(${y*.4}deg)`;
+    if(y > innerHeight+20){ done=true; el.remove(); combo=0; $('combo').textContent=''; createItem(); return }
+    requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+
+  const hit = e => {
+    e.preventDefault(); if(done) return; done = true;
+    const r = el.getBoundingClientRect(), px = r.left+r.width/2, py = r.top+r.height/2;
+    const now = Date.now(); combo = (now-lastHit<2500) ? combo+1 : 1; lastHit = now;
+    score++; $('score').textContent = score;
+    $('prog').style.width = (score/maxScore*100)+'%';
+    $('combo').textContent = combo>1 ? `COMBO x${combo}` : '';
+    try{ sound.currentTime=0; sound.play().catch(()=>{}) }catch(e){}
+    vib(40); fx(px,py);
+    el.style.transition='transform .25s,opacity .25s'; el.style.opacity='0';
+    setTimeout(()=>el.remove(),260);
+    if(score>=maxScore) finish(); else createItem();
+  };
+  el.addEventListener('pointerdown', hit);
+}
+function fx(x,y){
+  const s=document.createElement('div'); s.className='shock'; s.style.left=x+'px'; s.style.top=y+'px';
+  document.body.appendChild(s); setTimeout(()=>s.remove(),600);
+  const p=document.createElement('div'); p.className='plus'; p.textContent='+1'; p.style.left=(x-12)+'px'; p.style.top=(y-20)+'px';
+  document.body.appendChild(p); setTimeout(()=>p.remove(),800);
+  const g=$('game-screen'); g.classList.remove('shake'); void g.offsetWidth; g.classList.add('shake');
+}
+
+/* =========== FINAL =========== */
+function finish(){
+  ended = true;
+  document.querySelectorAll('.falling-item').forEach(e=>e.remove());
+  vib([100,60,100,60,250]);
+  setTimeout(()=>{
+    $('game-screen').classList.add('hidden');
+    const c = $('celebration-screen'); c.classList.remove('hidden');
+    scrollTo(0,0);
+    try{ music.currentTime=0; music.volume=.6; music.play().catch(()=>{}) }catch(e){}
+    requestAnimationFrame(()=>{ c.style.opacity='1' });
+    launchConfetti(); showPhotos(); startFireworks(); loadHero();
+    setTimeout(()=>document.querySelectorAll('#stats .bar i').forEach(b=>b.style.width=b.dataset.w+'%'),700);
+  },450);
+}
+
+function loadHero(){
+  // Si existe img/heroe.jpg la mostramos (imagen elegida por ti)
+  const im = new Image();
+  im.onload = () => { $('hero-img').src = im.src; $('hero-slot').style.display='block' };
+  im.src = 'img/heroe.jpg';
+}
+
+function launchConfetti(){
+  const colors=["#ff1f2d","#ffffff","#ffc62e","#35d6ff","#ff007f"];
+  const iv=setInterval(()=>{
+    const c=document.createElement('div'); c.className='confeti';
+    c.style.left=Math.random()*100+'vw'; c.style.top='-20px';
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    const d=Math.random()*3+2; c.style.animationDuration=d+'s';
+    document.body.appendChild(c); setTimeout(()=>c.remove(),d*1000);
+  },110);
+  setTimeout(()=>clearInterval(iv),15000);
+}
+
+/* =========== FOTOS =========== */
+const fotos = [
+  { t: "Tus primeros meses: el inicio de nuestra gran aventura 👶", url: "img/axxelbb1-primeros-meses-jugando.jpeg" },
+  { t: "Tus primeros gateos, descubriendo el mundo paso a paso 👣", url: "img/axxelbb1gateando.jpeg" },
+  { t: "Esa sonrisa que ilumina hasta mis días más oscuros 🌟", url: "img/axxelbb1sonrisa.jpeg" },
+  { t: "Mi bebé hermoso, el regalo más grande de la vida 🎀", url: "img/axxelbb2hermoso.jpeg" },
+  { t: "Tus primeros pasos: el comienzo de un camino brillante 🚶", url: "img/axxelbb3primerospasos.jpeg" },
+  { t: "Explorando nuevos sabores en tus primeros bocados 🍼", url: "img/axxelbb4comiendo.jpeg" },
+  { t: "Celebrando tus 10 meses de pura felicidad 🎂", url: "img/axxelbb5-1-10meses.jpeg" },
+  { t: "10 meses transformando nuestro mundo con tu alegría 🎂", url: "img/axxelbb5-10meses.jpeg" },
+  { t: "Mi príncipe y mi princesa: mis dos tesoros más valiosos 🌟", url: "img/axxelbb6-mi-principe-y-mi-princesa.jpeg" },
+  { t: "¡Cuidado mundo! Aquí llega mi pequeño y valiente Thor 🦸", url: "img/axxelbb6mi-pequenio-thor.jpeg" },
+  { t: "Casi un año... 11 meses de puro amor y aprendizaje 🎂", url: "img/axxelbb7-11meses.jpeg" },
+  { t: "Explorando el mundo con esa curiosidad que tanto amo 🌍", url: "img/axxelbb8-explorandoelmundo.jpeg" },
+  { t: "Compartiendo momentos inolvidables al lado de Papi 🎮", url: "img/axxelbb9-con-papi.jpeg" },
+  { t: "Un desayuno sorpresa para un niño que se merece todo 🍽️", url: "img/axxelbb10-desayuno-sorpresa.jpeg" },
+  { t: "Devorando un algodón de azúcar y disfrutando la dulzura de la niñez 🍬", url: "img/axxelbb11-comiendo-algodon-de-azucar.jpeg" },
+  { t: "Te amo con todas mis fuerzas, hijo mío 🤗", url: "img/axxelbb11-te-amo.jpeg" },
+  { t: "Ese momento divertido cuando intentabas asustarme... ¡Casi lo logras!", url: "img/axxelbb12-me-queria-asustar.jpeg" },
+  { t: "Simplemente decirte que te amo es poco para lo que siento", url: "img/axxelbb12-te-amo.jpeg" },
+  { t: "Enfocado y estudioso, construyendo tus sueños desde pequeño", url: "img/axxelbb13-estudiso.jpeg" },
+  { t: "¡Uy, qué miedo! Jejeje... Siempre sacándome una carcajada", url: "img/axxelbb14uyyy-miedo-jejej.jpeg" },
+  { t: "Mi Spiderman y su hermanita, la Mujer Maravilla: mi equipo de héroes", url: "img/axxelbb15-mi-spider-su-hermanita-mujer-maravilla.jpeg" },
+  { t: "Mi Spiderman favorito junto a su mayor fan: su papá", url: "img/axxelbb15-mi-spiderman-y-papa.jpeg" },
+  { t: "Esa sonrisa auténtica que refleja la pureza de tu corazón", url: "img/axxelbb16sonrisa-autentica.jpeg" },
+  { t: "No hay nada mejor que un helado y una buena charla con Papi", url: "img/axxelbb17-comiendo-helado-con-papi.jpeg" },
+  { t: "La felicidad completa: compartiendo con Papi y tu hermana", url: "img/axxelbb18-compartiendo-con-papi-y-hermana1.jpeg" },
+  { t: "Creando recuerdos que guardaremos siempre en el alma", url: "img/axxelbb18-compartiendo-con-papi-y-hermana-2.jpeg" },
+  { t: "Verlos juntos es mi mayor recompensa en la vida", url: "img/axxelbb18-compartiendo-con-papi-y-hermana-3.jpeg" },
+  { t: "Días de risas, juegos y mucho amor en familia", url: "img/axxelbb18-compartiendo-con-papi-y-hermana-4.jpeg" },
+  { t: "Haciendo lo que más le gusta: ¡disfrutar de un buen helado!", url: "img/axxelbb19comiendo-helado-le-encanta.jpeg" },
+  { t: "Aprendiendo a rodar por la vida en tu monopatín", url: "img/axxelbb20aprendiendo-monopatin.jpeg" },
+  { t: "Disfrutando de un lindo paseito y de la brisa en la cara", url: "img/axxelbb20paseito.jpeg" },
+  { t: "Porque un solo helado nunca es suficiente para tanta alegría", url: "img/axxelbb21-comiendo-mas-helado.jpeg" },
+  { t: "Amo cada una de tus locuras; tú le das color a mi vida 🧭", url: "img/axxelbb22amo-tus-locuras.jpeg" },
+  { t: "Tus ocurrencias son el motor que me hace sonreír cada día 🧭", url: "img/axxelbb22amo-tus-locuras-1.jpeg" },
+  { t: "Él es inmensamente feliz con su súper helado", url: "img/axxelbb23-el-feliz-con-su-super-helado.jpeg" },
+  { t: "Me detengo a mirar cómo has crecido, mi chiquitín hermoso", url: "img/axxelbb24-como-has-crecido.jpeg" },
+  { t: "Nunca dejes de sonreír, el mundo necesita tu luz", url: "img/axxelbb26-nunca-dejes-de-reir.jpeg" },
+  { t: "Te estás haciendo grande, pero siempre serás mi niño", url: "img/axxelbb26-te-estas-creciendo.jpeg" },
+  { t: "¡Nivel 10 desbloqueado! Juntos somos el mejor equipo 🥳", url: "img/axxel-y-papa.jpeg" }
+];
+
+const neon = ['#ff1f2d','#f4f6ff','#ffc62e','#35d6ff'];
+const slider = $('slider');
+let slideStep = 0;
+
+function showPhotos(){
+  $('visor').classList.remove('hidden');
+  slider.innerHTML = '';
+  fotos.forEach((f,i)=>{
+    const s = document.createElement('div');
+    s.className = 'slide' + (i===0?' active':'');
+    s.style.setProperty('--c', neon[i%neon.length]);
+    s.innerHTML = `<div class="frame"><img src="${f.url}" alt="Recuerdo ${i+1}" loading="lazy"><div class="cap"><h3>${f.t}</h3></div></div>`;
+    slider.appendChild(s);
+  });
+  $('contador').textContent = `1 / ${fotos.length}`;
+  slideStep = slider.querySelector('.slide').offsetWidth + 16;
+  let t;
+  slider.addEventListener('scroll',()=>{
+    clearTimeout(t);
+    t=setTimeout(()=>setActive(Math.round(slider.scrollLeft/slideStep)),60);
+  },{passive:true});
+}
+function setActive(i){
+  i = Math.max(0,Math.min(fotos.length-1,i));
+  $('contador').textContent = `${i+1} / ${fotos.length}`;
+  slider.querySelectorAll('.slide').forEach((s,k)=>s.classList.toggle('active',k===i));
+}
+function cambiarFoto(d){
+  slideStep = slider.querySelector('.slide').offsetWidth + 16;
+  const cur = Math.round(slider.scrollLeft/slideStep);
+  const next = (cur+d+fotos.length)%fotos.length;
+  slider.scrollTo({left: next*slideStep, behavior:'smooth'});
+  setActive(next);
+}
+
+/* =========== FUEGOS ARTIFICIALES =========== */
+const fc = $('fireworksCanvas'), ctx = fc.getContext('2d');
+function resizeFC(){ fc.width=innerWidth; fc.height=innerHeight }
+addEventListener('resize',resizeFC); resizeFC();
+let particles = [], rockets = [], fwOn = false;
+const FW_COLORS = [0,0,350,45,45,190]; // rojos, dorados y un toque cian
+
+function explode(x,y,n=60){
+  const base = FW_COLORS[Math.floor(Math.random()*FW_COLORS.length)];
+  for(let i=0;i<n;i++){
+    const a = Math.random()*6.283, v = Math.random()*5+1.5;
+    particles.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:100+Math.random()*50,
+      color:`hsl(${base+Math.random()*20},100%,${55+Math.random()*15}%)`,size:Math.random()*2+1});
+  }
+}
+function launchRocket(){
+  rockets.push({x:Math.random()*(fc.width-100)+50,y:fc.height,
+    ty:fc.height*.2+Math.random()*fc.height*.3});
+}
+function startFireworks(){
+  if(fwOn) return; fwOn = true;
+  setInterval(launchRocket,1100);
+  setTimeout(drawTextFirework,3500);
+  setTimeout(drawTextFirework,11000);
+  (function loop(){
+    ctx.fillStyle='rgba(7,8,15,.22)'; ctx.fillRect(0,0,fc.width,fc.height);
+    for(let i=rockets.length-1;i>=0;i--){
+      const r=rockets[i]; r.y-=11;
+      ctx.fillStyle='rgba(255,200,120,.9)'; ctx.beginPath(); ctx.arc(r.x,r.y,2,0,6.283); ctx.fill();
+      if(r.y<r.ty){ explode(r.x,r.y); rockets.splice(i,1); }
+    }
+    for(let i=particles.length-1;i>=0;i--){
+      const p=particles[i]; p.x+=p.vx; p.y+=p.vy; p.vy+=.05; p.vx*=.992; p.life-=1.5;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,6.283); ctx.fillStyle=p.color; ctx.fill();
+      if(p.life<=0) particles.splice(i,1);
+    }
+    requestAnimationFrame(loop);
+  })();
+}
+function drawTextFirework(){
+  const t = document.createElement('canvas'); t.width=fc.width; t.height=fc.height;
+  const c = t.getContext('2d');
+  c.fillStyle='#fff'; c.font=`900 ${Math.min(fc.width/4.2,130)}px Arial`;
+  c.textAlign='center'; c.textBaseline='middle';
+  c.fillText('AXXEL 10', fc.width/2, fc.height*.3);
+  const d = c.getImageData(0,0,t.width,t.height);
+  for(let y=0;y<d.height;y+=8) for(let x=0;x<d.width;x+=8){
+    if(d.data[(y*d.width+x)*4+3]>150)
+      particles.push({x,y,vx:(Math.random()-.5)*1.6,vy:(Math.random()-.5)*1.6,life:150+Math.random()*100,
+        color:`hsl(${Math.random()<.5?Math.random()*20+350:Math.random()*30+35},100%,60%)`,size:2});
+  }
+}
+
+/* =========== PWA =========== */
+if('serviceWorker' in navigator){
+  addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+}
+let deferred;
+addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault(); deferred=e; $('install-btn').classList.remove('hidden');
+});
+$('install-btn').onclick = async()=>{
+  if(!deferred) return; deferred.prompt(); await deferred.userChoice; deferred=null;
+  $('install-btn').classList.add('hidden');
+};
+addEventListener('appinstalled',()=>$('install-btn').classList.add('hidden'));
+</script>
+</body>
+</html>

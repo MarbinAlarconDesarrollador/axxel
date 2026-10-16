@@ -6,26 +6,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#0a0b1e">
     <link rel="manifest" href="manifest.json">
-    <title>🎮 Nivel 10 - Axxel Jhael</title>
+    <title>⚡ Nivel 10 - Axxel Jhael | Guerrero Viltrumita</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Press+Start+2P&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --blue: #00d4ff;
-            --purple: #9d00ff;
-            --pink: #ff007f;
+            --blue: #1e6fff;
+            --purple: #1a3fae;
+            --pink: #ff3d9a;
             --yellow: #ffff00;
-            --dark: #0a0b1e;
+            --dark: #050814;
+            --viltrum-glow: #3a8dff;
+            --viltrum-deep: #0a1a4d;
+            --viltrum-gold: #f5f7ff;
+            --viltrum-red: #ff3d9a;
         }
 
         body {
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: radial-gradient(circle at bottom, #1a1c3a, #000);
+            background: #05070f;
             color: white;
             text-align: center;
             overflow-x: hidden;
             touch-action: manipulation;
             /* Mejora la respuesta táctil en móviles */
+        }
+
+        /* FONDO CÓSMICO VILTRUMITA: imagen + estrellas + astros, detrás de TODO (juego y celebración) */
+        #cosmic-bg {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            background-image:
+                linear-gradient(180deg, rgba(4, 6, 16, 0.35) 0%, rgba(0, 0, 0, 0.55) 55%, rgba(0, 0, 0, 0.85) 100%),
+                radial-gradient(circle at 22% 18%, rgba(58, 141, 255, 0.20), transparent 42%),
+                radial-gradient(circle at 82% 78%, rgba(255, 61, 154, 0.12), transparent 45%),
+                radial-gradient(1.8px 1.8px at 12% 15%, #fff, transparent),
+                radial-gradient(1.3px 1.3px at 30% 60%, rgba(255, 255, 255, 0.9), transparent),
+                radial-gradient(2px 2px at 50% 10%, #fff, transparent),
+                radial-gradient(1.3px 1.3px at 68% 40%, rgba(255, 255, 255, 0.75), transparent),
+                radial-gradient(1.6px 1.6px at 88% 85%, #fff, transparent),
+                radial-gradient(1.1px 1.1px at 6% 90%, rgba(255, 255, 255, 0.65), transparent),
+                radial-gradient(1.5px 1.5px at 95% 25%, #fff, transparent),
+                radial-gradient(1.1px 1.1px at 42% 94%, rgba(255, 255, 255, 0.65), transparent),
+                url('icons/viltrumita.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, cover;
+            animation: cosmicTwinkle 6s ease-in-out infinite alternate;
+        }
+
+        /* Luna Viltrumita */
+        #cosmic-bg::before {
+            content: "";
+            position: absolute;
+            top: 7%;
+            right: 9%;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, #ffffff, #c9d6ff 40%, #4a6bbf 75%, transparent 100%);
+            box-shadow: 0 0 25px rgba(150, 180, 255, 0.6), 0 0 60px rgba(58, 141, 255, 0.35);
+            opacity: 0.85;
+        }
+
+        /* Planeta lejano con acento magenta (piel viltrumita) */
+        #cosmic-bg::after {
+            content: "";
+            position: absolute;
+            bottom: 9%;
+            left: 7%;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 38% 32%, #ffc2e2, #ff3d9a 55%, #6b0f45 100%);
+            box-shadow: 0 0 18px rgba(255, 61, 154, 0.5);
+            opacity: 0.7;
+        }
+
+        @keyframes cosmicTwinkle {
+            from {
+                filter: brightness(0.92);
+            }
+
+            to {
+                filter: brightness(1.06);
+            }
         }
 
         /* CANVAS */
@@ -51,26 +123,61 @@
         }
 
         h1 {
-            text-shadow: 0 0 15px var(--pink);
+            font-family: 'Bangers', 'Segoe UI', cursive;
+            font-size: 2.4rem;
+            letter-spacing: 2px;
+            color: #fff;
+            text-shadow:
+                0 0 10px var(--viltrum-glow),
+                0 0 25px var(--viltrum-glow),
+                3px 3px 0 var(--purple);
             padding: 0 20px;
+            transform: rotate(-2deg);
+        }
+
+        #game-screen h1 {
+            position: relative;
+        }
+
+        #game-screen h1::before {
+            content: "";
+            position: absolute;
+            inset: -25px -10px;
+            z-index: -1;
+            background:
+                radial-gradient(circle, rgba(58, 141, 255, 0.25) 0%, transparent 70%);
+            clip-path: polygon(50% 0%, 61% 35%, 95% 20%, 75% 50%, 98% 65%, 65% 65%, 50% 100%, 38% 65%, 5% 70%, 25% 45%, 2% 20%, 40% 35%);
+            filter: blur(2px);
         }
 
         .counter {
-            font-size: 2rem;
-            color: var(--blue);
-            text-shadow: 0 0 15px var(--blue);
-            margin-top: 20px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.1rem;
+            color: var(--viltrum-glow);
+            text-shadow: 0 0 15px var(--viltrum-glow);
+            margin-top: 25px;
             font-weight: bold;
+            line-height: 1.8;
         }
 
         .falling-item {
             position: fixed;
             font-size: 55px;
+            width: 60px;
+            height: 60px;
             cursor: pointer;
             user-select: none;
             z-index: 100;
             transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
             filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+        }
+
+        .falling-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+            /* el click se captura en el div padre, no en la imagen */
         }
 
         /* CELEBRACION */
@@ -84,40 +191,105 @@
         }
 
         .level-up {
-            font-size: 2.5rem;
-            color: var(--yellow);
+            font-family: 'Bangers', cursive;
+            font-size: 2.6rem;
+            letter-spacing: 2px;
+            background: linear-gradient(180deg, #ffffff 0%, var(--viltrum-gold) 30%, var(--viltrum-glow) 65%, var(--viltrum-deep) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            filter: drop-shadow(0 0 12px var(--viltrum-glow));
             animation: glow 1.5s infinite alternate;
             margin-bottom: 40px;
         }
 
         @keyframes glow {
             from {
-                text-shadow: 0 0 10px var(--yellow);
+                filter: drop-shadow(0 0 8px var(--viltrum-gold));
             }
 
             to {
-                text-shadow: 0 0 30px var(--yellow), 0 0 60px #ff8c00;
+                filter: drop-shadow(0 0 28px var(--viltrum-glow)) drop-shadow(0 0 45px var(--viltrum-red));
             }
         }
 
         /* Glassmorphism para la tarjeta */
         .birthday-card {
-            background: rgba(20, 20, 40, 0.6);
+            background: rgba(6, 12, 30, 0.68);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             padding: 40px 25px;
             border-radius: 25px;
-            border: 1px solid rgba(157, 0, 255, 0.5);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 40px rgba(157, 0, 255, 0.2);
+            border: 1px solid rgba(58, 141, 255, 0.5);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 40px rgba(58, 141, 255, 0.25), 0 0 70px rgba(26, 63, 174, 0.15);
             margin: 0 auto 70px auto;
             max-width: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .viltrum-stripe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, #ffffff 0%, var(--viltrum-glow) 45%, var(--viltrum-red) 75%, #ffffff 100%);
+            box-shadow: 0 0 15px rgba(58, 141, 255, 0.8);
+        }
+
+        .viltrum-emblem {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.55);
+            box-shadow: 0 0 12px rgba(58, 141, 255, 0.7), inset 0 0 8px rgba(58, 141, 255, 0.5);
+            opacity: 0.6;
+        }
+
+        .viltrum-emblem::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 2px;
+            height: 26px;
+            background: rgba(255, 255, 255, 0.55);
+            transform: translate(-50%, -50%);
+        }
+
+        .birthday-card::before {
+            content: "👊";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            font-size: 2.5rem;
+            opacity: 0.5;
+            transform: rotate(-20deg);
+            filter: drop-shadow(0 0 10px var(--viltrum-glow));
+        }
+
+        .birthday-card::after {
+            content: "🪐";
+            position: absolute;
+            bottom: -10px;
+            right: -5px;
+            font-size: 2.5rem;
+            opacity: 0.5;
+            transform: rotate(15deg);
+            filter: drop-shadow(0 0 10px var(--purple));
         }
 
         .birthday-card h2 {
-            color: var(--blue);
-            font-size: 2rem;
+            font-family: 'Bangers', cursive;
+            color: var(--viltrum-glow);
+            font-size: 2.2rem;
+            letter-spacing: 1px;
             margin-top: 0;
-            text-shadow: 0 0 10px var(--blue);
+            text-shadow: 0 0 12px var(--viltrum-glow);
         }
 
         .birthday-card p {
@@ -148,23 +320,33 @@
 
         .slider-wrapper {
             display: flex;
-            overflow-x: auto; /* Habilita el scroll horizontal */
+            overflow-x: auto;
+            /* Habilita el scroll horizontal */
             overflow-y: hidden;
-            scroll-snap-type: x mandatory; /* Fuerza a que la foto se pegue al centro */
-            scroll-behavior: smooth; /* Deslizamiento suave al usar botones */
-            gap: 15px; /* Espacio entre fotos */
+            scroll-snap-type: x mandatory;
+            /* Fuerza a que la foto se pegue al centro */
+            scroll-behavior: smooth;
+            /* Deslizamiento suave al usar botones */
+            gap: 15px;
+            /* Espacio entre fotos */
             padding: 10px 0 20px 0;
-            
-            /* Ocultar barra de scroll (Webkit) */
-            &::-webkit-scrollbar { display: none; }
-            -ms-overflow-style: none;  /* IE/Edge */
-            scrollbar-width: none;  /* Firefox */
+
+            -ms-overflow-style: none;
+            /* IE/Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        /* Ocultar barra de scroll (Webkit) - fuera del anidamiento para compatibilidad */
+        .slider-wrapper::-webkit-scrollbar {
+            display: none;
         }
 
         .slide {
-            min-width: 85vw; /* Cada foto ocupa casi todo el ancho de la pantalla */
-            max-width: 380px;
-            scroll-snap-align: center; /* Se alinea al centro al soltar el dedo */
+            width: min(75vw, 360px);
+            /* Nunca más grande que el contenedor de la tarjeta */
+            scroll-snap-align: center;
+            /* Se alinea al centro al soltar el dedo */
             flex-shrink: 0;
             position: relative;
         }
@@ -172,8 +354,8 @@
         .neon-frame {
             background: rgba(10, 11, 30, 0.9);
             border-radius: 20px;
-            border: 3px solid var(--blue);
-            box-shadow: 0 0 25px rgba(0, 212, 255, 0.3);
+            border: 3px solid var(--viltrum-glow);
+            box-shadow: 0 0 25px rgba(58, 141, 255, 0.3);
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -182,13 +364,15 @@
         }
 
         .slide.active .neon-frame {
-            transform: scale(1.03); /* Pequeño resalte a la foto centrada */
-            box-shadow: 0 0 35px rgba(0, 212, 255, 0.6);
+            transform: scale(1.03);
+            /* Pequeño resalte a la foto centrada */
+            box-shadow: 0 0 35px rgba(58, 141, 255, 0.6);
         }
 
         .neon-frame img {
             width: 100%;
-            height: 380px; /* Alto fijo para que todas luzcan igual */
+            height: 380px;
+            /* Alto fijo para que todas luzcan igual */
             object-fit: cover;
             display: block;
         }
@@ -206,7 +390,7 @@
             margin: 0;
             font-size: 1.2rem;
             color: #fff;
-            text-shadow: 0 0 10px var(--blue);
+            text-shadow: 0 0 10px var(--viltrum-glow);
             font-family: 'Segoe UI', sans-serif;
         }
 
@@ -215,30 +399,59 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px;
+            gap: 16px;
             margin-top: 10px;
+            flex-wrap: wrap;
+            width: 100%;
         }
 
         .btn-control {
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: white;
-            width: 40px;
-            height: 40px;
+            background: radial-gradient(circle at 35% 30%, rgba(100, 170, 255, 0.35), rgba(58, 141, 255, 0.10) 70%);
+            border: 1px solid rgba(58, 141, 255, 0.55);
+            /*color: #eafff0;*/
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
+            min-height: 42px;
+            flex-shrink: 0;
             border-radius: 50%;
             font-size: 1.2rem;
+            line-height: 1;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 10px rgba(58, 141, 255, 0.25), inset 0 0 8px rgba(58, 141, 255, 0.15);
             transition: all 0.2s;
             -webkit-tap-highlight-color: transparent;
+            color: #3a8dff;
         }
 
-        .btn-control:active { transform: scale(0.9); background: rgba(255,255,255,0.2); }
+        .btn-control:hover {
+            border-color: rgba(58, 141, 255, 0.9);
+            box-shadow: 0 0 16px rgba(58, 141, 255, 0.45), inset 0 0 10px rgba(58, 141, 255, 0.25);
+        }
+
+        .btn-control:active {
+            transform: scale(0.88);
+            background: radial-gradient(circle at 35% 30%, rgba(150, 200, 255, 0.5), rgba(58, 141, 255, 0.25) 70%);
+            box-shadow: 0 0 20px rgba(58, 141, 255, 0.7), inset 0 0 12px rgba(58, 141, 255, 0.3);
+        }
+
+        .btn-control svg {
+            filter: drop-shadow(0 0 4px rgba(58, 141, 255, 0.7));
+        }
 
         .counter-gamer {
-            font-size: 1rem;
-            color: var(--yellow);
-            text-shadow: 0 0 8px var(--yellow);
-            font-weight: bold;
+            color: #3a8dff;
+            font-family: monospace;
+            font-size: 14px;
+            letter-spacing: 1px;
+            padding: 6px 16px;
+            border: 1px solid rgba(58, 141, 255, 0.35);
+            border-radius: 20px;
+            background: rgba(58, 141, 255, 0.06);
+            white-space: nowrap;
         }
 
         .confeti {
@@ -257,10 +470,15 @@
         }
 
         .final-message {
-            font-size: 1.8rem;
-            color: var(--pink);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--viltrum-glow);
             margin: 60px 0;
             font-weight: bold;
+            text-shadow:
+                2px 2px 0 var(--purple),
+                4px 4px 0 #00000088;
             animation: pulse 2s infinite;
         }
 
@@ -270,8 +488,8 @@
             }
 
             50% {
-                transform: scale(1.08);
-                text-shadow: 0 0 20px var(--pink);
+                transform: scale(1.06);
+                text-shadow: 2px 2px 0 var(--pink), 4px 4px 0 #00000088, 0 0 20px var(--viltrum-glow);
             }
 
             100% {
@@ -318,19 +536,37 @@
             width: 100%;
             height: 100%;
         }
+
+        .falling-item {
+            width: 60px;
+            /* el tamaño normal que ya tengas */
+            height: 60px;
+        }
+
+        .viltrum-item {
+            width: 200px;
+            /* ajusta al tamaño que quieras */
+            height: 200px;
+        }
+
+        .falling-item img {
+            width: 100%;
+            height: 100%;
+        }
     </style>
 </head>
 
 <body>
 
+    <div id="cosmic-bg"></div>
     <canvas id="fireworksCanvas"></canvas>
 
     <audio id="popSound" src="audio/pop.mp3" preload="auto"></audio>
     <audio id="victoryMusic" src="audio/axxel_jhael.mp3" preload="auto" loop></audio>
 
     <div id="game-screen">
-        <h1>🎮 MISIÓN NIVEL 10 🎮</h1>
-        <p style="font-size: 1.2rem; color: #ccc;">¡Toca 10 objetos mágicos antes de que caigan!</p>
+        <h1>⚡ PODER VILTRUMITA: NIVEL 10 ⚡</h1>
+        <p style="font-size: 1.2rem; color: #ccc;">¡Atrapa 10 símbolos de poder antes de que caigan a la Tierra!</p>
         <div class="counter">
             Puntos: <span id="score">0</span> / 10
         </div>
@@ -347,13 +583,15 @@
     </button>
 
     <div id="celebration-screen">
-        <h1 class="level-up">🚀 ¡NIVEL 10 DESBLOQUEADO! 🚀</h1>
+        <h1 class="level-up">⚡ ¡PODER VILTRUMITA DESBLOQUEADO! ⚡</h1>
 
         <div class="birthday-card">
-            <h2>🎂 ¡FELIZ CUMPLEAÑOS, MI CAMPEÓN! 🎂</h2>
+            <div class="viltrum-stripe"></div>
+            <div class="viltrum-emblem"></div>
+            <h2>🎂 ¡FELIZ CUMPLEAÑOS, MI GUERRERO VILTRUMITA! 🎂</h2>
             <p>
                 <strong>Axxel Jhael</strong>, mi príncipe, mi lokito hermoso. Hoy desbloqueas uno de los niveles más
-                importantes del juego: <strong>¡Tus 10 añitos!</strong>
+                importantes del juego: <strong>¡Tus 10 añitos de poder!</strong>
             </p>
             <p>
                 Hace una década empezaste esta gran aventura y cada día me sorprendes más con tus habilidades. Eres
@@ -369,17 +607,27 @@
 
         <div class="visor-container" id="visor-holografico" style="display: none;">
             <div class="slider-wrapper" id="slider-wrapper">
-                </div>
-            
+            </div>
+
             <div class="controls">
-                <button class="btn-control btn-prev" onclick="cambiarFotoCSS(-1)">◀</button>
+                <button class="btn-control btn-prev" onclick="cambiarFotoCSS(-1)" aria-label="Anterior">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                </button>
                 <div class="counter-gamer" id="contador-fotos">1 / 40</div>
-                <button class="btn-control btn-next" onclick="cambiarFotoCSS(1)">▶</button>
+                <button class="btn-control btn-next" onclick="cambiarFotoCSS(1)" aria-label="Siguiente">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 18l6-6-6-6" />
+                    </svg>
+                </button>
             </div>
         </div>
 
         <div class="final-message">
-            🎁 FELIZ CUMPLEAÑOS, MI CAMPEÓN! 🎁
+            🎁 ¡FELIZ CUMPLEAÑOS, GUERRERO VILTRUMITA! 🎁
         </div>
     </div>
 
@@ -398,10 +646,17 @@
         function createItem() {
             if (score >= maxScore) return;
 
-            const items = ["🎁", "🎮", "🚀", "⭐", "🍕", "🎈", "👾", "🏆"];
+            const items = ["icons/puno.png", "icons/juego.png", "icons/cohete.png", "icons/dado.png", "icons/alien.png", "icons/trofeo.png", "icons/mk1.png", "icons/mk2.png", "icons/mk3.png", "icons/mk4.png", "icons/mk5.png"];
             const item = document.createElement("div");
-            item.className = "falling-item";
-            item.innerText = items[Math.floor(Math.random() * items.length)];
+            const chosen = items[Math.floor(Math.random() * items.length)];
+            // Detectamos si es un ícono "mk"
+            const isViltrum = chosen.includes("/mk");
+
+
+            //item.className = "falling-item";
+            //item.innerHTML = `<img src="${items[Math.floor(Math.random() * items.length)]}" alt="objeto" draggable="false">`;
+            item.className = "falling-item" + (isViltrum ? " viltrum-item" : "");
+            item.innerHTML = `<img src="${chosen}" alt="Cargando imagen..." draggable="false">`;
 
             // Asegurar que no se salgan de la pantalla en móviles
             const startX = Math.random() * (window.innerWidth - 80) + 10;
@@ -485,7 +740,7 @@
            CONFETI
            ======================= */
         function launchConfetti() {
-            const colors = ["#00d4ff", "#9d00ff", "#ff007f", "#ffff00", "#00ff00"];
+            const colors = ["#3a8dff", "#f5f7ff", "#ff3d9a", "#0a1a4d", "#1e6fff"];
 
             const confetiInterval = setInterval(() => {
                 const c = document.createElement("div");
@@ -527,47 +782,47 @@
             { t: "Un desayuno sorpresa para un niño que se merece todo 🍽️", url: "img/axxelbb10-desayuno-sorpresa.jpeg" },
             { t: "Devorando un algodón de azúcar y disfrutando la dulzura de la niñez 🍬", url: "img/axxelbb11-comiendo-algodon-de-azucar.jpeg" },
             { t: "Te amo con todas mis fuerzas, hijo mío 🤗", url: "img/axxelbb11-te-amo.jpeg" },
-            { t: "Ese momento divertido cuando intentabas asustarme... ¡Casi lo logras!", url: "img/axxelbb12-me-queria-asustar.jpeg" },
-            { t: "Simplemente decirte que te amo es poco para lo que siento", url: "img/axxelbb12-te-amo.jpeg" },
-            { t: "Enfocado y estudioso, construyendo tus sueños desde pequeño", url: "img/axxelbb13-estudiso.jpeg" },
-            { t: "¡Uy, qué miedo! Jejeje... Siempre sacándome una carcajada", url: "img/axxelbb14uyyy-miedo-jejej.jpeg" },
-            { t: "Mi Spiderman y su hermanita, la Mujer Maravilla: mi equipo de héroes", url: "img/axxelbb15-mi-spider-su-hermanita-mujer-maravilla.jpeg" },
-            { t: "Mi Spiderman favorito junto a su mayor fan: su papá", url: "img/axxelbb15-mi-spiderman-y-papa.jpeg" },
-            { t: "Esa sonrisa auténtica que refleja la pureza de tu corazón", url: "img/axxelbb16sonrisa-autentica.jpeg" },
-            { t: "No hay nada mejor que un helado y una buena charla con Papi", url: "img/axxelbb17-comiendo-helado-con-papi.jpeg" },
-            { t: "La felicidad completa: compartiendo con Papi y tu hermana", url: "img/axxelbb18-compartiendo-con-papi-y-hermana1.jpeg" },
-            { t: "Creando recuerdos que guardaremos siempre en el alma", url: "img/axxelbb18-compartiendo-con-papi-y-hermana-2.jpeg" },
-            { t: "Verlos juntos es mi mayor recompensa en la vida", url: "img/axxelbb18-compartiendo-con-papi-y-hermana-3.jpeg" },
-            { t: "Días de risas, juegos y mucho amor en familia", url: "img/axxelbb18-compartiendo-con-papi-y-hermana-4.jpeg" },
-            { t: "Haciendo lo que más le gusta: ¡disfrutar de un buen helado!", url: "img/axxelbb19comiendo-helado-le-encanta.jpeg" },
-            { t: "Aprendiendo a rodar por la vida en tu monopatín", url: "img/axxelbb20aprendiendo-monopatin.jpeg" },
-            { t: "Disfrutando de un lindo paseito y de la brisa en la cara", url: "img/axxelbb20paseito.jpeg" },
-            { t: "Porque un solo helado nunca es suficiente para tanta alegría", url: "img/axxelbb21-comiendo-mas-helado.jpeg" },
+            { t: "Ese momento divertido cuando intentabas asustarme... ¡Casi lo logras! 👻", url: "img/axxelbb12-me-queria-asustar.jpeg" },
+            { t: "Simplemente decirte que te amo es poco para lo que siento ❤️", url: "img/axxelbb12-te-amo.jpeg" },
+            { t: "Enfocado y estudioso, construyendo tus sueños desde pequeño 📚", url: "img/axxelbb13-estudiso.jpeg" },
+            { t: "¡Uy, qué miedo! Jejeje... Siempre sacándome una carcajada 😂", url: "img/axxelbb14uyyy-miedo-jejej.jpeg" },
+            { t: "Mi Spiderman y su hermanita, la Mujer Maravilla: mi equipo de héroes 🕷️", url: "img/axxelbb15-mi-spider-su-hermanita-mujer-maravilla.jpeg" },
+            { t: "Mi Spiderman favorito junto a su mayor fan: su papá 🕸️", url: "img/axxelbb15-mi-spiderman-y-papa.jpeg" },
+            { t: "Esa sonrisa auténtica que refleja la pureza de tu corazón 💖", url: "img/axxelbb16sonrisa-autentica.jpeg" },
+            { t: "No hay nada mejor que un helado y una buena charla con Papi 🍦", url: "img/axxelbb17-comiendo-helado-con-papi.jpeg" },
+            { t: "La felicidad completa: compartiendo con Papi y tu hermana 👨‍👧‍👦", url: "img/axxelbb18-compartiendo-con-papi-y-hermana1.jpeg" },
+            { t: "Creando recuerdos que guardaremos siempre en el alma 📸", url: "img/axxelbb18-compartiendo-con-papi-y-hermana-2.jpeg" },
+            { t: "Verlos juntos es mi mayor recompensa en la vida 🥰", url: "img/axxelbb18-compartiendo-con-papi-y-hermana-3.jpeg" },
+            { t: "Días de risas, juegos y mucho amor en familia 😄", url: "img/axxelbb18-compartiendo-con-papi-y-hermana-4.jpeg" },
+            { t: "Haciendo lo que más le gusta: ¡disfrutar de un buen helado! 🍨", url: "img/axxelbb19comiendo-helado-le-encanta.jpeg" },
+            { t: "Aprendiendo a rodar por la vida en tu monopatín 🛹", url: "img/axxelbb20aprendiendo-monopatin.jpeg" },
+            { t: "Disfrutando de un lindo paseito y de la brisa en la cara 🌬️", url: "img/axxelbb20paseito.jpeg" },
+            { t: "Porque un solo helado nunca es suficiente para tanta alegría 🍧", url: "img/axxelbb21-comiendo-mas-helado.jpeg" },
             { t: "Amo cada una de tus locuras; tú le das color a mi vida 🧭", url: "img/axxelbb22amo-tus-locuras.jpeg" },
             { t: "Tus ocurrencias son el motor que me hace sonreír cada día 🧭", url: "img/axxelbb22amo-tus-locuras-1.jpeg" },
-            { t: "Él es inmensamente feliz con su súper helado", url: "img/axxelbb23-el-feliz-con-su-super-helado.jpeg" },
-            { t: "Me detengo a mirar cómo has crecido, mi chiquitín hermoso", url: "img/axxelbb24-como-has-crecido.jpeg" },
-            { t: "Nunca dejes de sonreír, el mundo necesita tu luz", url: "img/axxelbb26-nunca-dejes-de-reir.jpeg" },
-            { t: "Te estás haciendo grande, pero siempre serás mi niño", url: "img/axxelbb26-te-estas-creciendo.jpeg" },
+            { t: "Él es inmensamente feliz con su súper helado 🍦", url: "img/axxelbb23-el-feliz-con-su-super-helado.jpeg" },
+            { t: "Me detengo a mirar cómo has crecido, mi chiquitín hermoso 🥹", url: "img/axxelbb24-como-has-crecido.jpeg" },
+            { t: "Nunca dejes de sonreír, el mundo necesita tu luz ☀️", url: "img/axxelbb26-nunca-dejes-de-reir.jpeg" },
+            { t: "Te estás haciendo grande, pero siempre serás mi niño 🌱", url: "img/axxelbb26-te-estas-creciendo.jpeg" },
             { t: "¡Nivel 10 desbloqueado! Juntos somos el mejor equipo 🥳", url: "img/axxel-y-papa.jpeg" }
         ];
 
-       
-      /* =======================
-           LÓGICA DEL SLIDER TÁCTIL NATIVO
-           ======================= */
+
+        /* =======================
+             LÓGICA DEL SLIDER TÁCTIL NATIVO
+             ======================= */
         let indiceFoto = 0;
         const marcoFoto = document.getElementById("marco-foto");
         const imgElement = document.getElementById("foto-actual");
         const textoElement = document.getElementById("texto-actual");
         const wrapper = document.getElementById("slider-wrapper");
         const contadorElement = document.getElementById("contador-fotos");
-        const coloresNeon = ['var(--blue)', 'var(--pink)', 'var(--yellow)', 'var(--purple)'];
+        const coloresNeon = ['var(--viltrum-glow)', 'var(--pink)', 'var(--viltrum-gold)', 'var(--purple)', 'var(--blue)'];
 
         function showPhotos() {
             // Mostramos el contenedor cuando el juego termina
             document.getElementById("visor-holografico").style.display = "block";
-            
+
             wrapper.innerHTML = ""; // Limpiar por seguridad
 
             fotos.forEach((f, i) => {
@@ -593,7 +848,7 @@
             wrapper.addEventListener('scroll', debounce(() => {
                 const slideWidth = wrapper.querySelector('.slide').offsetWidth + 15; // Ancho + Gap
                 const currentIdx = Math.round(wrapper.scrollLeft / slideWidth);
-                
+
                 actualizarContador(currentIdx);
             }, 50)); // Debounce para no saturar al procesador
         }
@@ -603,20 +858,20 @@
             const slideWidth = wrapper.querySelector('.slide').offsetWidth + 15;
             const currentIdx = Math.round(wrapper.scrollLeft / slideWidth);
             const nuevoIdx = (currentIdx + direccion + fotos.length) % fotos.length;
-            
+
             // Hacemos scroll programático (el CSS smooth se encarga de la animación)
             wrapper.scrollLeft = nuevoIdx * slideWidth;
-            
+
             actualizarContador(nuevoIdx);
         }
 
         function actualizarContador(idx) {
             contadorElement.innerText = `${idx + 1} / ${fotos.length}`;
-            
+
             // Resaltar la foto activa
             document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
             const activeSlide = document.getElementById(`slide-${idx}`);
-            if(activeSlide) activeSlide.classList.add('active');
+            if (activeSlide) activeSlide.classList.add('active');
         }
 
         // Función auxiliar para optimizar el evento scroll
