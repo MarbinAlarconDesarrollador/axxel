@@ -1059,11 +1059,11 @@
       #mute-btn {
         bottom: 22px;
       }
-      #install-btn {
+     /* #install-btn {
         bottom: 84px;
         font-size: 0.7rem;
         font-weight: 900;
-      }
+      }*/
       .fab:active {
         transform: scale(0.9);
       }
@@ -1122,8 +1122,8 @@
         background: rgba(225, 235, 237, 0.1);
       }
 
-      #install-btn-footer {
-        display: none;
+      #install-btn {
+        display: contents;
         margin: 20px auto 0;
       }
 
@@ -1134,6 +1134,14 @@
         font-size: 0.85rem;
         line-height: 1.5;
         color: #b8c6cb;
+      }
+      .btn-ghost {
+        font-size: 0.8rem;
+        font-weight: 900;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--suit); 
+        font-family: "Segoe UI", system-ui, sans-serif;
       }
     </style>
   </head>
@@ -1351,7 +1359,7 @@
       <footer>
         <div class="sig">Te amo infinitamente</div>
         <small>Hecho con amor por Papá · 2026</small>
-        <button class="btn ghost" id="install-btn-footer" type="button">
+        <button class="btn-ghost" id="install-btn" type="button">
           Guardar en mi pantalla de inicio
         </button>
         <p class="ios-hint" id="ios-hint">
@@ -1364,9 +1372,9 @@
     <button id="mute-btn" class="fab hidden" aria-label="Silenciar música">
       🔊
     </button>
-    <button id="install-btn" class="fab hidden" aria-label="Instalar app">
+   <!-- <button id="install-btn" class="fab hidden" aria-label="Instalar app">
       APP
-    </button>
+    </button>-->
 
     <script>
       const $ = (id) => document.getElementById(id);
