@@ -855,64 +855,6 @@
         width: 70%;
       }
 
-      /*.hero-slot{display:none;margin:0 auto 46px;max-width:340px;border:2px solid var(--suit);box-shadow:0 0 30px rgba(143,227,255,.35);background:rgba(0,0,0,.5);overflow:hidden}
-.hero-slot img{width:100%;display:block}*/
-
-      .hero-slot {
-        display: none;
-        margin: 0 auto 46px;
-        max-width: 340px;
-        /* Eliminamos el border físico clásico porque clip-path lo cortaría de forma irregular */
-        box-shadow: 0 0 30px rgba(143, 227, 255, 0.35);
-        background: rgba(0, 0, 0, 0.5);
-        overflow: hidden;
-
-        /* Relación de aspecto 1:1 (cuadrado) obligatoria para que el corazón y el diamante no se deformen */
-        aspect-ratio: 1 / 1;
-
-        /* Activamos la animación infinita de transformación */
-        animation: morphingFormas 16s ease-in-out infinite;
-      }
-
-      .hero-slot img {
-        width: 100%;
-        height: 100%; /* Forzamos a que llene la forma */
-        /*object-fit: cover;*/ /* Evita que la foto se estire feo */
-        object-fit: contain; /* Ajusta la imagen para que se vea completa dentro de la forma */
-        display: block;
-      }
-
-      /* Animación de metamorfosis (Morphing) */
-      @keyframes morphingFormas {
-        /* Círculo perfecto */
-        0%,
-        100% {
-          clip-path: inset(0% round 50%);
-        }
-        /* Diamante / Rombo */
-        25% {
-          clip-path: inset(
-            0% round 0%
-          ); /* Reseteo intermedio rápido para cortar esquinas */
-          clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-        }
-        /* Gota de agua */
-        50% {
-          clip-path: inset(0% round 0% 50% 50% 50%);
-        }
-        /* Corazón estilizado */
-        75% {
-          clip-path: polygon(
-            50% 15%,
-            75% 0%,
-            100% 25%,
-            50% 85%,
-            0% 25%,
-            25% 0%
-          );
-        }
-      }
-
       /* slider */
       .visor {
         width: 100%;
@@ -1059,7 +1001,7 @@
       #mute-btn {
         bottom: 22px;
       }
-     /* #install-btn {
+      /* #install-btn {
         bottom: 84px;
         font-size: 0.7rem;
         font-weight: 900;
@@ -1140,9 +1082,593 @@
         font-weight: 900;
         letter-spacing: 0.2em;
         text-transform: uppercase;
-        color: var(--suit); 
+        color: var(--suit);
         font-family: "Segoe UI", system-ui, sans-serif;
       }
+
+      /* =============================================
+   HÉROE CINEMATOGRÁFICO (Omni-Man / Conquest)
+   Estructura: cabecera (título) → escenario (imagen + efectos) → pie (mensaje + botón)
+   El texto NUNCA se superpone a la imagen, así se ve bien en cualquier pantalla.
+   ============================================= */
+
+.hero-slot {
+  display: none;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto 46px;
+  filter: drop-shadow(0 0 26px rgba(229, 48, 58, 0.35))
+    drop-shadow(0 0 60px rgba(143, 227, 255, 0.12));
+}
+
+.omni-universe {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  isolation: isolate;
+  background: #07020a;
+  border: 1px solid rgba(255, 90, 110, 0.45);
+  clip-path: polygon(
+    22px 0,
+    100% 0,
+    100% calc(100% - 22px),
+    calc(100% - 22px) 100%,
+    0 100%,
+    0 22px
+  );
+}
+
+/* ---------- Cabecera: título ---------- */
+
+.omni-head {
+  position: relative;
+  z-index: 6;
+  padding: 24px 12px 6px;
+  text-align: center;
+  background: radial-gradient(
+    ellipse at 50% 100%,
+    rgba(120, 8, 28, 0.55),
+    transparent 70%
+  );
+}
+
+.omni-title {
+  opacity: 0;
+  transform: scale(3);
+}
+
+.omni-small {
+  display: block;
+  color: #fff;
+  font-size: clamp(11px, 3vw, 16px);
+  font-weight: 900;
+  letter-spacing: 0.45em;
+  margin-right: -0.45em; /* compensa el espaciado final para centrar */
+  text-shadow: 0 0 14px rgba(255, 36, 72, 0.8);
+}
+
+.omni-title strong {
+  display: block;
+  margin-top: 2px;
+  color: #ff314e;
+  font-family: Impact, "Arial Black", sans-serif;
+  font-size: clamp(40px, 12.5vw, 96px);
+  line-height: 1.05;
+  letter-spacing: 2px;
+  -webkit-text-stroke: 1px #fff;
+  text-shadow:
+    0 4px 0 #58000e,
+    0 10px 18px #000,
+    0 0 38px rgba(255, 0, 45, 0.7);
+}
+
+.hero-slot.playing .omni-title {
+  animation: omniTitle 1.3s 3.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes omniTitle {
+  0% {
+    opacity: 0;
+    transform: scale(3);
+    filter: blur(12px);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(0.96);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+/* ---------- Escenario ---------- */
+
+.omni-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1079 / 646; /* se ajusta a la imagen real desde JS */
+  max-height: 80svh;
+  overflow: hidden;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    #2a0710 0%,
+    #0a030b 55%,
+    #010104 92%
+  );
+}
+
+/* Bordes del escenario que se funden con la tarjeta */
+.omni-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, #07020a 0%, transparent 14%),
+    linear-gradient(to top, #07020a 0%, transparent 18%),
+    radial-gradient(ellipse at center, transparent 58%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+/* Estrellas viajando (warp) */
+.omni-stars {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.omni-star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 8px #fff;
+  opacity: 0;
+}
+
+.hero-slot.playing .omni-star {
+  animation: omniWarp 2.4s ease-in forwards;
+  animation-delay: 0.3s;
+}
+
+@keyframes omniWarp {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.2);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(4);
+  }
+}
+
+/* Aura roja detrás del personaje */
+.omni-aura {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(
+    circle at 50% 55%,
+    rgba(255, 30, 60, 0.5),
+    transparent 62%
+  );
+}
+
+.hero-slot.playing .omni-aura {
+  animation: omniAura 3.2s ease-in-out 3.2s infinite alternate;
+}
+
+@keyframes omniAura {
+  from {
+    opacity: 0.25;
+  }
+  to {
+    opacity: 0.85;
+  }
+}
+
+/* Energía que se acumula */
+.omni-energy {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  z-index: 2;
+  width: 16%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #ff203d;
+  box-shadow:
+    0 0 45px 25px #ff1739,
+    0 0 120px 60px #b50023;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+}
+
+.hero-slot.playing .omni-energy {
+  animation: omniEnergy 1.9s 1.2s ease-in forwards;
+}
+
+@keyframes omniEnergy {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(5);
+    opacity: 0.9;
+  }
+}
+
+/* Personaje */
+.omni-character {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  opacity: 0;
+  transform: scale(1.5);
+}
+
+.omni-character img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  filter: contrast(1.08) saturate(1.12)
+    drop-shadow(0 0 22px rgba(255, 20, 40, 0.3));
+}
+
+.hero-slot.playing .omni-character {
+  animation: omniReveal 2.6s 2.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-slot.playing .omni-character img {
+  animation: omniBreath 9s ease-in-out 5.5s infinite alternate;
+}
+
+@keyframes omniReveal {
+  0% {
+    opacity: 0;
+    transform: scale(1.5);
+    filter: blur(16px);
+  }
+  25% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes omniBreath {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.045);
+  }
+}
+
+/* Brasas que suben tras el impacto */
+.omni-embers {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.omni-ember {
+  position: absolute;
+  bottom: -8px;
+  left: var(--x);
+  width: var(--s, 4px);
+  height: var(--s, 4px);
+  border-radius: 50%;
+  background: #ff8a4a;
+  box-shadow: 0 0 8px #ff3b1f;
+  opacity: 0;
+}
+
+.hero-slot.playing .omni-ember {
+  animation: omniEmber var(--t, 5s) linear infinite;
+  animation-delay: calc(4.4s + var(--d, 0s));
+}
+
+@keyframes omniEmber {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  12% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--sx, 20px), var(--rise, -320px));
+  }
+}
+
+/* Onda expansiva */
+.omni-shockwave {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  z-index: 7;
+  width: 18%;
+  aspect-ratio: 1;
+  border: 5px solid #ff3753;
+  border-radius: 50%;
+  box-shadow:
+    0 0 30px #ff183d,
+    inset 0 0 20px #ff183d;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+}
+
+.hero-slot.playing .omni-shockwave {
+  animation: omniShock 1s 2.9s ease-out forwards;
+}
+
+@keyframes omniShock {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(14);
+  }
+}
+
+/* Flash */
+.omni-flash {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  background: #fff;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hero-slot.playing .omni-flash {
+  animation: omniFlash 0.8s 2.9s ease-out both;
+}
+
+@keyframes omniFlash {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  35% {
+    opacity: 0.12;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+/* Texto introductorio (sobre el escenario, solo al inicio) */
+.omni-intro {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  z-index: 9;
+  padding: 0 12px;
+  text-align: center;
+  color: #fff;
+  font-size: clamp(13px, 3.8vw, 24px);
+  font-weight: 900;
+  letter-spacing: 0.25em;
+  text-shadow:
+    0 0 25px #ff2448,
+    0 2px 8px #000;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hero-slot.playing .omni-intro {
+  animation: omniIntro 2.4s 0.4s both;
+}
+
+@keyframes omniIntro {
+  0% {
+    opacity: 0;
+    transform: translateY(-50%) scale(1.4);
+  }
+  25%,
+  65% {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.8);
+  }
+}
+
+/* ---------- Pie: mensaje + botón ---------- */
+
+.omni-foot {
+  position: relative;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 4px 14px 24px;
+  text-align: center;
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(120, 8, 28, 0.45),
+    transparent 70%
+  );
+}
+
+.omni-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.omni-name {
+  color: #fff;
+  font-size: clamp(20px, 5.6vw, 36px);
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  margin-right: -0.18em;
+  text-shadow:
+    0 0 18px rgba(255, 36, 72, 0.7),
+    0 2px 8px #000;
+}
+
+.omni-message strong {
+  color: #ffcf4d;
+  font-size: clamp(14px, 4vw, 28px);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-shadow:
+    0 0 10px #ff9c00,
+    0 0 30px #ff4500,
+    0 3px 8px #000;
+}
+
+.omni-level {
+  color: #ffcf4d;
+  font-size: clamp(14px, 4vw, 20px);
+  letter-spacing: 0.35em;
+  margin-right: -0.35em;
+}
+
+.hero-slot.playing .omni-message {
+  animation: omniMessage 1s 4.8s ease-out forwards;
+}
+
+@keyframes omniMessage {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Botón repetir */
+.omni-replay {
+  min-height: 46px;
+  padding: 12px 22px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 30px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  cursor: pointer;
+  touch-action: manipulation;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.6s,
+    background 0.2s,
+    transform 0.2s;
+}
+
+.hero-slot.ready .omni-replay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.omni-replay:hover {
+  background: #bd102e;
+}
+
+.omni-replay:active {
+  transform: scale(0.95);
+}
+
+/* Sacudida de cámara */
+.hero-slot.shaking .omni-universe {
+  animation: omniShake 0.45s linear;
+}
+
+@keyframes omniShake {
+  0%,
+  100% {
+    transform: translate(0);
+  }
+  15% {
+    transform: translate(-6px, 4px);
+  }
+  30% {
+    transform: translate(5px, -5px);
+  }
+  45% {
+    transform: translate(-5px, -2px);
+  }
+  60% {
+    transform: translate(4px, 4px);
+  }
+  80% {
+    transform: translate(-2px, 2px);
+  }
+}
+
+/* Estado final directo (reducir movimiento) */
+.hero-slot.done .omni-title,
+.hero-slot.done .omni-message,
+.hero-slot.done .omni-character {
+  opacity: 1;
+  transform: none;
+}
+
+.hero-slot.done .omni-aura {
+  opacity: 0.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-slot .omni-character img,
+  .hero-slot .omni-aura,
+  .hero-slot .omni-ember {
+    animation: none !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .omni-head {
+    padding-top: 20px;
+  }
+  .omni-small {
+    letter-spacing: 0.35em;
+    margin-right: -0.35em;
+  }
+}
+
     </style>
   </head>
   <body>
@@ -1335,10 +1861,61 @@
         </div>
       </div>
 
-      <!-- Opcional: pon tu propia imagen en img/heroe.jpg (por ejemplo un arte que a Axxel le guste) -->
-      <div class="hero-slot" id="hero-slot">
-        <img id="hero-img" alt="Mi héroe favorito" loading="lazy" />
-      </div>
+      <!-- EXPERIENCIA CINEMATOGRÁFICA DEL HÉROE
+           Pon tu imagen en img/heroe.jpg (cualquier proporción funciona) -->
+      <section
+        class="hero-slot"
+        id="hero-slot"
+        aria-label="Omni-Man, el héroe favorito de Axxel"
+      >
+        <div class="omni-universe">
+          <!-- Título -->
+          <div class="omni-head">
+            <div class="omni-title">
+              <span class="omni-small">EL LEGENDARIO</span>
+              <strong>CONQUEST</strong>
+            </div>
+          </div>
+
+          <!-- Escenario: imagen + efectos -->
+          <div class="omni-stage" id="omni-stage">
+            <div class="omni-stars" id="omni-stars"></div>
+            <div class="omni-aura"></div>
+            <div class="omni-energy"></div>
+
+            <div class="omni-character">
+              <img
+                id="hero-img"
+                alt="Omni-Man, el héroe favorito de Axxel"
+                decoding="async"
+              />
+            </div>
+
+            <div class="omni-embers" id="omni-embers"></div>
+            <div class="omni-shockwave"></div>
+            <div class="omni-flash"></div>
+            <div class="omni-intro">DESDE OTRO UNIVERSO...</div>
+          </div>
+
+          <!-- Mensaje final + botón -->
+          <div class="omni-foot">
+            <div class="omni-message">
+              <span class="omni-name">AXXEL JHAEL</span>
+              <strong>NIVEL 10 DESBLOQUEADO</strong>
+              <span class="omni-level">★ ★ ★ ★ ★</span>
+            </div>
+
+            <button
+              class="omni-replay"
+              id="omni-replay"
+              type="button"
+              onclick="replayHero()"
+            >
+              ↻ REPETIR EXPERIENCIA
+            </button>
+          </div>
+        </div>
+      </section>
 
       <div class="visor hidden" id="visor">
         <h3 class="sec">Archivo de recuerdos</h3>
@@ -1372,7 +1949,7 @@
     <button id="mute-btn" class="fab hidden" aria-label="Silenciar música">
       🔊
     </button>
-   <!-- <button id="install-btn" class="fab hidden" aria-label="Instalar app">
+    <!-- <button id="install-btn" class="fab hidden" aria-label="Instalar app">
       APP
     </button>-->
 
@@ -1675,25 +2252,173 @@
           watchReveals();
         }, 320);
       }
-      /*function loadHero(){
-  const im=new Image();
-  im.onload=()=>{ $('hero-img').src=im.src; $('hero-slot').style.display='block' };
-  im.src='img/heroe.jpg';
-}*/
+      // ==============================================
+      // EXPERIENCIA CINEMATOGRÁFICA DEL HÉROE
+      // Arranca sola cuando el héroe aparece en pantalla.
+      // ==============================================
 
+      let heroTimers = [];
+      let heroObserver = null;
+      let heroPlayed = false;
+
+      function heroTimeout(fn, delay) {
+        heroTimers.push(setTimeout(fn, delay));
+      }
+
+      // Carga la imagen, ajusta el escenario a su proporción y espera a que se vea
       function loadHero() {
+        const slot = $("hero-slot");
+        const img = $("hero-img");
+        if (!slot || !img) return;
+
         const im = new Image();
+
         im.onload = () => {
-          $("hero-img").src = im.src;
-          $("hero-slot").style.display = "block";
+          img.src = im.src;
+          if (im.naturalWidth && im.naturalHeight) {
+            $("omni-stage").style.aspectRatio =
+              im.naturalWidth + " / " + im.naturalHeight;
+          }
+          slot.style.display = "block";
+          watchHero(slot);
         };
+
+        im.onerror = () => {
+          console.warn("No se pudo cargar img/heroe.jpg");
+        };
+
         im.src = "img/heroe.jpg";
       }
 
-      // Recuerda ejecutar la función para que se muestre el slot
-      loadHero();
+      // Reproduce la escena la primera vez que el usuario la ve
+      function watchHero(slot) {
+        if (heroObserver) heroObserver.disconnect();
 
-      function launchConfetti() {
+        if (!("IntersectionObserver" in window)) {
+          heroPlayed = true;
+          playHeroExperience();
+          return;
+        }
+
+        heroObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((en) => {
+              if (en.isIntersecting && !heroPlayed) {
+                heroPlayed = true;
+                heroObserver.disconnect();
+                playHeroExperience();
+              }
+            });
+          },
+          { threshold: 0.45 },
+        );
+
+        heroObserver.observe(slot);
+      }
+
+      // Estrellas que viajan desde el centro
+      function buildHeroStars() {
+        const box = $("omni-stars");
+        box.innerHTML = "";
+        const count = window.innerWidth < 600 ? 60 : 120;
+
+        for (let i = 0; i < count; i++) {
+          const s = document.createElement("span");
+          s.className = "omni-star";
+          const x = Math.random() * 100;
+          const y = Math.random() * 100;
+          s.style.left = x + "%";
+          s.style.top = y + "%";
+          s.style.setProperty("--dx", (x - 50) * 14 + "px");
+          s.style.setProperty("--dy", (y - 50) * 14 + "px");
+          s.style.animationDelay = 0.3 + Math.random() * 1.2 + "s";
+          box.appendChild(s);
+        }
+      }
+
+      // Brasas que suben después del impacto
+      function buildHeroEmbers() {
+        const box = $("omni-embers");
+        const stage = $("omni-stage");
+        box.innerHTML = "";
+        const rise = -Math.round(stage.offsetHeight * 1.1);
+        const count = window.innerWidth < 600 ? 14 : 24;
+
+        for (let i = 0; i < count; i++) {
+          const e = document.createElement("span");
+          e.className = "omni-ember";
+          e.style.setProperty("--x", Math.random() * 100 + "%");
+          e.style.setProperty("--s", 2 + Math.random() * 4 + "px");
+          e.style.setProperty("--t", 3.5 + Math.random() * 3.5 + "s");
+          e.style.setProperty("--d", Math.random() * 3 + "s");
+          e.style.setProperty("--sx", (Math.random() - 0.5) * 80 + "px");
+          e.style.setProperty("--rise", rise + "px");
+          box.appendChild(e);
+        }
+      }
+
+      function playHeroExperience() {
+        const slot = $("hero-slot");
+        if (!slot) return;
+
+        heroTimers.forEach(clearTimeout);
+        heroTimers = [];
+
+        slot.classList.remove("playing", "shaking", "ready", "done");
+
+        // Si la persona prefiere menos movimiento: estado final directo
+        if (
+          window.matchMedia &&
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ) {
+          slot.classList.add("done", "ready");
+          return;
+        }
+
+        buildHeroStars();
+        buildHeroEmbers();
+
+        // Reinicia las animaciones CSS
+        void slot.offsetWidth;
+        slot.classList.add("playing");
+
+        // Sonido de carga
+        heroTimeout(() => {
+          try {
+            riser(2.4);
+          } catch (e) {}
+        }, 300);
+
+        // Impacto 1: flash + onda + sacudida
+        heroTimeout(() => {
+          slot.classList.add("shaking");
+          try {
+            boom(200);
+          } catch (e) {}
+          vib([80, 40, 120]);
+        }, 2900);
+        heroTimeout(() => slot.classList.remove("shaking"), 3400);
+
+        // Impacto 2: aparece el título
+        heroTimeout(() => {
+          slot.classList.add("shaking");
+          try {
+            boom(150);
+          } catch (e) {}
+          vib(60);
+        }, 3750);
+        heroTimeout(() => slot.classList.remove("shaking"), 4250);
+
+        // Botón de repetir
+        heroTimeout(() => slot.classList.add("ready"), 6000);
+      }
+
+      // Botón de repetición
+      function replayHero() {
+        playHeroExperience();
+      }
+
+function launchConfetti() {
         const colors = ["#E1EBED", "#ffffff", "#8fe3ff", "#b4c4c9", "#e5303a"];
         const iv = setInterval(() => {
           const c = document.createElement("div");
@@ -1958,25 +2683,48 @@
       }
 
       /* ================= FUEGOS ARTIFICIALES ================= */
+
       const fc = $("fireworksCanvas"),
         ctx = fc.getContext("2d");
+
       function resizeFC() {
         fc.width = innerWidth;
         fc.height = innerHeight;
       }
+
       addEventListener("resize", resizeFC);
       resizeFC();
+
       let particles = [],
         rockets = [],
         fwOn = false;
-      const FW_HUES = [195, 195, 205, 0, 210, 200]; // hielo, blanco-azulado y un toque rojo
 
+      const FW_HUES = [195, 195, 205, 0, 210, 200];
+
+      // ======================================================
+      // CONFIGURACIÓN DEL TEXTO
+      // ======================================================
+      const TEXT_CONFIG = {
+        texto: "AXXEL JHAEL",
+        espera: 5000, // 5 segundos completamente formado
+        dispersion: 2500, // 2.5 segundos para desaparecer
+        separacion: 5, // Densidad de partículas
+        tamano: 2.5, // Tamaño de cada partícula
+        velocidad: 0.65, // Velocidad de dispersión
+      };
+
+      // ======================================================
+      // EXPLOSIONES NORMALES
+      // ======================================================
       function explode(x, y, n = 60) {
-        const h = FW_HUES[Math.floor(Math.random() * FW_HUES.length)],
-          red = h === 0;
+        const h = FW_HUES[Math.floor(Math.random() * FW_HUES.length)];
+
+        const red = h === 0;
+
         for (let i = 0; i < n; i++) {
-          const a = Math.random() * 6.283,
-            v = Math.random() * 5 + 1.5;
+          const a = Math.random() * 6.283;
+          const v = Math.random() * 5 + 1.5;
+
           particles.push({
             x,
             y,
@@ -1986,10 +2734,17 @@
             size: Math.random() * 2 + 1,
             color: red
               ? `hsl(${355 + Math.random() * 10},90%,60%)`
-              : `hsl(${h + Math.random() * 15},${40 + Math.random() * 60}%,${75 + Math.random() * 20}%)`,
+              : `hsl(${h + Math.random() * 15},${40 + Math.random() * 60}%,${
+                  75 + Math.random() * 20
+                }%)`,
+            isText: false,
           });
         }
       }
+
+      // ======================================================
+      // LANZAMIENTO DE COHETES
+      // ======================================================
       function launchRocket() {
         rockets.push({
           x: Math.random() * (fc.width - 100) + 50,
@@ -1997,67 +2752,172 @@
           ty: fc.height * 0.2 + Math.random() * fc.height * 0.3,
         });
       }
+
+      // ======================================================
+      // INICIAR FUEGOS ARTIFICIALES
+      // ======================================================
       function startFireworks() {
         if (fwOn) return;
+
         fwOn = true;
+
         setInterval(launchRocket, 1100);
+
+        // Primera aparición
         setTimeout(drawTextFirework, 3500);
+
+        // Segunda aparición
         setTimeout(drawTextFirework, 11000);
+
         (function loop() {
           ctx.fillStyle = "rgba(5,7,12,.22)";
           ctx.fillRect(0, 0, fc.width, fc.height);
+
+          // ----------------------------------------------
+          // ANIMACIÓN DE COHETES
+          // ----------------------------------------------
           for (let i = rockets.length - 1; i >= 0; i--) {
             const r = rockets[i];
+
             r.y -= 11;
+
             ctx.fillStyle = "rgba(225,235,237,.95)";
             ctx.beginPath();
             ctx.arc(r.x, r.y, 2, 0, 6.283);
             ctx.fill();
+
             if (r.y < r.ty) {
               explode(r.x, r.y);
               rockets.splice(i, 1);
             }
           }
+
+          // ----------------------------------------------
+          // ANIMACIÓN DE PARTÍCULAS
+          // ----------------------------------------------
+          const ahora = performance.now();
+
           for (let i = particles.length - 1; i >= 0; i--) {
             const p = particles[i];
-            p.x += p.vx;
-            p.y += p.vy;
-            p.vy += 0.05;
-            p.vx *= 0.992;
-            p.life -= 1.5;
+
+            if (p.isText) {
+              const transcurrido = ahora - p.createdAt;
+
+              // ETAPA 1: TEXTO QUIETO Y LEGIBLE
+              if (transcurrido < TEXT_CONFIG.espera) {
+                p.x = p.originX;
+                p.y = p.originY;
+              }
+
+              // ETAPA 2: DISPERSIÓN SUAVE
+              else {
+                const progreso = Math.min(
+                  (transcurrido - TEXT_CONFIG.espera) / TEXT_CONFIG.dispersion,
+                  1,
+                );
+
+                p.x += p.vx;
+                p.y += p.vy;
+
+                // Desvanecimiento gradual
+                p.opacity = 1 - progreso;
+
+                if (progreso >= 1) {
+                  particles.splice(i, 1);
+                  continue;
+                }
+              }
+            } else {
+              // Comportamiento original de los fuegos
+              p.x += p.vx;
+              p.y += p.vy;
+              p.vy += 0.05;
+              p.vx *= 0.992;
+              p.life -= 1.5;
+
+              if (p.life <= 0) {
+                particles.splice(i, 1);
+                continue;
+              }
+            }
+
+            // Dibujar partículas
+            ctx.save();
+
+            ctx.globalAlpha = p.isText ? (p.opacity ?? 1) : 1;
+
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.size, 0, 6.283);
             ctx.fillStyle = p.color;
             ctx.fill();
-            if (p.life <= 0) particles.splice(i, 1);
+
+            ctx.restore();
           }
+
           requestAnimationFrame(loop);
         })();
       }
+
+      // ======================================================
+      // CREAR TEXTO CON PARTÍCULAS
+      // ======================================================
       function drawTextFirework() {
         const t = document.createElement("canvas");
+
         t.width = fc.width;
         t.height = fc.height;
+
         const c = t.getContext("2d");
+
         c.fillStyle = "#fff";
-        c.font = `900 ${Math.min(fc.width / 4.2, 130)}px Arial`;
+
+        // Ajustar tamaño según pantalla
+        const fontSize = Math.min(fc.width / 5.5, 130);
+
+        c.font = `900 ${fontSize}px Arial`;
         c.textAlign = "center";
         c.textBaseline = "middle";
-        c.fillText("AXXEL 10", fc.width / 2, fc.height * 0.3);
+
+        c.fillText(
+          TEXT_CONFIG.texto,
+          fc.width / 2,
+          fc.height * 0.3,
+          fc.width * 0.92,
+        );
+
         const d = c.getImageData(0, 0, t.width, t.height);
-        for (let y = 0; y < d.height; y += 8)
-          for (let x = 0; x < d.width; x += 8) {
-            if (d.data[(y * d.width + x) * 4 + 3] > 150)
+
+        const ahora = performance.now();
+
+        for (let y = 0; y < d.height; y += TEXT_CONFIG.separacion) {
+          for (let x = 0; x < d.width; x += TEXT_CONFIG.separacion) {
+            if (d.data[(y * d.width + x) * 4 + 3] > 150) {
+              const angulo = Math.random() * Math.PI * 2;
+
               particles.push({
                 x,
                 y,
-                vx: (Math.random() - 0.5) * 1.6,
-                vy: (Math.random() - 0.5) * 1.6,
-                life: 150 + Math.random() * 100,
-                size: 2,
-                color: `hsl(${190 + Math.random() * 25},${30 + Math.random() * 50}%,${82 + Math.random() * 14}%)`,
+
+                originX: x,
+                originY: y,
+
+                vx: Math.cos(angulo) * TEXT_CONFIG.velocidad,
+
+                vy: Math.sin(angulo) * TEXT_CONFIG.velocidad,
+
+                size: TEXT_CONFIG.tamano,
+
+                color: `hsl(${190 + Math.random() * 25},${
+                  30 + Math.random() * 50
+                }%,${82 + Math.random() * 14}%)`,
+
+                opacity: 1,
+                createdAt: ahora,
+                isText: true,
               });
+            }
           }
+        }
       }
 
       /* ================= PWA ================= */

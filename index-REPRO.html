@@ -1,0 +1,3133 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#05070c" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="Axxel 10" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="icons/icon-192.png" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+    <title>Nivel 10 · Axxel Jhael</title>
+    <style>
+      :root {
+        --suit: #e1ebed; /* gris claro del uniforme */
+        --white: #ffffff;
+        --steel: #8c8c8c;
+        --space: #05070c;
+        --ice: #8fe3ff; /* energía / brillo */
+        --red: #e5303a; /* acento de impacto */
+        --gold: #ffd66b;
+        --panel: rgba(12, 16, 26, 0.74);
+      }
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+      html,
+      body {
+        margin: 0;
+        background: var(--space);
+        color: var(--suit);
+        font-family:
+          "Segoe UI",
+          system-ui,
+          -apple-system,
+          Roboto,
+          Helvetica,
+          Arial,
+          sans-serif;
+        overflow-x: hidden;
+        touch-action: manipulation;
+      }
+      body {
+        background: linear-gradient(
+            180deg,
+            #02030a 0%,
+            #070b14 55%,
+            #0b1320 100%
+          )
+          fixed;
+      }
+
+      /* ================= LOGO VILTRUMITA (diseño propio) ================= */
+      .viltrum-3d-logo {
+        --bg-dark: #8c8c8c;
+        --light-gray: #e0e0e0;
+        --white: #ffffff;
+        --shadow-dark: rgba(0, 0, 0, 0.45);
+        --shadow-light: rgba(255, 255, 255, 0.6);
+        --size: 250px;
+        width: var(--size);
+        height: var(--size);
+        position: relative;
+        border-radius: 50%;
+        box-sizing: border-box;
+        flex-shrink: 0;
+        background: radial-gradient(
+          circle at 35% 35%,
+          #a6a6a6 0%,
+          var(--bg-dark) 70%
+        );
+        box-shadow:
+          0 calc(var(--size) * 0.06) calc(var(--size) * 0.14)
+            rgba(0, 0, 0, 0.35),
+          inset calc(var(--size) * -0.016) calc(var(--size) * -0.016)
+            calc(var(--size) * 0.048) var(--shadow-dark),
+          inset calc(var(--size) * 0.024) calc(var(--size) * 0.024)
+            calc(var(--size) * 0.048) var(--shadow-light);
+      }
+      .viltrum-3d-logo::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        border: max(2px, calc(var(--size) * 0.024)) solid var(--white);
+        background: radial-gradient(
+          circle,
+          transparent 68%,
+          var(--light-gray) 68.5%
+        );
+        pointer-events: none;
+        z-index: 3;
+        box-shadow:
+          inset 0 0 calc(var(--size) * 0.04) rgba(0, 0, 0, 0.25),
+          0 calc(var(--size) * 0.016) calc(var(--size) * 0.04)
+            rgba(0, 0, 0, 0.15);
+      }
+      .viltrum-3d-logo::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        z-index: 2;
+        background:
+          linear-gradient(to bottom, var(--white) 60%, transparent 60%)
+            no-repeat 30% 0% / calc(var(--size) * 0.04) 100%,
+          linear-gradient(to bottom, var(--white), var(--white)) no-repeat 50%
+            40% / calc(var(--size) * 0.088) 80%,
+          linear-gradient(to top, var(--white) 60%, transparent 60%) no-repeat
+            70% 100% / calc(var(--size) * 0.04) 100%;
+        filter: drop-shadow(
+          calc(var(--size) * 0.012) calc(var(--size) * 0.02)
+            calc(var(--size) * 0.016) rgba(0, 0, 0, 0.25)
+        );
+      }
+      .logo-lg {
+        --size: min(54vw, 230px);
+      }
+      .logo-md {
+        --size: 120px;
+      }
+      .logo-sm {
+        --size: 44px;
+      }
+      .logo-glow {
+        filter: drop-shadow(0 0 28px rgba(143, 227, 255, 0.45));
+      }
+      .floaty {
+        animation: float 4s ease-in-out infinite;
+      }
+      @keyframes float {
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      /* ================= FONDO ================= */
+      #stars,
+      #fireworksCanvas {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+      #stars {
+        z-index: 0;
+      }
+      #fireworksCanvas {
+        z-index: 1;
+      }
+      .planet {
+        position: fixed;
+        z-index: 0;
+        left: 50%;
+        bottom: -118vw;
+        width: 150vw;
+        height: 150vw;
+        transform: translateX(-50%);
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at 50% 4%,
+          rgba(143, 227, 255, 0.5) 0%,
+          rgba(40, 90, 130, 0.35) 5%,
+          #060a13 22%
+        );
+        box-shadow:
+          0 -6px 60px rgba(143, 227, 255, 0.4),
+          0 -2px 12px rgba(225, 235, 237, 0.5);
+        pointer-events: none;
+      }
+      .vignette {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 55%,
+          rgba(0, 0, 0, 0.6) 100%
+        );
+      }
+      .scanlines {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 3;
+        opacity: 0.05;
+        background: repeating-linear-gradient(
+          0deg,
+          #fff 0 1px,
+          transparent 1px 3px
+        );
+      }
+      .hud {
+        position: fixed;
+        z-index: 4;
+        width: 42px;
+        height: 42px;
+        pointer-events: none;
+        border: 2px solid var(--suit);
+        opacity: 0.7;
+      }
+      .hud.tl {
+        top: 10px;
+        left: 10px;
+        border-right: 0;
+        border-bottom: 0;
+      }
+      .hud.tr {
+        top: 10px;
+        right: 10px;
+        border-left: 0;
+        border-bottom: 0;
+      }
+      .hud.bl {
+        bottom: 10px;
+        left: 10px;
+        border-right: 0;
+        border-top: 0;
+      }
+      .hud.br {
+        bottom: 10px;
+        right: 10px;
+        border-left: 0;
+        border-top: 0;
+      }
+
+      /* ================= PANTALLAS ================= */
+      .screen {
+        position: relative;
+        z-index: 2;
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 26px 18px;
+        text-align: center;
+      }
+      .hidden {
+        display: none !important;
+      }
+
+      .metal {
+        background: linear-gradient(180deg, #fff 0%, #e1ebed 45%, #8e9ea3 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        filter: drop-shadow(0 0 16px rgba(143, 227, 255, 0.35));
+      }
+      h1.title {
+        font-size: clamp(2.1rem, 10vw, 3.8rem);
+        margin: 14px 0 6px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        font-weight: 900;
+        line-height: 1.05;
+      }
+      .subtitle {
+        color: #b8c6cb;
+        font-size: 1.05rem;
+        letter-spacing: 0.04em;
+        max-width: 480px;
+        line-height: 1.55;
+        margin: 10px 0 0;
+      }
+      .tag {
+        display: inline-block;
+        margin-top: 18px;
+        padding: 5px 16px;
+        border: 1px solid var(--suit);
+        color: var(--suit);
+        font-size: 0.72rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+        background: rgba(225, 235, 237, 0.06);
+      }
+
+      .idcard {
+        margin-top: 22px;
+        width: 100%;
+        max-width: 360px;
+        padding: 14px 18px;
+        text-align: left;
+        background: var(--panel);
+        border-left: 4px solid var(--suit);
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 4px 14px;
+        font-size: 0.82rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .idcard span {
+        color: #7f9096;
+      }
+      .idcard b {
+        color: var(--white);
+      }
+
+      .btn {
+        margin-top: 28px;
+        border: 0;
+        cursor: pointer;
+        color: #0b1118;
+        font-weight: 900;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        font-size: 1rem;
+        padding: 17px 40px;
+        background: linear-gradient(135deg, #fff, #e1ebed 55%, #b4c4c9);
+        clip-path: polygon(14px 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
+        filter: drop-shadow(0 0 18px rgba(143, 227, 255, 0.55));
+        animation: pulseBtn 1.8s infinite;
+      }
+      .btn:active {
+        transform: scale(0.95);
+      }
+      @keyframes pulseBtn {
+        50% {
+          filter: drop-shadow(0 0 32px rgba(143, 227, 255, 0.95));
+        }
+      }
+
+      /* ================= JUEGO ================= */
+      #game-screen {
+        overflow: hidden;
+      }
+      .hud-top {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 5;
+        padding: 16px 62px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .score-box {
+        font-weight: 900;
+        letter-spacing: 0.1em;
+        font-size: 1rem;
+        text-align: center;
+      }
+      .score-box b {
+        color: var(--white);
+        text-shadow: 0 0 14px var(--ice);
+        font-size: 1.7rem;
+      }
+      .combo {
+        min-width: 84px;
+        text-align: right;
+        color: var(--ice);
+        font-weight: 900;
+        letter-spacing: 0.1em;
+        text-shadow: 0 0 10px var(--ice);
+        font-size: 0.9rem;
+      }
+      .power {
+        position: fixed;
+        left: 62px;
+        right: 62px;
+        top: 70px;
+        z-index: 5;
+      }
+      .power small {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.66rem;
+        letter-spacing: 0.25em;
+        color: #8fa0a6;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+      }
+      .power .rail {
+        height: 9px;
+        background: rgba(255, 255, 255, 0.1);
+        clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+      }
+      .power i {
+        display: block;
+        height: 100%;
+        width: 0;
+        background: linear-gradient(90deg, #6a7c82, var(--suit), var(--white));
+        box-shadow: 0 0 14px var(--ice);
+        transition: width 0.35s cubic-bezier(0.2, 1.4, 0.4, 1);
+      }
+      .game-center {
+        pointer-events: none;
+      }
+      .game-center h2 {
+        margin: 0 0 8px;
+        font-size: 1.2rem;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: var(--suit);
+      }
+      .game-center p {
+        margin: 0;
+        color: #8fa0a6;
+      }
+      .toast {
+        position: fixed;
+        left: 50%;
+        top: 34%;
+        transform: translate(-50%, 0);
+        z-index: 120;
+        font-weight: 900;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        font-size: 1.3rem;
+        color: #fff;
+        text-shadow: 0 0 18px var(--ice);
+        pointer-events: none;
+        animation: toast 1.1s ease-out forwards;
+        white-space: nowrap;
+      }
+      @keyframes toast {
+        0% {
+          opacity: 0;
+          transform: translate(-50%, 20px) scale(0.8);
+        }
+        20% {
+          opacity: 1;
+          transform: translate(-50%, 0) scale(1.05);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(-50%, -40px);
+        }
+      }
+
+      .falling-item {
+        position: fixed;
+        z-index: 100;
+        left: 0;
+        top: 0;
+        font-size: 56px;
+        line-height: 1;
+        cursor: pointer;
+        user-select: none;
+        -webkit-user-select: none;
+        will-change: transform;
+        filter: drop-shadow(0 0 14px rgba(143, 227, 255, 0.9));
+        padding: 12px;
+      }
+      .shock {
+        position: fixed;
+        z-index: 99;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        pointer-events: none;
+        border: 3px solid var(--white);
+        box-shadow:
+          0 0 24px var(--ice),
+          inset 0 0 18px var(--ice);
+        transform: translate(-50%, -50%);
+        animation: shock 0.6s ease-out forwards;
+      }
+      @keyframes shock {
+        to {
+          width: 230px;
+          height: 230px;
+          opacity: 0;
+          border-width: 1px;
+        }
+      }
+      .plus {
+        position: fixed;
+        z-index: 101;
+        pointer-events: none;
+        font-weight: 900;
+        color: #fff;
+        font-size: 1.6rem;
+        text-shadow: 0 0 12px var(--ice);
+        animation: plus 0.8s ease-out forwards;
+      }
+      @keyframes plus {
+        to {
+          transform: translateY(-70px);
+          opacity: 0;
+        }
+      }
+      .shake {
+        animation: shake 0.25s;
+      }
+      @keyframes shake {
+        25% {
+          transform: translate(4px, -3px);
+        }
+        50% {
+          transform: translate(-4px, 3px);
+        }
+        75% {
+          transform: translate(3px, 2px);
+        }
+      }
+
+      /* ================= CARGA DE PODER ================= */
+      #charge {
+        position: fixed;
+        inset: 0;
+        z-index: 3000;
+        background: radial-gradient(circle at 50% 45%, #0e1a2a, #02030a 70%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        text-align: center;
+      }
+      #charge .ring {
+        position: absolute;
+        width: min(80vw, 340px);
+        height: min(80vw, 340px);
+        border-radius: 50%;
+        border: 2px solid rgba(143, 227, 255, 0.35);
+        animation: ring 1.4s ease-out infinite;
+      }
+      #charge .ring.r2 {
+        animation-delay: 0.7s;
+      }
+      @keyframes ring {
+        from {
+          transform: scale(0.55);
+          opacity: 1;
+        }
+        to {
+          transform: scale(1.5);
+          opacity: 0;
+        }
+      }
+      #charge h2 {
+        margin: 26px 0 6px;
+        letter-spacing: 0.3em;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        color: #9fb2b8;
+        position: relative;
+      }
+      #charge .pct {
+        font-size: 3.4rem;
+        font-weight: 900;
+        position: relative;
+      }
+      #charge .rail {
+        width: min(78vw, 320px);
+        height: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        margin-top: 12px;
+        position: relative;
+        clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+      }
+      #charge .rail i {
+        display: block;
+        height: 100%;
+        width: 0;
+        background: linear-gradient(90deg, #6a7c82, #fff);
+        box-shadow: 0 0 16px var(--ice);
+      }
+      #flash {
+        position: fixed;
+        inset: 0;
+        z-index: 3500;
+        background: #fff;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.35s;
+      }
+      #flash.on {
+        opacity: 1;
+        transition: opacity 0.15s;
+      }
+
+      /* ================= CELEBRACIÓN ================= */
+      #celebration-screen {
+        justify-content: flex-start;
+        padding-top: 44px;
+        opacity: 0;
+        transition: opacity 1.2s;
+      }
+      .unlocked {
+        font-size: clamp(1.5rem, 7vw, 2.5rem);
+        font-weight: 900;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        margin: 12px 0 18px;
+        color: var(--white);
+        animation: glow 1.6s infinite alternate;
+      }
+      @keyframes glow {
+        from {
+          text-shadow: 0 0 10px var(--ice);
+        }
+        to {
+          text-shadow:
+            0 0 28px var(--ice),
+            0 0 60px rgba(143, 227, 255, 0.5);
+        }
+      }
+      .big10 {
+        font-size: clamp(6.5rem, 36vw, 12.5rem);
+        font-weight: 900;
+        line-height: 0.9;
+        margin: 14px 0 4px;
+        cursor: pointer;
+        animation: float 4.5s ease-in-out infinite;
+        user-select: none;
+      }
+      .hint {
+        font-size: 0.68rem;
+        letter-spacing: 0.3em;
+        color: #6f8087;
+        text-transform: uppercase;
+        margin-bottom: 26px;
+      }
+
+      .card {
+        background: var(--panel);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(225, 235, 237, 0.4);
+        padding: 34px 24px;
+        margin: 12px auto 46px;
+        max-width: 620px;
+        width: 100%;
+        box-shadow:
+          0 18px 40px rgba(0, 0, 0, 0.55),
+          0 0 40px rgba(143, 227, 255, 0.12);
+        clip-path: polygon(
+          22px 0,
+          100% 0,
+          100% calc(100% - 22px),
+          calc(100% - 22px) 100%,
+          0 100%,
+          0 22px
+        );
+      }
+      .card h2 {
+        margin-top: 0;
+        color: var(--white);
+        font-size: 1.6rem;
+        letter-spacing: 0.04em;
+        text-shadow: 0 0 14px rgba(143, 227, 255, 0.6);
+      }
+      .card p {
+        font-size: 1.14rem;
+        line-height: 1.65;
+        color: #d5e0e3;
+      }
+      .sign {
+        color: var(--white) !important;
+        font-weight: 900;
+        font-size: 1.35rem !important;
+        text-shadow:
+          0 0 14px var(--ice),
+          0 0 4px var(--red);
+        letter-spacing: 0.05em;
+      }
+
+      h3.sec {
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        font-size: 0.82rem;
+        color: var(--ice);
+        margin: 0 0 14px;
+      }
+      .section {
+        width: 100%;
+        max-width: 620px;
+        margin: 0 auto 46px;
+      }
+
+      /* contadores */
+      .counters {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .counter-box {
+        background: var(--panel);
+        border: 1px solid rgba(225, 235, 237, 0.25);
+        padding: 16px 8px;
+        clip-path: polygon(
+          12px 0,
+          100% 0,
+          100% calc(100% - 12px),
+          calc(100% - 12px) 100%,
+          0 100%,
+          0 12px
+        );
+      }
+      .counter-box b {
+        display: block;
+        font-size: 2.1rem;
+        font-weight: 900;
+        color: var(--white);
+        text-shadow: 0 0 14px var(--ice);
+      }
+      .counter-box span {
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #8fa0a6;
+      }
+
+      /* estadísticas */
+      .stats {
+        display: grid;
+        gap: 12px;
+        text-align: left;
+      }
+      .stat {
+        background: var(--panel);
+        border-left: 4px solid var(--suit);
+        padding: 10px 14px;
+      }
+      .stat span {
+        display: flex;
+        justify-content: space-between;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        font-size: 0.82rem;
+        text-transform: uppercase;
+      }
+      .stat em {
+        font-style: normal;
+        color: var(--ice);
+      }
+      .bar {
+        height: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        margin-top: 8px;
+        overflow: hidden;
+      }
+      .bar i {
+        display: block;
+        height: 100%;
+        width: 0;
+        background: linear-gradient(90deg, #6a7c82, var(--suit), var(--white));
+        box-shadow: 0 0 10px var(--ice);
+        transition: width 1.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+
+      /* logros */
+      .badges {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .badge {
+        background: var(--panel);
+        border: 1px solid rgba(225, 235, 237, 0.25);
+        padding: 16px 10px;
+        opacity: 0;
+        transform: translateY(18px) scale(0.94);
+        transition:
+          opacity 0.6s,
+          transform 0.6s;
+        transition-delay: var(--d, 0s);
+      }
+      .badges.in .badge {
+        opacity: 1;
+        transform: none;
+      }
+      .badge i {
+        display: block;
+        font-style: normal;
+        font-size: 2.2rem;
+        margin-bottom: 6px;
+        filter: drop-shadow(0 0 10px rgba(143, 227, 255, 0.6));
+      }
+      .badge b {
+        display: block;
+        font-size: 0.8rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--white);
+      }
+      .badge small {
+        display: block;
+        margin-top: 4px;
+        color: #8fa0a6;
+        font-size: 0.76rem;
+        line-height: 1.35;
+      }
+
+      /* certificado */
+      .cert {
+        position: relative;
+        padding: 30px 22px;
+        background: linear-gradient(
+          160deg,
+          rgba(225, 235, 237, 0.96),
+          rgba(255, 255, 255, 0.98) 50%,
+          rgba(190, 205, 210, 0.96)
+        );
+        color: #0b1118;
+        border: 3px double #5e7078;
+        box-shadow:
+          0 0 50px rgba(143, 227, 255, 0.3),
+          inset 0 0 40px rgba(0, 0, 0, 0.12);
+      }
+      .cert .seal {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+      .cert small {
+        display: block;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        font-size: 0.68rem;
+        color: #4b5b61;
+      }
+      .cert h2 {
+        margin: 8px 0;
+        font-size: clamp(1.3rem, 6vw, 1.9rem);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #0b1118;
+      }
+      .cert .name {
+        font-size: clamp(1.6rem, 8vw, 2.4rem);
+        font-weight: 900;
+        letter-spacing: 0.06em;
+        margin: 6px 0;
+        color: #0b1118;
+      }
+      .cert p {
+        margin: 8px 0;
+        color: #26343a;
+        font-size: 1rem;
+        line-height: 1.5;
+      }
+      .cert .line {
+        height: 1px;
+        background: #6b7d84;
+        margin: 16px auto 6px;
+        width: 70%;
+      }
+
+      /*.hero-slot{display:none;margin:0 auto 46px;max-width:340px;border:2px solid var(--suit);box-shadow:0 0 30px rgba(143,227,255,.35);background:rgba(0,0,0,.5);overflow:hidden}
+.hero-slot img{width:100%;display:block}*/
+
+      .hero-slot {
+        display: none;
+        margin: 0 auto 46px;
+        max-width: 340px;
+        /* Eliminamos el border físico clásico porque clip-path lo cortaría de forma irregular */
+        box-shadow: 0 0 30px rgba(143, 227, 255, 0.35);
+        background: rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+
+        /* Relación de aspecto 1:1 (cuadrado) obligatoria para que el corazón y el diamante no se deformen */
+        aspect-ratio: 1 / 1;
+
+        /* Activamos la animación infinita de transformación */
+        animation: morphingFormas 16s ease-in-out infinite;
+      }
+
+      .hero-slot img {
+        width: 100%;
+        height: 100%; /* Forzamos a que llene la forma */
+        /*object-fit: cover;*/ /* Evita que la foto se estire feo */
+        object-fit: contain; /* Ajusta la imagen para que se vea completa dentro de la forma */
+        display: block;
+      }
+
+      /* Animación de metamorfosis (Morphing) */
+      @keyframes morphingFormas {
+        /* Círculo perfecto */
+        0%,
+        100% {
+          clip-path: inset(0% round 50%);
+        }
+        /* Diamante / Rombo */
+        25% {
+          clip-path: inset(
+            0% round 0%
+          ); /* Reseteo intermedio rápido para cortar esquinas */
+          clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+        }
+        /* Gota de agua */
+        50% {
+          clip-path: inset(0% round 0% 50% 50% 50%);
+        }
+        /* Corazón estilizado */
+        75% {
+          clip-path: polygon(
+            50% 15%,
+            75% 0%,
+            100% 25%,
+            50% 85%,
+            0% 25%,
+            25% 0%
+          );
+        }
+      }
+
+      /* slider */
+      .visor {
+        width: 100%;
+        max-width: 440px;
+        margin: 0 auto 46px;
+        padding: 0 6px;
+      }
+      .slider {
+        display: flex;
+        overflow-x: auto;
+        overflow-y: hidden;
+        gap: 16px;
+        padding: 14px 4px 22px;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      .slider::-webkit-scrollbar {
+        display: none;
+      }
+      .slide {
+        flex: 0 0 min(80vw, 340px);
+        scroll-snap-align: center;
+      }
+      .frame {
+        background: rgba(6, 9, 16, 0.94);
+        border: 3px solid var(--c, var(--suit));
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        box-shadow: 0 0 22px
+          color-mix(in srgb, var(--c, var(--suit)) 40%, transparent);
+        transition:
+          transform 0.3s,
+          box-shadow 0.3s;
+        clip-path: polygon(
+          16px 0,
+          100% 0,
+          100% calc(100% - 16px),
+          calc(100% - 16px) 100%,
+          0 100%,
+          0 16px
+        );
+      }
+      .slide.active .frame {
+        transform: scale(1.03);
+        box-shadow: 0 0 38px var(--c, var(--suit));
+      }
+      .frame img {
+        width: 100%;
+        height: 370px;
+        object-fit: cover;
+        display: block;
+        background: #0a0f18;
+      }
+      .cap {
+        padding: 14px;
+        min-height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.55);
+      }
+      .cap h3 {
+        margin: 0;
+        font-size: 1.04rem;
+        line-height: 1.35;
+        color: #f2f7f8;
+        text-shadow: 0 0 10px var(--c, var(--suit));
+      }
+      .controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+      }
+      .cbtn {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        border: 2px solid var(--suit);
+        background: rgba(225, 235, 237, 0.1);
+        color: #fff;
+        font-size: 1.1rem;
+        cursor: pointer;
+      }
+      .cbtn:active {
+        transform: scale(0.9);
+      }
+      .counter {
+        color: var(--white);
+        font-weight: 900;
+        text-shadow: 0 0 8px var(--ice);
+        min-width: 70px;
+      }
+
+      .final {
+        font-size: clamp(1.3rem, 6vw, 1.9rem);
+        margin: 24px 0 110px;
+        font-weight: 900;
+        letter-spacing: 0.06em;
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+        50% {
+          transform: scale(1.06);
+        }
+      }
+      .confeti {
+        position: fixed;
+        width: 11px;
+        height: 11px;
+        pointer-events: none;
+        z-index: 999;
+        border-radius: 2px;
+        animation: fall linear forwards;
+      }
+      @keyframes fall {
+        to {
+          transform: translateY(112vh) rotate(720deg);
+        }
+      }
+
+      .fab {
+        position: fixed;
+        right: 18px;
+        z-index: 2000;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+        background: rgba(5, 7, 12, 0.85);
+        border: 2px solid var(--suit);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 15px rgba(143, 227, 255, 0.35);
+        color: #fff;
+        font-size: 1.3rem;
+        padding: 0;
+      }
+      #mute-btn {
+        bottom: 22px;
+      }
+      /* #install-btn {
+        bottom: 84px;
+        font-size: 0.7rem;
+        font-weight: 900;
+      }*/
+      .fab:active {
+        transform: scale(0.9);
+      }
+
+      /* ================= FOOTER Y ESTILOS ASOCIADOS ================= */
+      footer {
+        position: relative;
+        z-index: 10;
+        padding: 40px 20px calc(80px + env(safe-area-inset-bottom, 0px));
+        text-align: center;
+        color: #8fa0a6;
+        background: linear-gradient(
+          180deg,
+          transparent,
+          rgba(5, 7, 12, 0.86) 40%
+        );
+        margin-top: 40px;
+      }
+
+      footer .sig {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        font-weight: 900;
+        font-size: 2rem;
+        color: var(--white);
+        text-shadow: 0 0 16px var(--ice);
+        letter-spacing: 0.05em;
+        margin-bottom: 8px;
+      }
+
+      footer small {
+        display: block;
+        margin-top: 6px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        color: #7f9096;
+      }
+
+      .btn.ghost {
+        background: transparent;
+        color: var(--suit);
+        border: 1.5px solid var(--suit);
+        box-shadow: none;
+        padding: 12px 28px;
+        font-size: 0.8rem;
+        animation: none;
+        margin-top: 20px;
+        clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+        transition:
+          background 0.2s,
+          transform 0.2s;
+      }
+
+      .btn.ghost:active {
+        transform: scale(0.95);
+        background: rgba(225, 235, 237, 0.1);
+      }
+
+      #install-btn {
+        display: contents;
+        margin: 20px auto 0;
+      }
+
+      .ios-hint {
+        display: none;
+        margin: 14px auto 0;
+        max-width: 32ch;
+        font-size: 0.85rem;
+        line-height: 1.5;
+        color: #b8c6cb;
+      }
+      .btn-ghost {
+        font-size: 0.8rem;
+        font-weight: 900;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--suit);
+        font-family: "Segoe UI", system-ui, sans-serif;
+      }
+
+      /* =============================================
+   OMNI-MAN: EXPERIENCIA CINEMATOGRÁFICA
+   ============================================= */
+
+      .hero-slot {
+        display: none;
+        position: relative;
+        width: 100%;
+        max-width: 1200px;
+        margin: 40px auto;
+        overflow: hidden;
+        background: #020207;
+        isolation: isolate;
+      }
+
+      .omni-universe {
+        position: relative;
+        width: 100%;
+        height: clamp(430px, 65vw, 690px);
+        overflow: hidden;
+        background: radial-gradient(
+          ellipse at 50% 48%,
+          #260609 0%,
+          #09030a 50%,
+          #010104 85%
+        );
+      }
+
+      /* ESTRELLAS */
+
+      .omni-stars {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        z-index: 1;
+      }
+
+      .omni-star {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 0 8px #fff;
+        opacity: 0;
+      }
+
+      .hero-slot.playing .omni-star {
+        animation: omniWarp 2.4s ease-in forwards;
+        animation-delay: 0.3s;
+      }
+
+      @keyframes omniWarp {
+        0% {
+          opacity: 0;
+          transform: translate(0, 0) scale(0.2);
+        }
+        30% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          transform: translate(var(--dx), var(--dy)) scale(4);
+        }
+      }
+
+      /* ENERGÍA ROJA */
+
+      .omni-energy {
+        position: absolute;
+        width: 15%;
+        aspect-ratio: 1;
+        left: 50%;
+        top: 45%;
+        transform: translate(-50%, -50%) scale(0);
+        border-radius: 50%;
+        background: #ff203d;
+        box-shadow:
+          0 0 45px 25px #ff1739,
+          0 0 120px 60px #b50023;
+        opacity: 0;
+        z-index: 2;
+      }
+
+      .hero-slot.playing .omni-energy {
+        animation: omniEnergy 2s 1.4s ease-out forwards;
+      }
+
+      @keyframes omniEnergy {
+        0% {
+          transform: translate(-50%, -50%) scale(0);
+          opacity: 0;
+        }
+        45% {
+          opacity: 1;
+        }
+        100% {
+          transform: translate(-50%, -50%) scale(8);
+          opacity: 0;
+        }
+      }
+
+      /* ONDA EXPANSIVA */
+
+      .omni-shockwave {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        left: 50%;
+        top: 45%;
+        border: 6px solid #ff3753;
+        border-radius: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        box-shadow: 0 0 30px #ff183d;
+        opacity: 0;
+        z-index: 5;
+      }
+
+      .hero-slot.playing .omni-shockwave {
+        animation: omniShock 1s 3s ease-out forwards;
+      }
+
+      @keyframes omniShock {
+        0% {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(0.1);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(16);
+        }
+      }
+
+      /* FLASH DE PANTALLA */
+
+      .omni-flash {
+        position: absolute;
+        inset: 0;
+        background: #fff;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 10;
+      }
+
+      .hero-slot.playing .omni-flash {
+        animation: omniFlash 0.8s 3.1s ease-out both;
+      }
+
+      @keyframes omniFlash {
+        0%,
+        100% {
+          opacity: 0;
+        }
+        15% {
+          opacity: 0.9;
+        }
+        35% {
+          opacity: 0.12;
+        }
+        50% {
+          opacity: 0.55;
+        }
+      }
+
+      /* PERSONAJE */
+
+      .omni-character {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 3;
+        opacity: 0;
+        transform: scale(1.65);
+      }
+
+      .omni-character img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
+        filter: contrast(1.12) saturate(1.15)
+          drop-shadow(0 0 25px rgba(255, 20, 40, 0.3));
+
+        /*mask-image: radial-gradient(
+          ellipse 72% 70% at center,
+          black 45%,
+          transparent 100%
+        );*/
+        -webkit-mask-image: none;
+        mask-image: none;
+      }
+
+      .hero-slot.playing .omni-character {
+        animation: omniReveal 4s 3.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      @keyframes omniReveal {
+        0% {
+          opacity: 0;
+          transform: scale(1.65);
+          filter: blur(18px);
+        }
+        20% {
+          opacity: 1;
+          filter: blur(0);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+          filter: blur(0);
+        }
+      }
+
+      /* TEXTO INTRODUCTORIO */
+
+      .omni-intro {
+        position: absolute;
+        top: 15%;
+        width: 100%;
+        text-align: center;
+        font-size: clamp(14px, 3vw, 25px);
+        font-weight: 900;
+        letter-spacing: 5px;
+        color: #fff;
+        opacity: 0;
+        z-index: 6;
+        text-shadow: 0 0 25px #ff2448;
+      }
+
+      .hero-slot.playing .omni-intro {
+        animation: omniIntro 2.4s 0.4s both;
+      }
+
+      @keyframes omniIntro {
+        0% {
+          opacity: 0;
+          transform: scale(1.4);
+        }
+        25%,
+        65% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+      }
+
+      /* TÍTULO OMNI-MAN */
+
+      .omni-title {
+        position: absolute;
+        top: 7%;
+        width: 100%;
+        text-align: center;
+        z-index: 7;
+        opacity: 0;
+        transform: scale(3);
+      }
+
+      .omni-title span {
+        display: block;
+        color: #fff;
+        font-size: clamp(12px, 2vw, 20px);
+        letter-spacing: 7px;
+        font-weight: 900;
+      }
+
+      .omni-title strong {
+        display: block;
+        color: #ff314e;
+        font-family: Impact, "Arial Black", sans-serif;
+        font-size: clamp(55px, 12vw, 145px);
+        line-height: 1;
+        letter-spacing: 3px;
+        -webkit-text-stroke: 1px #fff;
+        text-shadow:
+          0 5px 0 #58000e,
+          0 12px 20px #000,
+          0 0 40px rgba(255, 0, 45, 0.65);
+      }
+
+      .hero-slot.playing .omni-title {
+        animation: omniTitle 1.4s 4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      @keyframes omniTitle {
+        0% {
+          opacity: 0;
+          transform: scale(3);
+          filter: blur(12px);
+        }
+        70% {
+          opacity: 1;
+          transform: scale(0.95);
+          filter: blur(0);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+          filter: blur(0);
+        }
+      }
+
+      /* MENSAJE FINAL */
+
+      .omni-message {
+        position: absolute;
+        bottom: 13%;
+        left: 0;
+        width: 100%;
+        z-index: 7;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        text-align: center;
+        opacity: 0;
+        transform: translateY(60px);
+      }
+
+      .omni-message > span:first-child {
+        color: #fff;
+        font-size: clamp(19px, 4vw, 35px);
+        font-weight: 900;
+        letter-spacing: 4px;
+        text-shadow: 0 0 15px #000;
+      }
+
+      .omni-message strong {
+        color: #ffcf4d;
+        font-size: clamp(15px, 3vw, 29px);
+        font-weight: 900;
+        letter-spacing: 2px;
+        text-shadow:
+          0 0 10px #ff9c00,
+          0 0 30px #ff4500,
+          0 3px 8px #000;
+      }
+
+      .omni-level {
+        color: #ffcf4d;
+        letter-spacing: 8px;
+        font-size: 18px;
+      }
+
+      .hero-slot.playing .omni-message {
+        animation: omniMessage 1s 5.6s ease-out forwards;
+      }
+
+      @keyframes omniMessage {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* BOTÓN REPETIR */
+
+      .omni-replay {
+        position: absolute;
+        bottom: 3%;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9;
+        padding: 10px 20px;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 30px;
+        background: rgba(0, 0, 0, 0.7);
+        color: #fff;
+        font-size: 11px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        cursor: pointer;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .hero-slot.playing .omni-replay {
+        animation: omniReplayShow 0.6s 7s forwards;
+      }
+
+      @keyframes omniReplayShow {
+        to {
+          opacity: 1;
+          pointer-events: auto;
+        }
+      }
+
+      .omni-replay:hover {
+        background: #bd102e;
+      }
+
+      /* SACUDIDA DE CÁMARA */
+
+      .hero-slot.shaking .omni-universe {
+        animation: omniShake 0.45s linear;
+      }
+
+      @keyframes omniShake {
+        0%,
+        100% {
+          transform: translate(0);
+        }
+        15% {
+          transform: translate(-8px, 5px);
+        }
+        30% {
+          transform: translate(7px, -6px);
+        }
+        45% {
+          transform: translate(-6px, -3px);
+        }
+        60% {
+          transform: translate(5px, 5px);
+        }
+        80% {
+          transform: translate(-3px, 2px);
+        }
+      }
+
+      /* CELULARES */
+
+      @media (max-width: 600px) {
+        .omni-universe {
+          height: 490px;
+        }
+
+        .omni-character img {
+          width: 145%;
+          max-width: none;
+          object-fit: contain;
+        }
+
+        .omni-title {
+          top: 13%;
+        }
+
+        .omni-title strong {
+          font-size: clamp(52px, 14vw, 85px);
+        }
+
+        .omni-title span {
+          letter-spacing: 3px;
+        }
+
+        .omni-message {
+          bottom: 18%;
+          padding: 0 10px;
+        }
+
+        .omni-message strong {
+          letter-spacing: 1px;
+        }
+
+        .omni-replay {
+          bottom: 5%;
+          white-space: nowrap;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .hero-slot.playing .omni-character,
+        .hero-slot.playing .omni-title,
+        .hero-slot.playing .omni-message,
+        .hero-slot.playing .omni-replay {
+          animation-duration: 0.01ms;
+          animation-delay: 0ms;
+        }
+
+        .hero-slot.playing .omni-star,
+        .hero-slot.playing .omni-energy,
+        .hero-slot.playing .omni-shockwave,
+        .hero-slot.playing .omni-flash,
+        .hero-slot.playing .omni-intro {
+          animation: none;
+        }
+      }
+      @media (max-width: 600px) {
+        .omni-universe {
+          width: 100%;
+          height: auto;
+          min-height: 480px;
+          height: 75svh;
+          max-height: 680px;
+          overflow: hidden;
+        }
+
+        .omni-character {
+          inset: 0;
+          padding: 10px;
+        }
+
+        .omni-character img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+
+        .omni-title {
+          left: 0;
+          width: 100%;
+          padding-inline: 8px;
+          box-sizing: border-box;
+        }
+
+        .omni-title strong {
+          font-size: clamp(38px, 12vw, 72px);
+          letter-spacing: 0;
+          overflow-wrap: anywhere;
+        }
+
+        .omni-message {
+          left: 0;
+          width: 100%;
+          padding-inline: 12px;
+          box-sizing: border-box;
+        }
+
+        .omni-message strong {
+          max-width: 100%;
+          overflow-wrap: anywhere;
+          font-size: clamp(14px, 4vw, 23px);
+        }
+
+        .omni-replay {
+          min-height: 44px;
+          max-width: calc(100% - 24px);
+        }
+      }
+
+      /* ============================================
+   CORRECCIÓN RESPONSIVE: OMNI-MAN EN LA PWA
+   Imagen horizontal original: 1079 x 646
+   ============================================ */
+
+      .hero-slot {
+        width: 100%;
+        max-width: 1200px;
+        margin: 24px auto;
+        box-sizing: border-box;
+        overflow: hidden;
+        isolation: isolate;
+      }
+
+      .omni-universe {
+        position: relative;
+        width: 100%;
+        height: clamp(480px, 65vw, 690px);
+        overflow: hidden;
+        box-sizing: border-box;
+      }
+
+      /* La imagen completa, sin zoom ni recorte */
+      .omni-character {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      .omni-character img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        object-position: center center;
+        box-sizing: border-box;
+      }
+
+      /* Evitar que el título desborde */
+      .omni-title {
+        left: 0;
+        width: 100%;
+        padding: 0 12px;
+        box-sizing: border-box;
+      }
+
+      .omni-title strong {
+        max-width: 100%;
+        font-size: clamp(36px, 10vw, 120px);
+        line-height: 1.05;
+        overflow-wrap: anywhere;
+      }
+
+      /* Mensaje y botón por encima de las decoraciones */
+      .omni-message {
+        left: 0;
+        width: 100%;
+        padding: 0 12px;
+        box-sizing: border-box;
+        z-index: 12;
+      }
+
+      .omni-replay {
+        z-index: 20;
+        left: 50%;
+        bottom: 12px;
+        transform: translateX(-50%);
+        min-height: 44px;
+        padding: 12px 18px;
+        box-sizing: border-box;
+        max-width: calc(100% - 24px);
+        white-space: nowrap;
+        touch-action: manipulation;
+      }
+
+      /* FLASH: no debe bloquear los controles */
+      .omni-flash {
+        pointer-events: none;
+      }
+
+      /* ============================================
+   MÓVILES
+   ============================================ */
+
+      @media (max-width: 600px) {
+        .hero-slot {
+          width: 100%;
+          max-width: 100%;
+          margin: 16px auto;
+        }
+
+        .omni-universe {
+          width: 100%;
+          height: 620px;
+          height: min(720px, max(580px, 82svh));
+          min-height: 580px;
+          max-height: 720px;
+        }
+
+        .omni-character {
+          inset: 0;
+          padding: 0;
+        }
+
+        .omni-character img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          object-position: center center;
+        }
+
+        .omni-intro {
+          top: 7%;
+          padding: 0 12px;
+          box-sizing: border-box;
+          font-size: clamp(12px, 3.5vw, 17px);
+          letter-spacing: 2px;
+        }
+
+        .omni-title {
+          top: 12%;
+          padding-inline: 8px;
+        }
+
+        .omni-title span {
+          font-size: 12px;
+          letter-spacing: 2px;
+        }
+
+        .omni-title strong {
+          font-size: clamp(36px, 11vw, 64px);
+          letter-spacing: 0;
+          -webkit-text-stroke: 0.5px #fff;
+        }
+
+        /* Reservar espacio para el botón */
+        .omni-message {
+          bottom: 85px;
+          gap: 7px;
+          padding-inline: 10px;
+        }
+
+        .omni-message > span:first-child {
+          font-size: clamp(17px, 5vw, 26px);
+          letter-spacing: 2px;
+        }
+
+        .omni-message strong {
+          max-width: 100%;
+          font-size: clamp(13px, 3.8vw, 20px);
+          letter-spacing: 0;
+          overflow-wrap: anywhere;
+        }
+
+        .omni-level {
+          font-size: 15px;
+          letter-spacing: 5px;
+        }
+
+        .omni-replay {
+          bottom: 12px;
+          width: auto;
+          min-width: 44px;
+          min-height: 48px;
+          font-size: 11px;
+        }
+      }
+
+      /* Teléfonos pequeños */
+      @media (max-width: 360px) {
+        .omni-universe {
+          height: 600px;
+          height: min(680px, max(560px, 85svh));
+          min-height: 560px;
+        }
+
+        .omni-title strong {
+          font-size: 35px;
+        }
+
+        .omni-message > span:first-child {
+          font-size: 17px;
+        }
+
+        .omni-message strong {
+          font-size: 13px;
+        }
+
+        .omni-replay {
+          padding-inline: 12px;
+          font-size: 10px;
+        }
+      }
+
+      /* Escritorios */
+      @media (min-width: 601px) {
+        .omni-universe {
+          min-height: 520px;
+        }
+
+        .omni-character img {
+          object-fit: contain;
+        }
+
+        .omni-message {
+          bottom: 12%;
+        }
+
+        .omni-replay {
+          bottom: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="planet"></div>
+    <canvas id="stars"></canvas>
+    <canvas id="fireworksCanvas"></canvas>
+    <div class="vignette"></div>
+    <div class="scanlines"></div>
+    <div class="hud tl"></div>
+    <div class="hud tr"></div>
+    <div class="hud bl"></div>
+    <div class="hud br"></div>
+
+    <audio id="popSound" src="audio/pop.mp3" preload="auto"></audio>
+    <audio
+      id="victoryMusic"
+      src="audio/axxel_jhael.mp3"
+      preload="auto"
+      loop
+    ></audio>
+
+    <!-- ============ INTRO ============ -->
+    <section id="intro-screen" class="screen">
+      <div class="viltrum-3d-logo logo-lg logo-glow floaty"></div>
+      <span class="tag">Transmisión de Viltrum · Prioridad máxima</span>
+      <h1 class="title metal">Misión<br />Nivel 10</h1>
+      <div class="idcard">
+        <span>Soldado</span><b>Axxel Jhael</b> <span>Rango</span
+        ><b>Guerrero Viltrumita</b> <span>Edad</span><b>10 años</b>
+        <span>Poder</span><b>Calculando…</b>
+      </div>
+      <p class="subtitle">
+        Tu entrenamiento final ha comenzado.<br />¿Listo para desbloquear tus 10
+        años?
+      </p>
+      <button class="btn" id="start-btn">Iniciar entrenamiento</button>
+    </section>
+
+    <!-- ============ JUEGO ============ -->
+    <section id="game-screen" class="screen hidden">
+      <div class="hud-top">
+        <div class="viltrum-3d-logo logo-sm"></div>
+        <div class="score-box">PUNTOS <b id="score">0</b> / 10</div>
+        <div class="combo" id="combo"></div>
+      </div>
+      <div class="power">
+        <small><span>Nivel de poder</span><span id="power-pct">0%</span></small>
+        <div class="rail"><i id="prog"></i></div>
+      </div>
+      <div class="game-center">
+        <h2>Entrenamiento</h2>
+        <p>¡Destruye los 10 objetos antes de que escapen!</p>
+      </div>
+    </section>
+
+    <!-- ============ CARGA ============ -->
+    <div id="charge" class="hidden">
+      <div class="ring"></div>
+      <div class="ring r2"></div>
+      <div
+        class="viltrum-3d-logo logo-md logo-glow floaty"
+        style="position: relative"
+      ></div>
+      <h2>Analizando nivel de poder</h2>
+      <div class="pct metal" id="charge-pct">0%</div>
+      <div class="rail"><i id="charge-bar"></i></div>
+    </div>
+    <div id="flash"></div>
+
+    <!-- ============ CELEBRACIÓN ============ -->
+    <section id="celebration-screen" class="screen hidden">
+      <div
+        class="viltrum-3d-logo logo-lg logo-glow floaty"
+        id="logo-click"
+      ></div>
+      <span class="tag">Entrenamiento completado</span>
+      <h1 class="unlocked">Nivel 10 desbloqueado</h1>
+      <div class="big10 metal" id="big10">10</div>
+      <div class="hint">Toca el 10 para liberar tu poder</div>
+
+      <div class="card">
+        <h2>🎂 ¡FELIZ CUMPLEAÑOS, MI CAMPEÓN! 🎂</h2>
+        <p>
+          <strong>Axxel Jhael</strong>, mi príncipe, mi lokito hermoso. Hoy
+          desbloqueas uno de los niveles más importantes del juego:
+          <strong>¡tus 10 añitos!</strong>
+        </p>
+        <p>
+          Hace una década empezaste esta gran aventura y cada día me sorprendes
+          más con tus habilidades. Eres valiente, súper inteligente y tienes el
+          corazón más noble de toda la galaxia. Sigue riendo, sigue jugando y
+          nunca dejes de ser ese niño extraordinario que ilumina mi vida.
+        </p>
+        <p>
+          ¡Prepárate, porque los siguientes niveles vienen con gráficos
+          increíbles y aventuras épicas! Siempre estaré aquí, siendo tu Jugador
+          2, listo para apoyarte en cada partida.
+        </p>
+        <p class="sign">❤️ TE AMO INFINITAMENTE ❤️</p>
+      </div>
+
+      <div class="section">
+        <h3 class="sec">Tu aventura en números</h3>
+        <div class="counters" id="counters">
+          <div class="counter-box">
+            <b data-count="10">0</b><span>Años</span>
+          </div>
+          <div class="counter-box">
+            <b data-count="120">0</b><span>Meses</span>
+          </div>
+          <div class="counter-box">
+            <b data-count="3652">0</b><span>Días de aventuras</span>
+          </div>
+          <div class="counter-box"><b>∞</b><span>Amor de tu familia</span></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3 class="sec">Informe de poder</h3>
+        <div class="stats" id="stats">
+          <div class="stat">
+            <span>Fuerza <em>NIVEL 10</em></span>
+            <div class="bar"><i data-w="92"></i></div>
+          </div>
+          <div class="stat">
+            <span>Velocidad <em>MAX</em></span>
+            <div class="bar"><i data-w="95"></i></div>
+          </div>
+          <div class="stat">
+            <span>Valentía <em>∞</em></span>
+            <div class="bar"><i data-w="100"></i></div>
+          </div>
+          <div class="stat">
+            <span>Inteligencia <em>MAX</em></span>
+            <div class="bar"><i data-w="97"></i></div>
+          </div>
+          <div class="stat">
+            <span>Corazón noble <em>MAX</em></span>
+            <div class="bar"><i data-w="100"></i></div>
+          </div>
+          <div class="stat">
+            <span>Amor de papá y mamá <em>∞∞∞</em></span>
+            <div class="bar"><i data-w="100"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3 class="sec">Logros desbloqueados</h3>
+        <div class="badges" id="badges">
+          <div class="badge" style="--d: 0s">
+            <i>👣</i><b>Primeros pasos</b
+            ><small>Empezaste a caminar y ya no paraste</small>
+          </div>
+          <div class="badge" style="--d: 0.15s">
+            <i>🕷️</i><b>Spiderman oficial</b
+            ><small>Mi héroe favorito del barrio</small>
+          </div>
+          <div class="badge" style="--d: 0.3s">
+            <i>🍦</i><b>Maestro del helado</b
+            ><small>Un helado nunca es suficiente</small>
+          </div>
+          <div class="badge" style="--d: 0.45s">
+            <i>🛹</i><b>Piloto de monopatín</b
+            ><small>Rodando por la vida</small>
+          </div>
+          <div class="badge" style="--d: 0.6s">
+            <i>🧠</i><b>Mente brillante</b
+            ><small>Estudioso y súper inteligente</small>
+          </div>
+          <div class="badge" style="--d: 0.75s">
+            <i>🏆</i><b>Nivel 10</b><small>Diez años de pura aventura</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="cert">
+          <div class="seal"><div class="viltrum-3d-logo logo-md"></div></div>
+          <small>Certificado oficial</small>
+          <h2>Guerrero Nivel 10</h2>
+          <small>Se otorga a</small>
+          <div class="name">AXXEL JHAEL</div>
+          <p>
+            por 10 años de valentía, inteligencia, risas y helados, y por ser el
+            niño más extraordinario de la galaxia.
+          </p>
+          <div class="line"></div>
+          <small>Con todo el amor de tu familia · 16 de octubre de 2026</small>
+        </div>
+      </div>
+
+      <!-- Opcional: pon tu propia imagen en img/heroe.jpg (por ejemplo un arte que a Axxel le guste) -->
+      <!--<div class="hero-slot" id="hero-slot">
+        <img id="hero-img" alt="Mi héroe favorito" loading="lazy" />
+      </div>-->
+
+      <!-- EXPERIENCIA CINEMATOGRÁFICA DEL HÉROE -->
+      <section class="hero-slot" id="hero-slot">
+        <div class="omni-universe">
+          <!-- Estrellas viajando por el espacio -->
+          <div class="omni-stars" id="omni-stars"></div>
+
+          <!-- Energía y explosión -->
+          <div class="omni-energy"></div>
+          <div class="omni-shockwave"></div>
+          <div class="omni-flash"></div>
+
+          <!-- Personaje original -->
+          <div class="omni-character">
+            <img
+              id="hero-img"
+              alt="Omni-Man, el héroe favorito de Axxel"
+              loading="lazy"
+            />
+          </div>
+
+          <!-- Títulos cinematográficos -->
+          <div class="omni-intro">DESDE OTRO UNIVERSO...</div>
+
+          <div class="omni-title">
+            <span class="omni-small">EL LEGENDARIO</span>
+            <strong>CONQUEST</strong>
+          </div>
+
+          <div class="omni-message">
+            <span>AXXEL JHAEL</span>
+            <strong>NIVEL 10 DESBLOQUEADO</strong>
+            <span class="omni-level">★ ★ ★ ★ ★</span>
+          </div>
+
+          <!-- Botón para repetir -->
+          <button
+            class="omni-replay"
+            id="omni-replay"
+            type="button"
+            onclick="replayHero()"
+          >
+            ↻ REPETIR EXPERIENCIA
+          </button>
+        </div>
+      </section>
+
+      <div class="visor hidden" id="visor">
+        <h3 class="sec">Archivo de recuerdos</h3>
+        <div class="slider" id="slider"></div>
+        <div class="controls">
+          <button class="cbtn" onclick="cambiarFoto(-1)" aria-label="Anterior">
+            ◀
+          </button>
+          <div class="counter" id="contador">1 / 1</div>
+          <button class="cbtn" onclick="cambiarFoto(1)" aria-label="Siguiente">
+            ▶
+          </button>
+        </div>
+      </div>
+
+      <div class="final metal">🎁 ¡FELIZ CUMPLEAÑOS, MI CAMPEÓN! 🎁</div>
+
+      <footer>
+        <div class="sig">Te amo infinitamente</div>
+        <small>Hecho con amor por Papá · 2026</small>
+        <button class="btn-ghost" id="install-btn" type="button">
+          Guardar en mi pantalla de inicio
+        </button>
+        <p class="ios-hint" id="ios-hint">
+          En iPhone: toca <b>Compartir</b> y luego
+          <b>“Agregar a pantalla de inicio”</b>.
+        </p>
+      </footer>
+    </section>
+
+    <button id="mute-btn" class="fab hidden" aria-label="Silenciar música">
+      🔊
+    </button>
+    <!-- <button id="install-btn" class="fab hidden" aria-label="Instalar app">
+      APP
+    </button>-->
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const vib = (p) => {
+        try {
+          navigator.vibrate && navigator.vibrate(p);
+        } catch (e) {}
+      };
+
+      /* ================= ESTRELLAS ================= */
+      (function () {
+        const c = $("stars"),
+          x = c.getContext("2d");
+        let W,
+          H,
+          S = [];
+        function init() {
+          W = c.width = innerWidth;
+          H = c.height = innerHeight;
+          S = Array.from(
+            { length: Math.min(170, Math.floor((W * H) / 6000)) },
+            () => ({
+              x: Math.random() * W,
+              y: Math.random() * H,
+              r: Math.random() * 1.5 + 0.2,
+              v: Math.random() * 0.35 + 0.05,
+              t: Math.random() * 6,
+            }),
+          );
+        }
+        addEventListener("resize", init);
+        init();
+        (function loop() {
+          x.clearRect(0, 0, W, H);
+          for (const s of S) {
+            s.y += s.v;
+            s.t += 0.03;
+            if (s.y > H) {
+              s.y = -2;
+              s.x = Math.random() * W;
+            }
+            x.globalAlpha = 0.35 + Math.abs(Math.sin(s.t)) * 0.65;
+            x.fillStyle = s.r > 1.25 ? "#bfefff" : "#fff";
+            x.beginPath();
+            x.arc(s.x, s.y, s.r, 0, 6.283);
+            x.fill();
+          }
+          requestAnimationFrame(loop);
+        })();
+      })();
+
+      /* ================= AUDIO ================= */
+      const sound = $("popSound"),
+        music = $("victoryMusic");
+      let muted = false,
+        AC = null;
+      function ac() {
+        if (!AC) {
+          try {
+            AC = new (window.AudioContext || window.webkitAudioContext)();
+          } catch (e) {}
+        }
+        return AC;
+      }
+      function setMuted(m) {
+        muted = m;
+        music.muted = m;
+        sound.muted = m;
+        $("mute-btn").textContent = m ? "🔇" : "🔊";
+        $("mute-btn").style.borderColor = m ? "#e5303a" : "var(--suit)";
+      }
+      $("mute-btn").onclick = () => setMuted(!muted);
+
+      function boom(low = 140) {
+        if (muted) return;
+        const c = ac();
+        if (!c) return;
+        const t = c.currentTime;
+        const o = c.createOscillator(),
+          g = c.createGain();
+        o.type = "sawtooth";
+        o.frequency.setValueAtTime(low, t);
+        o.frequency.exponentialRampToValueAtTime(28, t + 0.4);
+        g.gain.setValueAtTime(0.32, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.45);
+        o.connect(g).connect(c.destination);
+        o.start(t);
+        o.stop(t + 0.5);
+      }
+      function riser(sec = 2) {
+        if (muted) return;
+        const c = ac();
+        if (!c) return;
+        const t = c.currentTime;
+        const o = c.createOscillator(),
+          g = c.createGain();
+        o.type = "triangle";
+        o.frequency.setValueAtTime(90, t);
+        o.frequency.exponentialRampToValueAtTime(1100, t + sec);
+        g.gain.setValueAtTime(0.001, t);
+        g.gain.linearRampToValueAtTime(0.18, t + sec * 0.9);
+        g.gain.linearRampToValueAtTime(0.001, t + sec);
+        o.connect(g).connect(c.destination);
+        o.start(t);
+        o.stop(t + sec + 0.05);
+      }
+
+      /* ================= INTRO -> JUEGO ================= */
+      $("start-btn").onclick = () => {
+        try {
+          const c = ac();
+          c && c.resume && c.resume();
+        } catch (e) {}
+        // el toque del usuario desbloquea el audio en móviles
+        try {
+          music.volume = 0;
+          music
+            .play()
+            .then(() => {
+              music.pause();
+              music.currentTime = 0;
+              music.volume = 0.6;
+            })
+            .catch(() => {});
+        } catch (e) {}
+        try {
+          sound
+            .play()
+            .then(() => {
+              sound.pause();
+              sound.currentTime = 0;
+            })
+            .catch(() => {});
+        } catch (e) {}
+        $("intro-screen").classList.add("hidden");
+        $("game-screen").classList.remove("hidden");
+        $("mute-btn").classList.remove("hidden");
+        for (let i = 0; i < 3; i++) setTimeout(createItem, i * 700);
+      };
+
+      /* ================= JUEGO ================= */
+      const maxScore = 10;
+      let score = 0,
+        combo = 0,
+        lastHit = 0,
+        ended = false;
+      const ITEMS = [
+        "🛸",
+        "☄️",
+        "🪐",
+        "⭐",
+        "🚀",
+        "💥",
+        "🛰️",
+        "🌠",
+        "🏆",
+        "🎁",
+      ];
+      const MILESTONES = {
+        3: "¡Buen golpe!",
+        5: "¡Mitad del camino!",
+        8: "¡Casi lo logras!",
+      };
+
+      function createItem() {
+        if (ended || score >= maxScore) return;
+        const el = document.createElement("div");
+        el.className = "falling-item";
+        el.textContent = ITEMS[Math.floor(Math.random() * ITEMS.length)];
+        const x = Math.random() * (innerWidth - 100) + 10;
+        let y = -90,
+          done = false,
+          cx = 0;
+        const speed = (Math.random() * 1.6 + 2.3) * (1 + score * 0.06),
+          drift = (Math.random() - 0.5) * 1.2;
+        el.style.left = x + "px";
+        document.body.appendChild(el);
+        (function step() {
+          if (done) return;
+          y += speed;
+          cx += drift;
+          el.style.transform = `translate(${cx}px,${y}px) rotate(${y * 0.4}deg)`;
+          if (y > innerHeight + 20) {
+            done = true;
+            el.remove();
+            combo = 0;
+            $("combo").textContent = "";
+            createItem();
+            return;
+          }
+          requestAnimationFrame(step);
+        })();
+        el.addEventListener("pointerdown", (e) => {
+          e.preventDefault();
+          if (done) return;
+          done = true;
+          const r = el.getBoundingClientRect(),
+            px = r.left + r.width / 2,
+            py = r.top + r.height / 2;
+          const now = Date.now();
+          combo = now - lastHit < 2500 ? combo + 1 : 1;
+          lastHit = now;
+          score++;
+          $("score").textContent = score;
+          const pct = (score / maxScore) * 100;
+          $("prog").style.width = pct + "%";
+          $("power-pct").textContent = Math.round(pct) + "%";
+          $("combo").textContent = combo > 1 ? `COMBO x${combo}` : "";
+          try {
+            sound.currentTime = 0;
+            sound.play().catch(() => {});
+          } catch (e) {}
+          boom();
+          vib(40);
+          fx(px, py);
+          if (MILESTONES[score]) toast(MILESTONES[score]);
+          el.style.transition = "transform .25s,opacity .25s";
+          el.style.opacity = "0";
+          setTimeout(() => el.remove(), 260);
+          if (score >= maxScore) finish();
+          else createItem();
+        });
+      }
+      function fx(x, y) {
+        const s = document.createElement("div");
+        s.className = "shock";
+        s.style.left = x + "px";
+        s.style.top = y + "px";
+        document.body.appendChild(s);
+        setTimeout(() => s.remove(), 650);
+        const p = document.createElement("div");
+        p.className = "plus";
+        p.textContent = "+1";
+        p.style.left = x - 12 + "px";
+        p.style.top = y - 20 + "px";
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 800);
+        const g = $("game-screen");
+        g.classList.remove("shake");
+        void g.offsetWidth;
+        g.classList.add("shake");
+      }
+      function toast(t) {
+        const d = document.createElement("div");
+        d.className = "toast";
+        d.textContent = t;
+        document.body.appendChild(d);
+        setTimeout(() => d.remove(), 1150);
+      }
+
+      /* ================= FINAL ================= */
+      function finish() {
+        ended = true;
+        document.querySelectorAll(".falling-item").forEach((e) => e.remove());
+        vib([80, 50, 80]);
+        setTimeout(runCharge, 500);
+      }
+      function runCharge() {
+        $("charge").classList.remove("hidden");
+        riser(2.2);
+        let p = 0;
+        const iv = setInterval(() => {
+          p += 1.6 + Math.random() * 2.4;
+          if (p >= 100) {
+            p = 100;
+            clearInterval(iv);
+            setTimeout(reveal, 350);
+          }
+          $("charge-bar").style.width = p + "%";
+          $("charge-pct").textContent = Math.floor(p) + "%";
+        }, 45);
+      }
+      function reveal() {
+        const f = $("flash");
+        f.classList.add("on");
+        boom(220);
+        vib([120, 60, 120, 60, 300]);
+        setTimeout(() => {
+          $("charge").classList.add("hidden");
+          $("game-screen").classList.add("hidden");
+          const c = $("celebration-screen");
+          c.classList.remove("hidden");
+          scrollTo(0, 0);
+          try {
+            music.currentTime = 0;
+            music.volume = 0.6;
+            music.play().catch(() => {});
+          } catch (e) {}
+          requestAnimationFrame(() => {
+            c.style.opacity = "1";
+            f.classList.remove("on");
+            f.style.transition = "opacity 1s";
+          });
+          launchConfetti();
+          showPhotos();
+          startFireworks();
+          loadHero();
+          watchReveals();
+        }, 320);
+      }
+      /*function loadHero(){
+  const im=new Image();
+  im.onload=()=>{ $('hero-img').src=im.src; $('hero-slot').style.display='block' };
+  im.src='img/heroe.jpg';
+}*/
+
+      /*function loadHero() {
+        const im = new Image();
+        im.onload = () => {
+          $("hero-img").src = im.src;
+          $("hero-slot").style.display = "block";
+        };
+        im.src = "img/heroe.jpg";
+      }*/
+
+      // ==============================================
+      // CONTROL DE LA EXPERIENCIA CINEMATOGRÁFICA
+      // ==============================================
+
+      let heroTimers = [];
+      let heroStarted = false;
+
+      // Cargar la imagen original
+      function loadHero() {
+        const im = new Image();
+
+        im.onload = () => {
+          $("hero-img").src = im.src;
+          $("hero-slot").style.display = "block";
+
+          // Reproducir al cargar
+          playHeroExperience();
+        };
+
+        im.onerror = () => {
+          console.warn("No se pudo cargar img/heroe.jpg");
+        };
+
+        im.src = "img/heroe.jpg";
+      }
+
+      // Crear estrellas dinámicas
+      function createHeroStars() {
+        const container = $("omni-stars");
+        container.innerHTML = "";
+
+        const count = window.innerWidth < 600 ? 65 : 130;
+
+        for (let i = 0; i < count; i++) {
+          const star = document.createElement("span");
+          star.className = "omni-star";
+
+          const x = Math.random() * 100;
+          const y = Math.random() * 100;
+
+          // Vector radial desde el centro
+          const dx = (x - 50) * 18;
+          const dy = (y - 50) * 18;
+
+          star.style.left = x + "%";
+          star.style.top = y + "%";
+          star.style.setProperty("--dx", dx + "px");
+          star.style.setProperty("--dy", dy + "px");
+          star.style.animationDelay = Math.random() * 1.2 + "s";
+
+          container.appendChild(star);
+        }
+      }
+
+      // Registrar temporizadores para evitar duplicados
+      function heroTimeout(fn, delay) {
+        const id = setTimeout(fn, delay);
+        heroTimers.push(id);
+      }
+
+      // Reproducir escena
+      function playHeroExperience() {
+        const slot = $("hero-slot");
+        if (!slot) return;
+
+        heroTimers.forEach(clearTimeout);
+        heroTimers = [];
+
+        slot.classList.remove("playing", "shaking");
+
+        createHeroStars();
+
+        // Reiniciar animaciones CSS
+        void slot.offsetWidth;
+
+        slot.classList.add("playing");
+        heroStarted = true;
+
+        heroTimeout(() => {
+          const btn = $("omni-replay");
+
+          if (btn) {
+            btn.style.opacity = "1";
+            btn.style.pointerEvents = "auto";
+          }
+        }, 7200);
+
+        // Impacto cinematográfico
+        heroTimeout(() => {
+          slot.classList.add("shaking");
+        }, 3150);
+
+        heroTimeout(() => {
+          slot.classList.remove("shaking");
+        }, 3650);
+
+        // Segundo impacto cuando aparece el título
+        heroTimeout(() => {
+          slot.classList.add("shaking");
+        }, 4100);
+
+        heroTimeout(() => {
+          slot.classList.remove("shaking");
+        }, 4600);
+      }
+
+      // Botón de repetición
+      function replayHero() {
+        playHeroExperience();
+      }
+
+      // Recuerda ejecutar la función para que se muestre el slot
+      loadHero();
+
+      function launchConfetti() {
+        const colors = ["#E1EBED", "#ffffff", "#8fe3ff", "#b4c4c9", "#e5303a"];
+        const iv = setInterval(() => {
+          const c = document.createElement("div");
+          c.className = "confeti";
+          c.style.left = Math.random() * 100 + "vw";
+          c.style.top = "-20px";
+          c.style.background =
+            colors[Math.floor(Math.random() * colors.length)];
+          const d = Math.random() * 3 + 2;
+          c.style.animationDuration = d + "s";
+          document.body.appendChild(c);
+          setTimeout(() => c.remove(), d * 1000);
+        }, 110);
+        setTimeout(() => clearInterval(iv), 15000);
+      }
+
+      /* Easter egg: tocar el 10 o el logo libera poder */
+      function powerBurst(e) {
+        const r = e.currentTarget.getBoundingClientRect(),
+          x = r.left + r.width / 2,
+          y = r.top + r.height / 2;
+        for (let i = 0; i < 3; i++) setTimeout(() => fx(x, y), i * 120);
+        boom(200);
+        vib(60);
+        explode(x, Math.max(80, y), 90);
+      }
+      $("big10").addEventListener("pointerdown", powerBurst);
+      $("logo-click").addEventListener("pointerdown", powerBurst);
+
+      /* ================= REVEALS (contadores, barras, logros) ================= */
+      function countUp(el, to, dur = 1800) {
+        const t0 = performance.now();
+        (function f(t) {
+          const k = Math.min(1, (t - t0) / dur),
+            e = 1 - Math.pow(1 - k, 3);
+          el.textContent = Math.round(to * e).toLocaleString("es-CO");
+          if (k < 1) requestAnimationFrame(f);
+        })(t0);
+      }
+      function watchReveals() {
+        const io = new IntersectionObserver(
+          (es) =>
+            es.forEach((en) => {
+              if (!en.isIntersecting) return;
+              const t = en.target;
+              io.unobserve(t);
+              if (t.id === "counters")
+                t.querySelectorAll("[data-count]").forEach((b) =>
+                  countUp(b, +b.dataset.count),
+                );
+              if (t.id === "stats")
+                t.querySelectorAll(".bar i").forEach(
+                  (b) => (b.style.width = b.dataset.w + "%"),
+                );
+              if (t.id === "badges") t.classList.add("in");
+            }),
+          { threshold: 0.3 },
+        );
+        ["counters", "stats", "badges"].forEach((id) => io.observe($(id)));
+      }
+
+      /* ================= FOTOS ================= */
+      const fotos = [
+        {
+          t: "Tus primeros meses: el inicio de nuestra gran aventura 👶",
+          url: "img/axxelbb1-primeros-meses-jugando.jpeg",
+        },
+        {
+          t: "Tus primeros gateos, descubriendo el mundo paso a paso 👣",
+          url: "img/axxelbb1gateando.jpeg",
+        },
+        {
+          t: "Esa sonrisa que ilumina hasta mis días más oscuros 🌟",
+          url: "img/axxelbb1sonrisa.jpeg",
+        },
+        {
+          t: "Mi bebé hermoso, el regalo más grande de la vida 🎀",
+          url: "img/axxelbb2hermoso.jpeg",
+        },
+        {
+          t: "Tus primeros pasos: el comienzo de un camino brillante 🚶",
+          url: "img/axxelbb3primerospasos.jpeg",
+        },
+        {
+          t: "Explorando nuevos sabores en tus primeros bocados 🍼",
+          url: "img/axxelbb4comiendo.jpeg",
+        },
+        {
+          t: "Celebrando tus 10 meses de pura felicidad 🎂",
+          url: "img/axxelbb5-1-10meses.jpeg",
+        },
+        {
+          t: "10 meses transformando nuestro mundo con tu alegría 🎂",
+          url: "img/axxelbb5-10meses.jpeg",
+        },
+        {
+          t: "Mi príncipe y mi princesa: mis dos tesoros más valiosos 🌟",
+          url: "img/axxelbb6-mi-principe-y-mi-princesa.jpeg",
+        },
+        {
+          t: "¡Cuidado mundo! Aquí llega mi pequeño y valiente Thor 🦸",
+          url: "img/axxelbb6mi-pequenio-thor.jpeg",
+        },
+        {
+          t: "Casi un año... 11 meses de puro amor y aprendizaje 🎂",
+          url: "img/axxelbb7-11meses.jpeg",
+        },
+        {
+          t: "Explorando el mundo con esa curiosidad que tanto amo 🌍",
+          url: "img/axxelbb8-explorandoelmundo.jpeg",
+        },
+        {
+          t: "Compartiendo momentos inolvidables al lado de Papi 🎮",
+          url: "img/axxelbb9-con-papi.jpeg",
+        },
+        {
+          t: "Un desayuno sorpresa para un niño que se merece todo 🍽️",
+          url: "img/axxelbb10-desayuno-sorpresa.jpeg",
+        },
+        {
+          t: "Devorando un algodón de azúcar y disfrutando la dulzura de la niñez 🍬",
+          url: "img/axxelbb11-comiendo-algodon-de-azucar.jpeg",
+        },
+        {
+          t: "Te amo con todas mis fuerzas, hijo mío 🤗",
+          url: "img/axxelbb11-te-amo.jpeg",
+        },
+        {
+          t: "Ese momento divertido cuando intentabas asustarme... ¡Casi lo logras!",
+          url: "img/axxelbb12-me-queria-asustar.jpeg",
+        },
+        {
+          t: "Simplemente decirte que te amo es poco para lo que siento",
+          url: "img/axxelbb12-te-amo.jpeg",
+        },
+        {
+          t: "Enfocado y estudioso, construyendo tus sueños desde pequeño",
+          url: "img/axxelbb13-estudiso.jpeg",
+        },
+        {
+          t: "¡Uy, qué miedo! Jejeje... Siempre sacándome una carcajada",
+          url: "img/axxelbb14uyyy-miedo-jejej.jpeg",
+        },
+        {
+          t: "Mi Spiderman y su hermanita, la Mujer Maravilla: mi equipo de héroes",
+          url: "img/axxelbb15-mi-spider-su-hermanita-mujer-maravilla.jpeg",
+        },
+        {
+          t: "Mi Spiderman favorito junto a su mayor fan: su papá",
+          url: "img/axxelbb15-mi-spiderman-y-papa.jpeg",
+        },
+        {
+          t: "Esa sonrisa auténtica que refleja la pureza de tu corazón",
+          url: "img/axxelbb16sonrisa-autentica.jpeg",
+        },
+        {
+          t: "No hay nada mejor que un helado y una buena charla con Papi",
+          url: "img/axxelbb17-comiendo-helado-con-papi.jpeg",
+        },
+        {
+          t: "La felicidad completa: compartiendo con Papi y tu hermana",
+          url: "img/axxelbb18-compartiendo-con-papi-y-hermana1.jpeg",
+        },
+        {
+          t: "Creando recuerdos que guardaremos siempre en el alma",
+          url: "img/axxelbb18-compartiendo-con-papi-y-hermana-2.jpeg",
+        },
+        {
+          t: "Verlos juntos es mi mayor recompensa en la vida",
+          url: "img/axxelbb18-compartiendo-con-papi-y-hermana-3.jpeg",
+        },
+        {
+          t: "Días de risas, juegos y mucho amor en familia",
+          url: "img/axxelbb18-compartiendo-con-papi-y-hermana-4.jpeg",
+        },
+        {
+          t: "Haciendo lo que más le gusta: ¡disfrutar de un buen helado!",
+          url: "img/axxelbb19comiendo-helado-le-encanta.jpeg",
+        },
+        {
+          t: "Aprendiendo a rodar por la vida en tu monopatín",
+          url: "img/axxelbb20aprendiendo-monopatin.jpeg",
+        },
+        {
+          t: "Disfrutando de un lindo paseito y de la brisa en la cara",
+          url: "img/axxelbb20paseito.jpeg",
+        },
+        {
+          t: "Porque un solo helado nunca es suficiente para tanta alegría",
+          url: "img/axxelbb21-comiendo-mas-helado.jpeg",
+        },
+        {
+          t: "Amo cada una de tus locuras; tú le das color a mi vida 🧭",
+          url: "img/axxelbb22amo-tus-locuras.jpeg",
+        },
+        {
+          t: "Tus ocurrencias son el motor que me hace sonreír cada día 🧭",
+          url: "img/axxelbb22amo-tus-locuras-1.jpeg",
+        },
+        {
+          t: "Él es inmensamente feliz con su súper helado",
+          url: "img/axxelbb23-el-feliz-con-su-super-helado.jpeg",
+        },
+        {
+          t: "Me detengo a mirar cómo has crecido, mi chiquitín hermoso",
+          url: "img/axxelbb24-como-has-crecido.jpeg",
+        },
+        {
+          t: "Nunca dejes de sonreír, el mundo necesita tu luz",
+          url: "img/axxelbb26-nunca-dejes-de-reir.jpeg",
+        },
+        {
+          t: "Te estás haciendo grande, pero siempre serás mi niño",
+          url: "img/axxelbb26-te-estas-creciendo.jpeg",
+        },
+        {
+          t: "¡Nivel 10 desbloqueado! Juntos somos el mejor equipo 🥳",
+          url: "img/axxel-y-papa.jpeg",
+        },
+      ];
+      const frameColors = ["#E1EBED", "#ffffff", "#8fe3ff", "#e5303a"];
+      const slider = $("slider");
+      let slideStep = 0;
+      function showPhotos() {
+        $("visor").classList.remove("hidden");
+        slider.innerHTML = "";
+        fotos.forEach((f, i) => {
+          const s = document.createElement("div");
+          s.className = "slide" + (i === 0 ? " active" : "");
+          s.style.setProperty("--c", frameColors[i % frameColors.length]);
+          s.innerHTML = `<div class="frame"><img src="${f.url}" alt="Recuerdo ${i + 1}" loading="lazy"><div class="cap"><h3>${f.t}</h3></div></div>`;
+          slider.appendChild(s);
+        });
+        $("contador").textContent = `1 / ${fotos.length}`;
+        slideStep = slider.querySelector(".slide").offsetWidth + 16;
+        let t;
+        slider.addEventListener(
+          "scroll",
+          () => {
+            clearTimeout(t);
+            t = setTimeout(
+              () => setActive(Math.round(slider.scrollLeft / slideStep)),
+              60,
+            );
+          },
+          { passive: true },
+        );
+      }
+      function setActive(i) {
+        i = Math.max(0, Math.min(fotos.length - 1, i));
+        $("contador").textContent = `${i + 1} / ${fotos.length}`;
+        slider
+          .querySelectorAll(".slide")
+          .forEach((s, k) => s.classList.toggle("active", k === i));
+      }
+      function cambiarFoto(d) {
+        slideStep = slider.querySelector(".slide").offsetWidth + 16;
+        const cur = Math.round(slider.scrollLeft / slideStep),
+          next = (cur + d + fotos.length) % fotos.length;
+        slider.scrollTo({ left: next * slideStep, behavior: "smooth" });
+        setActive(next);
+      }
+
+      /* ================= FUEGOS ARTIFICIALES ================= */
+
+      const fc = $("fireworksCanvas"),
+        ctx = fc.getContext("2d");
+
+      function resizeFC() {
+        fc.width = innerWidth;
+        fc.height = innerHeight;
+      }
+
+      addEventListener("resize", resizeFC);
+      resizeFC();
+
+      let particles = [],
+        rockets = [],
+        fwOn = false;
+
+      const FW_HUES = [195, 195, 205, 0, 210, 200];
+
+      // ======================================================
+      // CONFIGURACIÓN DEL TEXTO
+      // ======================================================
+      const TEXT_CONFIG = {
+        texto: "AXXEL JHAEL",
+        espera: 5000, // 5 segundos completamente formado
+        dispersion: 2500, // 2.5 segundos para desaparecer
+        separacion: 5, // Densidad de partículas
+        tamano: 2.5, // Tamaño de cada partícula
+        velocidad: 0.65, // Velocidad de dispersión
+      };
+
+      // ======================================================
+      // EXPLOSIONES NORMALES
+      // ======================================================
+      function explode(x, y, n = 60) {
+        const h = FW_HUES[Math.floor(Math.random() * FW_HUES.length)];
+
+        const red = h === 0;
+
+        for (let i = 0; i < n; i++) {
+          const a = Math.random() * 6.283;
+          const v = Math.random() * 5 + 1.5;
+
+          particles.push({
+            x,
+            y,
+            vx: Math.cos(a) * v,
+            vy: Math.sin(a) * v,
+            life: 100 + Math.random() * 50,
+            size: Math.random() * 2 + 1,
+            color: red
+              ? `hsl(${355 + Math.random() * 10},90%,60%)`
+              : `hsl(${h + Math.random() * 15},${40 + Math.random() * 60}%,${
+                  75 + Math.random() * 20
+                }%)`,
+            isText: false,
+          });
+        }
+      }
+
+      // ======================================================
+      // LANZAMIENTO DE COHETES
+      // ======================================================
+      function launchRocket() {
+        rockets.push({
+          x: Math.random() * (fc.width - 100) + 50,
+          y: fc.height,
+          ty: fc.height * 0.2 + Math.random() * fc.height * 0.3,
+        });
+      }
+
+      // ======================================================
+      // INICIAR FUEGOS ARTIFICIALES
+      // ======================================================
+      function startFireworks() {
+        if (fwOn) return;
+
+        fwOn = true;
+
+        setInterval(launchRocket, 1100);
+
+        // Primera aparición
+        setTimeout(drawTextFirework, 3500);
+
+        // Segunda aparición
+        setTimeout(drawTextFirework, 11000);
+
+        (function loop() {
+          ctx.fillStyle = "rgba(5,7,12,.22)";
+          ctx.fillRect(0, 0, fc.width, fc.height);
+
+          // ----------------------------------------------
+          // ANIMACIÓN DE COHETES
+          // ----------------------------------------------
+          for (let i = rockets.length - 1; i >= 0; i--) {
+            const r = rockets[i];
+
+            r.y -= 11;
+
+            ctx.fillStyle = "rgba(225,235,237,.95)";
+            ctx.beginPath();
+            ctx.arc(r.x, r.y, 2, 0, 6.283);
+            ctx.fill();
+
+            if (r.y < r.ty) {
+              explode(r.x, r.y);
+              rockets.splice(i, 1);
+            }
+          }
+
+          // ----------------------------------------------
+          // ANIMACIÓN DE PARTÍCULAS
+          // ----------------------------------------------
+          const ahora = performance.now();
+
+          for (let i = particles.length - 1; i >= 0; i--) {
+            const p = particles[i];
+
+            if (p.isText) {
+              const transcurrido = ahora - p.createdAt;
+
+              // ETAPA 1: TEXTO QUIETO Y LEGIBLE
+              if (transcurrido < TEXT_CONFIG.espera) {
+                p.x = p.originX;
+                p.y = p.originY;
+              }
+
+              // ETAPA 2: DISPERSIÓN SUAVE
+              else {
+                const progreso = Math.min(
+                  (transcurrido - TEXT_CONFIG.espera) / TEXT_CONFIG.dispersion,
+                  1,
+                );
+
+                p.x += p.vx;
+                p.y += p.vy;
+
+                // Desvanecimiento gradual
+                p.opacity = 1 - progreso;
+
+                if (progreso >= 1) {
+                  particles.splice(i, 1);
+                  continue;
+                }
+              }
+            } else {
+              // Comportamiento original de los fuegos
+              p.x += p.vx;
+              p.y += p.vy;
+              p.vy += 0.05;
+              p.vx *= 0.992;
+              p.life -= 1.5;
+
+              if (p.life <= 0) {
+                particles.splice(i, 1);
+                continue;
+              }
+            }
+
+            // Dibujar partículas
+            ctx.save();
+
+            ctx.globalAlpha = p.isText ? (p.opacity ?? 1) : 1;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, 6.283);
+            ctx.fillStyle = p.color;
+            ctx.fill();
+
+            ctx.restore();
+          }
+
+          requestAnimationFrame(loop);
+        })();
+      }
+
+      // ======================================================
+      // CREAR TEXTO CON PARTÍCULAS
+      // ======================================================
+      function drawTextFirework() {
+        const t = document.createElement("canvas");
+
+        t.width = fc.width;
+        t.height = fc.height;
+
+        const c = t.getContext("2d");
+
+        c.fillStyle = "#fff";
+
+        // Ajustar tamaño según pantalla
+        const fontSize = Math.min(fc.width / 5.5, 130);
+
+        c.font = `900 ${fontSize}px Arial`;
+        c.textAlign = "center";
+        c.textBaseline = "middle";
+
+        c.fillText(
+          TEXT_CONFIG.texto,
+          fc.width / 2,
+          fc.height * 0.3,
+          fc.width * 0.92,
+        );
+
+        const d = c.getImageData(0, 0, t.width, t.height);
+
+        const ahora = performance.now();
+
+        for (let y = 0; y < d.height; y += TEXT_CONFIG.separacion) {
+          for (let x = 0; x < d.width; x += TEXT_CONFIG.separacion) {
+            if (d.data[(y * d.width + x) * 4 + 3] > 150) {
+              const angulo = Math.random() * Math.PI * 2;
+
+              particles.push({
+                x,
+                y,
+
+                originX: x,
+                originY: y,
+
+                vx: Math.cos(angulo) * TEXT_CONFIG.velocidad,
+
+                vy: Math.sin(angulo) * TEXT_CONFIG.velocidad,
+
+                size: TEXT_CONFIG.tamano,
+
+                color: `hsl(${190 + Math.random() * 25},${
+                  30 + Math.random() * 50
+                }%,${82 + Math.random() * 14}%)`,
+
+                opacity: 1,
+                createdAt: ahora,
+                isText: true,
+              });
+            }
+          }
+        }
+      }
+
+      /* ================= PWA ================= */
+      if ("serviceWorker" in navigator) {
+        addEventListener("load", () =>
+          navigator.serviceWorker.register("sw.js").catch(() => {}),
+        );
+      }
+      let deferred;
+      addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        deferred = e;
+        $("install-btn").classList.remove("hidden");
+      });
+      $("install-btn").onclick = async () => {
+        if (!deferred) return;
+        deferred.prompt();
+        await deferred.userChoice;
+        deferred = null;
+        $("install-btn").classList.add("hidden");
+      };
+      addEventListener("appinstalled", () =>
+        $("install-btn").classList.add("hidden"),
+      );
+    </script>
+  </body>
+</html>
