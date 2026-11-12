@@ -1,4 +1,4 @@
-const CACHE = "axxel-10-v3";
+const CACHE = "axxel-10-v4";
 
 const CORE = [
   "./",
