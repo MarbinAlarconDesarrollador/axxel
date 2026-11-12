@@ -855,21 +855,70 @@
         width: 70%;
       }
 
-      /* slider */
+      /* ================= ARCHIVO DE RECUERDOS ================= */
       .visor {
         width: 100%;
-        max-width: 440px;
+        max-width: 560px;
         margin: 0 auto 46px;
-        padding: 0 6px;
       }
+      .visor-sub {
+        margin: 0 0 16px;
+        color: #7f9096;
+        font-size: 0.72rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+      .phases {
+        position: relative;
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding: 2px 14px 12px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      .phases::-webkit-scrollbar {
+        display: none;
+      }
+      .phase {
+        flex: none;
+        border: 0;
+        cursor: pointer;
+        font: inherit;
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--suit);
+        padding: 9px 16px;
+        background: rgba(225, 235, 237, 0.1);
+        clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+        transition:
+          background 0.25s,
+          color 0.25s;
+      }
+      .phase b {
+        color: var(--ice);
+        margin-right: 6px;
+      }
+      .phase.on {
+        color: #0b1118;
+        background: linear-gradient(135deg, #fff, #e1ebed 55%, #b4c4c9);
+      }
+      .phase.on b {
+        color: #0b1118;
+      }
+
       .slider {
+        position: relative;
         display: flex;
         overflow-x: auto;
         overflow-y: hidden;
         gap: 16px;
-        padding: 14px 4px 22px;
+        padding: 14px calc(50% - min(36vw, 160px)) 18px;
         scroll-snap-type: x mandatory;
         scroll-behavior: smooth;
+        overscroll-behavior-x: contain;
         scrollbar-width: none;
         -ms-overflow-style: none;
       }
@@ -877,8 +926,14 @@
         display: none;
       }
       .slide {
-        flex: 0 0 min(80vw, 340px);
+        flex: 0 0 min(72vw, 320px);
         scroll-snap-align: center;
+        scroll-snap-stop: always;
+        opacity: 0.5;
+        transition: opacity 0.35s;
+      }
+      .slide.active {
+        opacity: 1;
       }
       .frame {
         background: rgba(6, 9, 16, 0.94);
@@ -889,9 +944,10 @@
         height: 100%;
         box-shadow: 0 0 22px
           color-mix(in srgb, var(--c, var(--suit)) 40%, transparent);
+        transform: scale(0.96);
         transition:
-          transform 0.3s,
-          box-shadow 0.3s;
+          transform 0.35s,
+          box-shadow 0.35s;
         clip-path: polygon(
           16px 0,
           100% 0,
@@ -902,30 +958,134 @@
         );
       }
       .slide.active .frame {
-        transform: scale(1.03);
+        transform: scale(1.02);
         box-shadow: 0 0 38px var(--c, var(--suit));
       }
-      .frame img {
-        width: 100%;
-        height: 370px;
-        object-fit: cover;
-        display: block;
+      .ph {
+        position: relative;
+        aspect-ratio: 4 / 5;
+        overflow: hidden;
         background: #0a0f18;
+        cursor: zoom-in;
+      }
+      .ph::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          100deg,
+          transparent 30%,
+          rgba(143, 227, 255, 0.16) 50%,
+          transparent 70%
+        );
+        background-size: 200% 100%;
+        animation: scan 1.6s linear infinite;
+      }
+      .ph.loaded::before {
+        display: none;
+      }
+      @keyframes scan {
+        from {
+          background-position: 200% 0;
+        }
+        to {
+          background-position: -200% 0;
+        }
+      }
+      .ph::after {
+        content: "";
+        position: absolute;
+        inset: auto 0 0 0;
+        height: 38%;
+        pointer-events: none;
+        background: linear-gradient(transparent, rgba(6, 9, 16, 0.85));
+      }
+      .ph img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: 50% 25%;
+        opacity: 0;
+        transition: opacity 0.6s;
+      }
+      .ph.loaded img {
+        opacity: 1;
+      }
+      .ph:focus-visible {
+        outline: 2px solid var(--ice);
+        outline-offset: -4px;
+      }
+      .rec,
+      .age,
+      .zoom {
+        position: absolute;
+        z-index: 2;
+        font-size: 0.62rem;
+        font-weight: 800;
+        letter-spacing: 0.2em;
+        padding: 4px 9px;
+        background: rgba(5, 7, 12, 0.78);
+        border: 1px solid var(--c, var(--suit));
+        clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+      }
+      .rec {
+        top: 10px;
+        left: 10px;
+        color: #fff;
+      }
+      .age {
+        top: 10px;
+        right: 10px;
+        color: var(--ice);
+      }
+      .zoom {
+        right: 10px;
+        bottom: 10px;
+        color: #fff;
+        letter-spacing: 0;
+        font-size: 0.8rem;
+        padding: 3px 10px;
       }
       .cap {
-        padding: 14px;
-        min-height: 76px;
+        padding: 14px 16px 16px;
+        min-height: 96px;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
+        gap: 6px;
         background: rgba(0, 0, 0, 0.55);
+      }
+      .cap small {
+        font-size: 0.6rem;
+        font-weight: 800;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: var(--ice);
       }
       .cap h3 {
         margin: 0;
         font-size: 1.04rem;
         line-height: 1.35;
         color: #f2f7f8;
+        text-wrap: balance;
         text-shadow: 0 0 10px var(--c, var(--suit));
+      }
+      .gprog {
+        height: 6px;
+        margin: 2px 14px 18px;
+        background: rgba(255, 255, 255, 0.1);
+        clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+      }
+      .gprog i {
+        display: block;
+        height: 100%;
+        width: 0;
+        background: linear-gradient(90deg, #6a7c82, var(--suit), var(--white));
+        box-shadow: 0 0 12px var(--ice);
+        transition: width 0.35s;
       }
       .controls {
         display: flex;
@@ -949,8 +1109,99 @@
       .counter {
         color: var(--white);
         font-weight: 900;
+        letter-spacing: 0.08em;
         text-shadow: 0 0 8px var(--ice);
-        min-width: 70px;
+        min-width: 86px;
+      }
+
+      /* Visor a pantalla completa */
+      #gbox {
+        position: fixed;
+        inset: 0;
+        z-index: 2600;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 64px 14px 26px;
+        background: rgba(2, 3, 10, 0.985);
+        text-align: center;
+        opacity: 0;
+        transition: opacity 0.25s;
+      }
+      #gbox.open {
+        display: flex;
+      }
+      #gbox.on {
+        opacity: 1;
+      }
+      #gbox img {
+        max-width: 100%;
+        max-height: 68vh;
+        max-height: 68dvh;
+        object-fit: contain;
+        border: 2px solid var(--suit);
+        box-shadow: 0 0 40px rgba(143, 227, 255, 0.35);
+      }
+      #gbox .gcap {
+        margin-top: 16px;
+        max-width: 520px;
+        color: #f2f7f8;
+        font-size: 1.05rem;
+        line-height: 1.4;
+        text-wrap: balance;
+      }
+      #gbox .gnum {
+        margin-top: 8px;
+        color: var(--ice);
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+      .gb-btn {
+        position: absolute;
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        border: 2px solid var(--suit);
+        background: rgba(5, 7, 12, 0.7);
+        color: #fff;
+        font-size: 1.1rem;
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+        padding: 0;
+      }
+      #gb-close {
+        top: calc(14px + env(safe-area-inset-top, 0px));
+        right: 14px;
+      }
+      #gb-prev,
+      #gb-next {
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      #gb-prev {
+        left: 8px;
+      }
+      #gb-next {
+        right: 8px;
+      }
+      #gb-close:active {
+        transform: scale(0.9);
+      }
+      #gb-prev:active,
+      #gb-next:active {
+        transform: translateY(-50%) scale(0.9);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .slider {
+          scroll-behavior: auto;
+        }
+        .ph::before {
+          animation: none;
+        }
       }
 
       .final {
@@ -1920,12 +2171,15 @@
 
       <div class="visor hidden" id="visor">
         <h3 class="sec">Archivo de recuerdos</h3>
+        <p class="visor-sub">Diez años de misiones · desliza o toca una foto</p>
+        <div class="phases" id="fases"></div>
         <div class="slider" id="slider"></div>
+        <div class="gprog" aria-hidden="true"><i id="gprog"></i></div>
         <div class="controls">
           <button class="cbtn" onclick="cambiarFoto(-1)" aria-label="Anterior">
             ◀
           </button>
-          <div class="counter" id="contador">1 / 1</div>
+          <div class="counter" id="contador">01 / 01</div>
           <button class="cbtn" onclick="cambiarFoto(1)" aria-label="Siguiente">
             ▶
           </button>
@@ -1946,6 +2200,16 @@
         </p>
       </footer>
     </section>
+
+    <!-- Visor de fotos a pantalla completa -->
+    <div id="gbox" role="dialog" aria-modal="true" aria-label="Visor de fotos">
+      <button class="gb-btn" id="gb-close" type="button" aria-label="Cerrar">✕</button>
+      <button class="gb-btn" id="gb-prev" type="button" aria-label="Anterior">◀</button>
+      <button class="gb-btn" id="gb-next" type="button" aria-label="Siguiente">▶</button>
+      <img id="gb-img" alt="" />
+      <div class="gcap" id="gb-cap"></div>
+      <div class="gnum" id="gb-num"></div>
+    </div>
 
     <button id="mute-btn" class="fab hidden" aria-label="Silenciar música">
       🔊
@@ -2482,206 +2746,282 @@ function launchConfetti() {
       }
 
       /* ================= FOTOS ================= */
+      // t = leyenda · y = etiqueta opcional (edad) sobre la foto
       const fotos = [
-        {
-          t: "Tus primeros meses: el inicio de nuestra gran aventura 👶",
-          url: "img/axxelbb1-primeros-meses-jugando.jpeg",
-        },
-        {
-          t: "Tus primeros gateos, descubriendo el mundo paso a paso 👣",
-          url: "img/axxelbb1gateando.jpeg",
-        },
-        {
-          t: "Esa sonrisa que ilumina hasta mis días más oscuros 🌟",
-          url: "img/axxelbb1sonrisa.jpeg",
-        },
-        {
-          t: "Mi bebé hermoso, el regalo más grande de la vida 🎀",
-          url: "img/axxelbb2hermoso.jpeg",
-        },
-        {
-          t: "Tus primeros pasos: el comienzo de un camino brillante 🚶",
-          url: "img/axxelbb3primerospasos.jpeg",
-        },
-        {
-          t: "Explorando nuevos sabores en tus primeros bocados 🍼",
-          url: "img/axxelbb4comiendo.jpeg",
-        },
-        {
-          t: "Celebrando tus 10 meses de pura felicidad 🎂",
-          url: "img/axxelbb5-1-10meses.jpeg",
-        },
-        {
-          t: "10 meses transformando nuestro mundo con tu alegría 🎂",
-          url: "img/axxelbb5-10meses.jpeg",
-        },
-        {
-          t: "Mi príncipe y mi princesa: mis dos tesoros más valiosos 🌟",
-          url: "img/axxelbb6-mi-principe-y-mi-princesa.jpeg",
-        },
-        {
-          t: "¡Cuidado mundo! Aquí llega mi pequeño y valiente Thor 🦸",
-          url: "img/axxelbb6mi-pequenio-thor.jpeg",
-        },
-        {
-          t: "Casi un año... 11 meses de puro amor y aprendizaje 🎂",
-          url: "img/axxelbb7-11meses.jpeg",
-        },
-        {
-          t: "Explorando el mundo con esa curiosidad que tanto amo 🌍",
-          url: "img/axxelbb8-explorandoelmundo.jpeg",
-        },
-        {
-          t: "Compartiendo momentos inolvidables al lado de Papi 🎮",
-          url: "img/axxelbb9-con-papi.jpeg",
-        },
-        {
-          t: "Un desayuno sorpresa para un niño que se merece todo 🍽️",
-          url: "img/axxelbb10-desayuno-sorpresa.jpeg",
-        },
-        {
-          t: "Devorando un algodón de azúcar y disfrutando la dulzura de la niñez 🍬",
-          url: "img/axxelbb11-comiendo-algodon-de-azucar.jpeg",
-        },
-        {
-          t: "Te amo con todas mis fuerzas, hijo mío 🤗",
-          url: "img/axxelbb11-te-amo.jpeg",
-        },
-        {
-          t: "Ese momento divertido cuando intentabas asustarme... ¡Casi lo logras!",
-          url: "img/axxelbb12-me-queria-asustar.jpeg",
-        },
-        {
-          t: "Simplemente decirte que te amo es poco para lo que siento",
-          url: "img/axxelbb12-te-amo.jpeg",
-        },
-        {
-          t: "Enfocado y estudioso, construyendo tus sueños desde pequeño",
-          url: "img/axxelbb13-estudiso.jpeg",
-        },
-        {
-          t: "¡Uy, qué miedo! Jejeje... Siempre sacándome una carcajada",
-          url: "img/axxelbb14uyyy-miedo-jejej.jpeg",
-        },
-        {
-          t: "Mi Spiderman y su hermanita, la Mujer Maravilla: mi equipo de héroes",
-          url: "img/axxelbb15-mi-spider-su-hermanita-mujer-maravilla.jpeg",
-        },
-        {
-          t: "Mi Spiderman favorito junto a su mayor fan: su papá",
-          url: "img/axxelbb15-mi-spiderman-y-papa.jpeg",
-        },
-        {
-          t: "Esa sonrisa auténtica que refleja la pureza de tu corazón",
-          url: "img/axxelbb16sonrisa-autentica.jpeg",
-        },
-        {
-          t: "No hay nada mejor que un helado y una buena charla con Papi",
-          url: "img/axxelbb17-comiendo-helado-con-papi.jpeg",
-        },
-        {
-          t: "La felicidad completa: compartiendo con Papi y tu hermana",
-          url: "img/axxelbb18-compartiendo-con-papi-y-hermana1.jpeg",
-        },
-        {
-          t: "Creando recuerdos que guardaremos siempre en el alma",
-          url: "img/axxelbb18-compartiendo-con-papi-y-hermana-2.jpeg",
-        },
-        {
-          t: "Verlos juntos es mi mayor recompensa en la vida",
-          url: "img/axxelbb18-compartiendo-con-papi-y-hermana-3.jpeg",
-        },
-        {
-          t: "Días de risas, juegos y mucho amor en familia",
-          url: "img/axxelbb18-compartiendo-con-papi-y-hermana-4.jpeg",
-        },
-        {
-          t: "Haciendo lo que más le gusta: ¡disfrutar de un buen helado!",
-          url: "img/axxelbb19comiendo-helado-le-encanta.jpeg",
-        },
-        {
-          t: "Aprendiendo a rodar por la vida en tu monopatín",
-          url: "img/axxelbb20aprendiendo-monopatin.jpeg",
-        },
-        {
-          t: "Disfrutando de un lindo paseito y de la brisa en la cara",
-          url: "img/axxelbb20paseito.jpeg",
-        },
-        {
-          t: "Porque un solo helado nunca es suficiente para tanta alegría",
-          url: "img/axxelbb21-comiendo-mas-helado.jpeg",
-        },
-        {
-          t: "Amo cada una de tus locuras; tú le das color a mi vida 🧭",
-          url: "img/axxelbb22amo-tus-locuras.jpeg",
-        },
-        {
-          t: "Tus ocurrencias son el motor que me hace sonreír cada día 🧭",
-          url: "img/axxelbb22amo-tus-locuras-1.jpeg",
-        },
-        {
-          t: "Él es inmensamente feliz con su súper helado",
-          url: "img/axxelbb23-el-feliz-con-su-super-helado.jpeg",
-        },
-        {
-          t: "Me detengo a mirar cómo has crecido, mi chiquitín hermoso",
-          url: "img/axxelbb24-como-has-crecido.jpeg",
-        },
-        {
-          t: "Nunca dejes de sonreír, el mundo necesita tu luz",
-          url: "img/axxelbb26-nunca-dejes-de-reir.jpeg",
-        },
-        {
-          t: "Te estás haciendo grande, pero siempre serás mi niño",
-          url: "img/axxelbb26-te-estas-creciendo.jpeg",
-        },
-        {
-          t: "¡Nivel 10 desbloqueado! Juntos somos el mejor equipo 🥳",
-          url: "img/axxel-y-papa.jpeg",
-        },
+        { t: "Tus primeros meses: el inicio de nuestra gran aventura 👶", url: "img/axxelbb1-primeros-meses-jugando.jpeg" },
+        { t: "Tus primeros gateos, descubriendo el mundo paso a paso 👣", url: "img/axxelbb1gateando.jpeg" },
+        { t: "Esa sonrisa que ilumina hasta mis días más oscuros 🌟", url: "img/axxelbb1sonrisa.jpeg" },
+        { t: "Mi bebé hermoso, el regalo más grande de la vida 🎀", url: "img/axxelbb2hermoso.jpeg" },
+        { t: "Tus primeros pasos: el comienzo de un camino brillante 🚶", url: "img/axxelbb3primerospasos.jpeg" },
+        { t: "Explorando nuevos sabores en tus primeros bocados 🍼", url: "img/axxelbb4comiendo.jpeg" },
+
+        { t: "Celebrando tus 10 meses de pura felicidad 🎂", url: "img/axxelbb5-1-10meses.jpeg", y: "10 meses" },
+        { t: "10 meses transformando nuestro mundo con tu alegría ✨", url: "img/axxelbb5-10meses.jpeg", y: "10 meses" },
+        { t: "Mi príncipe y mi princesa: mis dos tesoros más valiosos 👑", url: "img/axxelbb6-mi-principe-y-mi-princesa.jpeg" },
+        { t: "¡Cuidado mundo! Aquí llega mi pequeño y valiente Thor ⚡", url: "img/axxelbb6mi-pequenio-thor.jpeg" },
+        { t: "Casi un año... 11 meses de puro amor y aprendizaje 🎂", url: "img/axxelbb7-11meses.jpeg", y: "11 meses" },
+        { t: "Explorando el mundo con esa curiosidad que tanto amo 🌍", url: "img/axxelbb8-explorandoelmundo.jpeg" },
+        { t: "Compartiendo momentos inolvidables al lado de Papi 🎮", url: "img/axxelbb9-con-papi.jpeg" },
+
+        { t: "Un desayuno sorpresa para un niño que se merece todo 🍽️", url: "img/axxelbb10-desayuno-sorpresa.jpeg" },
+        { t: "Devorando un algodón de azúcar y disfrutando la dulzura de la niñez 🍬", url: "img/axxelbb11-comiendo-algodon-de-azucar.jpeg" },
+        { t: "Te amo con todas mis fuerzas, hijo mío 🤗", url: "img/axxelbb11-te-amo.jpeg" },
+        { t: "Ese momento divertido cuando intentabas asustarme... ¡Casi lo logras! 😆", url: "img/axxelbb12-me-queria-asustar.jpeg" },
+        { t: "Decirte que te amo es poco para lo que siento 💙", url: "img/axxelbb12-te-amo.jpeg" },
+        { t: "Enfocado y estudioso, construyendo tus sueños desde pequeño 📚", url: "img/axxelbb13-estudiso.jpeg" },
+        { t: "¡Uy, qué miedo! Jejeje... Siempre sacándome una carcajada 👻", url: "img/axxelbb14uyyy-miedo-jejej.jpeg" },
+        { t: "Mi Spiderman y su hermanita, la Mujer Maravilla: mi equipo de héroes 🕷️", url: "img/axxelbb15-mi-spider-su-hermanita-mujer-maravilla.jpeg" },
+        { t: "Mi Spiderman favorito junto a su mayor fan: su papá 🕸️", url: "img/axxelbb15-mi-spiderman-y-papa.jpeg" },
+
+        { t: "Esa sonrisa auténtica que refleja la pureza de tu corazón 😊", url: "img/axxelbb16sonrisa-autentica.jpeg" },
+        { t: "No hay nada mejor que un helado y una buena charla con Papi 🍦", url: "img/axxelbb17-comiendo-helado-con-papi.jpeg" },
+        { t: "La felicidad completa: compartiendo con Papi y tu hermana 💫", url: "img/axxelbb18-compartiendo-con-papi-y-hermana1.jpeg" },
+        { t: "Creando recuerdos que guardaremos siempre en el alma", url: "img/axxelbb18-compartiendo-con-papi-y-hermana-2.jpeg" },
+        { t: "Verlos juntos es mi mayor recompensa en la vida", url: "img/axxelbb18-compartiendo-con-papi-y-hermana-3.jpeg" },
+        { t: "Días de risas, juegos y mucho amor en familia ❤️", url: "img/axxelbb18-compartiendo-con-papi-y-hermana-4.jpeg" },
+
+        { t: "Haciendo lo que más le gusta: ¡disfrutar de un buen helado! 🍦", url: "img/axxelbb19comiendo-helado-le-encanta.jpeg" },
+        { t: "Aprendiendo a rodar por la vida en tu monopatín 🛹", url: "img/axxelbb20aprendiendo-monopatin.jpeg" },
+        { t: "Disfrutando de un lindo paseito y de la brisa en la cara 🌬️", url: "img/axxelbb20paseito.jpeg" },
+        { t: "Porque un solo helado nunca es suficiente para tanta alegría 🍨", url: "img/axxelbb21-comiendo-mas-helado.jpeg" },
+        { t: "Amo cada una de tus locuras; tú le das color a mi vida 🧭", url: "img/axxelbb22amo-tus-locuras.jpeg" },
+        { t: "Tus ocurrencias son el motor que me hace sonreír cada día 🚀", url: "img/axxelbb22amo-tus-locuras-1.jpeg" },
+        { t: "Él es inmensamente feliz con su súper helado 🍦", url: "img/axxelbb23-el-feliz-con-su-super-helado.jpeg" },
+
+        { t: "Me detengo a mirar cómo has crecido, mi chiquitín hermoso 🌱", url: "img/axxelbb24-como-has-crecido.jpeg" },
+        { t: "Nunca dejes de sonreír, el mundo necesita tu luz ☀️", url: "img/axxelbb26-nunca-dejes-de-reir.jpeg" },
+        { t: "Te estás haciendo grande, pero siempre serás mi niño 💙", url: "img/axxelbb26-te-estas-creciendo.jpeg" },
+        { t: "¡Nivel 10 desbloqueado! Juntos somos el mejor equipo 🥳", url: "img/axxel-y-papa.jpeg", y: "10 años" },
       ];
+
+      // at = índice de la primera foto de cada fase
+      const fases = [
+        { n: "Origen", at: 0 },
+        { n: "Primeros héroes", at: 6 },
+        { n: "Travesuras", at: 13 },
+        { n: "Equipo familiar", at: 22 },
+        { n: "Helados y ruedas", at: 28 },
+        { n: "Creciendo", at: 35 },
+      ];
+      const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"];
       const frameColors = ["#E1EBED", "#ffffff", "#8fe3ff", "#e5303a"];
-      const slider = $("slider");
-      let slideStep = 0;
+      const pad2 = (n) => String(n).padStart(2, "0");
+      const mk = (tag, cls, txt) => {
+        const e = document.createElement(tag);
+        if (cls) e.className = cls;
+        if (txt != null) e.textContent = txt;
+        return e;
+      };
+
+      const slider = $("slider"),
+        fasesEl = $("fases");
+      let galleryReady = false,
+        cur = 0,
+        raf = 0;
+      const slides = () => [...slider.children];
+
       function showPhotos() {
+        if (galleryReady) return;
+        galleryReady = true;
         $("visor").classList.remove("hidden");
-        slider.innerHTML = "";
-        fotos.forEach((f, i) => {
-          const s = document.createElement("div");
-          s.className = "slide" + (i === 0 ? " active" : "");
-          s.style.setProperty("--c", frameColors[i % frameColors.length]);
-          s.innerHTML = `<div class="frame"><img src="${f.url}" alt="Recuerdo ${i + 1}" loading="lazy"><div class="cap"><h3>${f.t}</h3></div></div>`;
-          slider.appendChild(s);
+
+        fases.forEach((p, k) => {
+          const b = mk("button", "phase" + (k === 0 ? " on" : ""));
+          b.type = "button";
+          const r = mk("b", null, ROMAN[k]);
+          b.append(r, document.createTextNode(p.n));
+          b.addEventListener("click", () => {
+            const i = slides().findIndex((s) => +s.dataset.fase === k);
+            if (i >= 0) irA(i);
+          });
+          fasesEl.appendChild(b);
         });
-        $("contador").textContent = `1 / ${fotos.length}`;
-        slideStep = slider.querySelector(".slide").offsetWidth + 16;
-        let t;
+
+        fotos.forEach((f, i) => {
+          f.fase = fases.reduce((a, p, k) => (i >= p.at ? k : a), 0);
+          const s = mk("div", "slide" + (i === 0 ? " active" : ""));
+          s.dataset.fase = f.fase;
+          s._f = f;
+          s.style.setProperty("--c", frameColors[i % frameColors.length]);
+
+          const frame = mk("div", "frame");
+          const ph = mk("div", "ph");
+          ph.setAttribute("role", "button");
+          ph.setAttribute("aria-label", "Ver foto completa");
+          ph.tabIndex = 0;
+          const img = mk("img");
+          img.alt = f.t;
+          img.loading = "lazy";
+          img.decoding = "async";
+          img.addEventListener("load", () => ph.classList.add("loaded"));
+          img.addEventListener("error", () => {
+            s.remove();
+            refrescar();
+          });
+          img.src = f.url;
+          if (img.complete && img.naturalWidth) ph.classList.add("loaded");
+          ph.append(img, mk("span", "rec"));
+          if (f.y) ph.appendChild(mk("span", "age", f.y));
+          ph.appendChild(mk("span", "zoom", "⤢"));
+
+          const cap = mk("div", "cap");
+          cap.append(mk("small", null, "Fase " + ROMAN[f.fase] + " · " + fases[f.fase].n), mk("h3", null, f.t));
+          frame.append(ph, cap);
+          s.appendChild(frame);
+          slider.appendChild(s);
+
+          const abrir = () => abrirGaleria(slides().indexOf(s));
+          ph.addEventListener("click", abrir);
+          ph.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              abrir();
+            }
+          });
+        });
+
         slider.addEventListener(
           "scroll",
           () => {
-            clearTimeout(t);
-            t = setTimeout(
-              () => setActive(Math.round(slider.scrollLeft / slideStep)),
-              60,
-            );
+            if (raf) return;
+            raf = requestAnimationFrame(() => {
+              raf = 0;
+              setActive(cercana());
+            });
           },
           { passive: true },
         );
+        refrescar();
+        setActive(0, true);
       }
-      function setActive(i) {
-        i = Math.max(0, Math.min(fotos.length - 1, i));
-        $("contador").textContent = `${i + 1} / ${fotos.length}`;
-        slider
-          .querySelectorAll(".slide")
-          .forEach((s, k) => s.classList.toggle("active", k === i));
+
+      // Renumera "REGISTRO 01…" según las fotos que realmente cargaron
+      function refrescar() {
+        const all = slides();
+        all.forEach((s, k) => {
+          s.querySelector(".rec").textContent = "REGISTRO " + pad2(k + 1);
+        });
+        if (all.length) setActive(Math.min(cur, all.length - 1), true);
       }
+
+      function cercana() {
+        const c = slider.scrollLeft + slider.clientWidth / 2;
+        let best = 0,
+          bd = Infinity;
+        slides().forEach((s, k) => {
+          const d = Math.abs(s.offsetLeft + s.offsetWidth / 2 - c);
+          if (d < bd) {
+            bd = d;
+            best = k;
+          }
+        });
+        return best;
+      }
+
+      function setActive(i, force) {
+        const all = slides(),
+          n = all.length;
+        if (!n) return;
+        i = Math.max(0, Math.min(n - 1, i));
+        if (i === cur && !force) return;
+        cur = i;
+        $("contador").textContent = `${pad2(i + 1)} / ${pad2(n)}`;
+        $("gprog").style.width = ((i + 1) / n) * 100 + "%";
+        all.forEach((s, k) => s.classList.toggle("active", k === i));
+        const fase = +all[i].dataset.fase;
+        [...fasesEl.children].forEach((b, k) => {
+          b.classList.toggle("on", k === fase);
+          if (k === fase) {
+            fasesEl.scrollTo({
+              left: b.offsetLeft - (fasesEl.clientWidth - b.offsetWidth) / 2,
+              behavior: "smooth",
+            });
+          }
+        });
+      }
+
+      function irA(i, instant) {
+        const s = slides()[i];
+        if (!s) return;
+        slider.scrollTo({
+          left: s.offsetLeft + s.offsetWidth / 2 - slider.clientWidth / 2,
+          behavior: instant ? "instant" : "smooth",
+        });
+        setActive(i);
+      }
+
       function cambiarFoto(d) {
-        slideStep = slider.querySelector(".slide").offsetWidth + 16;
-        const cur = Math.round(slider.scrollLeft / slideStep),
-          next = (cur + d + fotos.length) % fotos.length;
-        slider.scrollTo({ left: next * slideStep, behavior: "smooth" });
-        setActive(next);
+        const n = slides().length;
+        if (n) irA((cur + d + n) % n);
       }
+
+      /* ===== Visor a pantalla completa ===== */
+      const gb = $("gbox");
+      let gbi = 0;
+      function pintarGb() {
+        const list = slides().map((s) => s._f),
+          g = list[gbi];
+        if (!g) return;
+        $("gb-img").src = g.url;
+        $("gb-img").alt = g.t;
+        $("gb-cap").textContent = g.t;
+        $("gb-num").textContent = `${pad2(gbi + 1)} / ${pad2(list.length)} · Fase ${ROMAN[g.fase]} · ${fases[g.fase].n}` + (g.y ? ` · ${g.y}` : "");
+        [1, -1].forEach((d) => {
+          const nx = list[(gbi + d + list.length) % list.length];
+          if (nx) new Image().src = nx.url;
+        });
+      }
+      function abrirGaleria(i) {
+        gbi = Math.max(0, i);
+        pintarGb();
+        gb.classList.add("open");
+        requestAnimationFrame(() => gb.classList.add("on"));
+        document.body.style.overflow = "hidden";
+      }
+      function cerrarGaleria() {
+        gb.classList.remove("on");
+        setTimeout(() => gb.classList.remove("open"), 250);
+        document.body.style.overflow = "";
+        irA(gbi, true);
+      }
+      function pasoGb(d) {
+        const n = slides().length;
+        if (!n) return;
+        gbi = (gbi + d + n) % n;
+        pintarGb();
+      }
+      $("gb-close").addEventListener("click", cerrarGaleria);
+      $("gb-prev").addEventListener("click", (e) => {
+        e.stopPropagation();
+        pasoGb(-1);
+      });
+      $("gb-next").addEventListener("click", (e) => {
+        e.stopPropagation();
+        pasoGb(1);
+      });
+      gb.addEventListener("click", (e) => {
+        if (e.target === gb) cerrarGaleria();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (!gb.classList.contains("open")) return;
+        if (e.key === "Escape") cerrarGaleria();
+        if (e.key === "ArrowLeft") pasoGb(-1);
+        if (e.key === "ArrowRight") pasoGb(1);
+      });
+      let tx = null,
+        ty = null;
+      gb.addEventListener("touchstart", (e) => {
+        tx = e.touches[0].clientX;
+        ty = e.touches[0].clientY;
+      }, { passive: true });
+      gb.addEventListener("touchend", (e) => {
+        if (tx === null) return;
+        const dx = e.changedTouches[0].clientX - tx,
+          dy = e.changedTouches[0].clientY - ty;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) pasoGb(dx < 0 ? 1 : -1);
+        else if (dy > 90 && Math.abs(dy) > Math.abs(dx)) cerrarGaleria();
+        tx = ty = null;
+      });
 
       /* ================= FUEGOS ARTIFICIALES ================= */
 
