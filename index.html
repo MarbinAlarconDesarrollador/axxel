@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
-    <meta name="theme-color" content="#05070c" />   
+    <meta name="theme-color" content="#05070c" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta
@@ -17,12 +17,9 @@
     <link rel="manifest" href="manifest.json" />
     <link rel="icon" href="icons/icon-192.png" />
     <link rel="apple-touch-icon" href="icons/icon-192.png" />
-  
-    <meta
-      name="description"
-      content="¡Axxel cumple 10! 🎂"
-    />
-      
+
+    <meta name="description" content="¡Axxel cumple 10! 🎂" />
+
     <!-- Vista previa al compartir -->
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_CO" />
@@ -38,7 +35,7 @@
     />
     <meta
       property="og:image"
-      content="https://marbinalarcondesarrollador.github.io/axxel/preview.png"
+      content="https://marbinalarcondesarrollador.github.io/axxel/preview?v=2.png"
     />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
@@ -57,12 +54,8 @@
     />
     <meta
       name="twitter:image"
-      content="https://marbinalarcondesarrollador.github.io/axxel/preview.png"
+      content="https://marbinalarcondesarrollador.github.io/axxel/preview?v=2.png"
     />
-
-
-
-
 
     <title>Nivel 10 · Axxel Jhael</title>
     <style>
@@ -1390,583 +1383,586 @@
    El texto NUNCA se superpone a la imagen, así se ve bien en cualquier pantalla.
    ============================================= */
 
-.hero-slot {
-  display: none;
-  width: 100%;
-  max-width: 720px;
-  margin: 0 auto 46px;
-  filter: drop-shadow(0 0 26px rgba(229, 48, 58, 0.35))
-    drop-shadow(0 0 60px rgba(143, 227, 255, 0.12));
-}
+      .hero-slot {
+        display: none;
+        width: 100%;
+        max-width: 720px;
+        margin: 0 auto 46px;
+        filter: drop-shadow(0 0 26px rgba(229, 48, 58, 0.35))
+          drop-shadow(0 0 60px rgba(143, 227, 255, 0.12));
+      }
 
-.omni-universe {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  isolation: isolate;
-  background: #07020a;
-  border: 1px solid rgba(255, 90, 110, 0.45);
-  clip-path: polygon(
-    22px 0,
-    100% 0,
-    100% calc(100% - 22px),
-    calc(100% - 22px) 100%,
-    0 100%,
-    0 22px
-  );
-}
+      .omni-universe {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        isolation: isolate;
+        background: #07020a;
+        border: 1px solid rgba(255, 90, 110, 0.45);
+        clip-path: polygon(
+          22px 0,
+          100% 0,
+          100% calc(100% - 22px),
+          calc(100% - 22px) 100%,
+          0 100%,
+          0 22px
+        );
+      }
 
-/* ---------- Cabecera: título ---------- */
+      /* ---------- Cabecera: título ---------- */
 
-.omni-head {
-  position: relative;
-  z-index: 6;
-  padding: 24px 12px 6px;
-  text-align: center;
-  background: radial-gradient(
-    ellipse at 50% 100%,
-    rgba(120, 8, 28, 0.55),
-    transparent 70%
-  );
-}
+      .omni-head {
+        position: relative;
+        z-index: 6;
+        padding: 24px 12px 6px;
+        text-align: center;
+        background: radial-gradient(
+          ellipse at 50% 100%,
+          rgba(120, 8, 28, 0.55),
+          transparent 70%
+        );
+      }
 
-.omni-title {
-  opacity: 0;
-  transform: scale(3);
-}
+      .omni-title {
+        opacity: 0;
+        transform: scale(3);
+      }
 
-.omni-small {
-  display: block;
-  color: #fff;
-  font-size: clamp(11px, 3vw, 16px);
-  font-weight: 900;
-  letter-spacing: 0.45em;
-  margin-right: -0.45em; /* compensa el espaciado final para centrar */
-  text-shadow: 0 0 14px rgba(255, 36, 72, 0.8);
-}
+      .omni-small {
+        display: block;
+        color: #fff;
+        font-size: clamp(11px, 3vw, 16px);
+        font-weight: 900;
+        letter-spacing: 0.45em;
+        margin-right: -0.45em; /* compensa el espaciado final para centrar */
+        text-shadow: 0 0 14px rgba(255, 36, 72, 0.8);
+      }
 
-.omni-title strong {
-  display: block;
-  margin-top: 2px;
-  color: #ff314e;
-  font-family: Impact, "Arial Black", sans-serif;
-  font-size: clamp(40px, 12.5vw, 96px);
-  line-height: 1.05;
-  letter-spacing: 2px;
-  -webkit-text-stroke: 1px #fff;
-  text-shadow:
-    0 4px 0 #58000e,
-    0 10px 18px #000,
-    0 0 38px rgba(255, 0, 45, 0.7);
-}
+      .omni-title strong {
+        display: block;
+        margin-top: 2px;
+        color: #ff314e;
+        font-family: Impact, "Arial Black", sans-serif;
+        font-size: clamp(40px, 12.5vw, 96px);
+        line-height: 1.05;
+        letter-spacing: 2px;
+        -webkit-text-stroke: 1px #fff;
+        text-shadow:
+          0 4px 0 #58000e,
+          0 10px 18px #000,
+          0 0 38px rgba(255, 0, 45, 0.7);
+      }
 
-.hero-slot.playing .omni-title {
-  animation: omniTitle 1.3s 3.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
+      .hero-slot.playing .omni-title {
+        animation: omniTitle 1.3s 3.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
 
-@keyframes omniTitle {
-  0% {
-    opacity: 0;
-    transform: scale(3);
-    filter: blur(12px);
-  }
-  70% {
-    opacity: 1;
-    transform: scale(0.96);
-    filter: blur(0);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-    filter: blur(0);
-  }
-}
+      @keyframes omniTitle {
+        0% {
+          opacity: 0;
+          transform: scale(3);
+          filter: blur(12px);
+        }
+        70% {
+          opacity: 1;
+          transform: scale(0.96);
+          filter: blur(0);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+          filter: blur(0);
+        }
+      }
 
-/* ---------- Escenario ---------- */
+      /* ---------- Escenario ---------- */
 
-.omni-stage {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1079 / 646; /* se ajusta a la imagen real desde JS */
-  max-height: 80svh;
-  overflow: hidden;
-  background: radial-gradient(
-    ellipse at 50% 50%,
-    #2a0710 0%,
-    #0a030b 55%,
-    #010104 92%
-  );
-}
+      .omni-stage {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1079 / 646; /* se ajusta a la imagen real desde JS */
+        max-height: 80svh;
+        overflow: hidden;
+        background: radial-gradient(
+          ellipse at 50% 50%,
+          #2a0710 0%,
+          #0a030b 55%,
+          #010104 92%
+        );
+      }
 
-/* Bordes del escenario que se funden con la tarjeta */
-.omni-stage::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  pointer-events: none;
-  background:
-    linear-gradient(to bottom, #07020a 0%, transparent 14%),
-    linear-gradient(to top, #07020a 0%, transparent 18%),
-    radial-gradient(ellipse at center, transparent 58%, rgba(0, 0, 0, 0.55) 100%);
-}
+      /* Bordes del escenario que se funden con la tarjeta */
+      .omni-stage::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 5;
+        pointer-events: none;
+        background:
+          linear-gradient(to bottom, #07020a 0%, transparent 14%),
+          linear-gradient(to top, #07020a 0%, transparent 18%),
+          radial-gradient(
+            ellipse at center,
+            transparent 58%,
+            rgba(0, 0, 0, 0.55) 100%
+          );
+      }
 
-/* Estrellas viajando (warp) */
-.omni-stars {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  overflow: hidden;
-}
+      /* Estrellas viajando (warp) */
+      .omni-stars {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        overflow: hidden;
+      }
 
-.omni-star {
-  position: absolute;
-  width: 2px;
-  height: 2px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 0 8px #fff;
-  opacity: 0;
-}
+      .omni-star {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 0 8px #fff;
+        opacity: 0;
+      }
 
-.hero-slot.playing .omni-star {
-  animation: omniWarp 2.4s ease-in forwards;
-  animation-delay: 0.3s;
-}
+      .hero-slot.playing .omni-star {
+        animation: omniWarp 2.4s ease-in forwards;
+        animation-delay: 0.3s;
+      }
 
-@keyframes omniWarp {
-  0% {
-    opacity: 0;
-    transform: translate(0, 0) scale(0.2);
-  }
-  30% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: translate(var(--dx), var(--dy)) scale(4);
-  }
-}
+      @keyframes omniWarp {
+        0% {
+          opacity: 0;
+          transform: translate(0, 0) scale(0.2);
+        }
+        30% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          transform: translate(var(--dx), var(--dy)) scale(4);
+        }
+      }
 
-/* Aura roja detrás del personaje */
-.omni-aura {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  opacity: 0;
-  pointer-events: none;
-  mix-blend-mode: screen;
-  background: radial-gradient(
-    circle at 50% 55%,
-    rgba(255, 30, 60, 0.5),
-    transparent 62%
-  );
-}
+      /* Aura roja detrás del personaje */
+      .omni-aura {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        opacity: 0;
+        pointer-events: none;
+        mix-blend-mode: screen;
+        background: radial-gradient(
+          circle at 50% 55%,
+          rgba(255, 30, 60, 0.5),
+          transparent 62%
+        );
+      }
 
-.hero-slot.playing .omni-aura {
-  animation: omniAura 3.2s ease-in-out 3.2s infinite alternate;
-}
+      .hero-slot.playing .omni-aura {
+        animation: omniAura 3.2s ease-in-out 3.2s infinite alternate;
+      }
 
-@keyframes omniAura {
-  from {
-    opacity: 0.25;
-  }
-  to {
-    opacity: 0.85;
-  }
-}
+      @keyframes omniAura {
+        from {
+          opacity: 0.25;
+        }
+        to {
+          opacity: 0.85;
+        }
+      }
 
-/* Energía que se acumula */
-.omni-energy {
-  position: absolute;
-  left: 50%;
-  top: 48%;
-  z-index: 2;
-  width: 16%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: #ff203d;
-  box-shadow:
-    0 0 45px 25px #ff1739,
-    0 0 120px 60px #b50023;
-  transform: translate(-50%, -50%) scale(0);
-  opacity: 0;
-}
+      /* Energía que se acumula */
+      .omni-energy {
+        position: absolute;
+        left: 50%;
+        top: 48%;
+        z-index: 2;
+        width: 16%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: #ff203d;
+        box-shadow:
+          0 0 45px 25px #ff1739,
+          0 0 120px 60px #b50023;
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+      }
 
-.hero-slot.playing .omni-energy {
-  animation: omniEnergy 1.9s 1.2s ease-in forwards;
-}
+      .hero-slot.playing .omni-energy {
+        animation: omniEnergy 1.9s 1.2s ease-in forwards;
+      }
 
-@keyframes omniEnergy {
-  0% {
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0;
-  }
-  70% {
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(5);
-    opacity: 0.9;
-  }
-}
+      @keyframes omniEnergy {
+        0% {
+          transform: translate(-50%, -50%) scale(0);
+          opacity: 0;
+        }
+        70% {
+          opacity: 1;
+        }
+        100% {
+          transform: translate(-50%, -50%) scale(5);
+          opacity: 0.9;
+        }
+      }
 
-/* Personaje */
-.omni-character {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  opacity: 0;
-  transform: scale(1.5);
-}
+      /* Personaje */
+      .omni-character {
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+        opacity: 0;
+        transform: scale(1.5);
+      }
 
-.omni-character img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 30%;
-  filter: contrast(1.08) saturate(1.12)
-    drop-shadow(0 0 22px rgba(255, 20, 40, 0.3));
-}
+      .omni-character img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 30%;
+        filter: contrast(1.08) saturate(1.12)
+          drop-shadow(0 0 22px rgba(255, 20, 40, 0.3));
+      }
 
-.hero-slot.playing .omni-character {
-  animation: omniReveal 2.6s 2.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
+      .hero-slot.playing .omni-character {
+        animation: omniReveal 2.6s 2.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
 
-.hero-slot.playing .omni-character img {
-  animation: omniBreath 9s ease-in-out 5.5s infinite alternate;
-}
+      .hero-slot.playing .omni-character img {
+        animation: omniBreath 9s ease-in-out 5.5s infinite alternate;
+      }
 
-@keyframes omniReveal {
-  0% {
-    opacity: 0;
-    transform: scale(1.5);
-    filter: blur(16px);
-  }
-  25% {
-    opacity: 1;
-    filter: blur(0);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-    filter: blur(0);
-  }
-}
+      @keyframes omniReveal {
+        0% {
+          opacity: 0;
+          transform: scale(1.5);
+          filter: blur(16px);
+        }
+        25% {
+          opacity: 1;
+          filter: blur(0);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+          filter: blur(0);
+        }
+      }
 
-@keyframes omniBreath {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.045);
-  }
-}
+      @keyframes omniBreath {
+        from {
+          transform: scale(1);
+        }
+        to {
+          transform: scale(1.045);
+        }
+      }
 
-/* Brasas que suben tras el impacto */
-.omni-embers {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-  overflow: hidden;
-  pointer-events: none;
-}
+      /* Brasas que suben tras el impacto */
+      .omni-embers {
+        position: absolute;
+        inset: 0;
+        z-index: 4;
+        overflow: hidden;
+        pointer-events: none;
+      }
 
-.omni-ember {
-  position: absolute;
-  bottom: -8px;
-  left: var(--x);
-  width: var(--s, 4px);
-  height: var(--s, 4px);
-  border-radius: 50%;
-  background: #ff8a4a;
-  box-shadow: 0 0 8px #ff3b1f;
-  opacity: 0;
-}
+      .omni-ember {
+        position: absolute;
+        bottom: -8px;
+        left: var(--x);
+        width: var(--s, 4px);
+        height: var(--s, 4px);
+        border-radius: 50%;
+        background: #ff8a4a;
+        box-shadow: 0 0 8px #ff3b1f;
+        opacity: 0;
+      }
 
-.hero-slot.playing .omni-ember {
-  animation: omniEmber var(--t, 5s) linear infinite;
-  animation-delay: calc(4.4s + var(--d, 0s));
-}
+      .hero-slot.playing .omni-ember {
+        animation: omniEmber var(--t, 5s) linear infinite;
+        animation-delay: calc(4.4s + var(--d, 0s));
+      }
 
-@keyframes omniEmber {
-  0% {
-    opacity: 0;
-    transform: translate(0, 0);
-  }
-  12% {
-    opacity: 0.95;
-  }
-  100% {
-    opacity: 0;
-    transform: translate(var(--sx, 20px), var(--rise, -320px));
-  }
-}
+      @keyframes omniEmber {
+        0% {
+          opacity: 0;
+          transform: translate(0, 0);
+        }
+        12% {
+          opacity: 0.95;
+        }
+        100% {
+          opacity: 0;
+          transform: translate(var(--sx, 20px), var(--rise, -320px));
+        }
+      }
 
-/* Onda expansiva */
-.omni-shockwave {
-  position: absolute;
-  left: 50%;
-  top: 48%;
-  z-index: 7;
-  width: 18%;
-  aspect-ratio: 1;
-  border: 5px solid #ff3753;
-  border-radius: 50%;
-  box-shadow:
-    0 0 30px #ff183d,
-    inset 0 0 20px #ff183d;
-  transform: translate(-50%, -50%) scale(0);
-  opacity: 0;
-}
+      /* Onda expansiva */
+      .omni-shockwave {
+        position: absolute;
+        left: 50%;
+        top: 48%;
+        z-index: 7;
+        width: 18%;
+        aspect-ratio: 1;
+        border: 5px solid #ff3753;
+        border-radius: 50%;
+        box-shadow:
+          0 0 30px #ff183d,
+          inset 0 0 20px #ff183d;
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+      }
 
-.hero-slot.playing .omni-shockwave {
-  animation: omniShock 1s 2.9s ease-out forwards;
-}
+      .hero-slot.playing .omni-shockwave {
+        animation: omniShock 1s 2.9s ease-out forwards;
+      }
 
-@keyframes omniShock {
-  0% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(0.1);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(14);
-  }
-}
+      @keyframes omniShock {
+        0% {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(0.1);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(14);
+        }
+      }
 
-/* Flash */
-.omni-flash {
-  position: absolute;
-  inset: 0;
-  z-index: 8;
-  background: #fff;
-  opacity: 0;
-  pointer-events: none;
-}
+      /* Flash */
+      .omni-flash {
+        position: absolute;
+        inset: 0;
+        z-index: 8;
+        background: #fff;
+        opacity: 0;
+        pointer-events: none;
+      }
 
-.hero-slot.playing .omni-flash {
-  animation: omniFlash 0.8s 2.9s ease-out both;
-}
+      .hero-slot.playing .omni-flash {
+        animation: omniFlash 0.8s 2.9s ease-out both;
+      }
 
-@keyframes omniFlash {
-  0%,
-  100% {
-    opacity: 0;
-  }
-  15% {
-    opacity: 0.9;
-  }
-  35% {
-    opacity: 0.12;
-  }
-  50% {
-    opacity: 0.55;
-  }
-}
+      @keyframes omniFlash {
+        0%,
+        100% {
+          opacity: 0;
+        }
+        15% {
+          opacity: 0.9;
+        }
+        35% {
+          opacity: 0.12;
+        }
+        50% {
+          opacity: 0.55;
+        }
+      }
 
-/* Texto introductorio (sobre el escenario, solo al inicio) */
-.omni-intro {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  z-index: 9;
-  padding: 0 12px;
-  text-align: center;
-  color: #fff;
-  font-size: clamp(13px, 3.8vw, 24px);
-  font-weight: 900;
-  letter-spacing: 0.25em;
-  text-shadow:
-    0 0 25px #ff2448,
-    0 2px 8px #000;
-  opacity: 0;
-  pointer-events: none;
-}
+      /* Texto introductorio (sobre el escenario, solo al inicio) */
+      .omni-intro {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        z-index: 9;
+        padding: 0 12px;
+        text-align: center;
+        color: #fff;
+        font-size: clamp(13px, 3.8vw, 24px);
+        font-weight: 900;
+        letter-spacing: 0.25em;
+        text-shadow:
+          0 0 25px #ff2448,
+          0 2px 8px #000;
+        opacity: 0;
+        pointer-events: none;
+      }
 
-.hero-slot.playing .omni-intro {
-  animation: omniIntro 2.4s 0.4s both;
-}
+      .hero-slot.playing .omni-intro {
+        animation: omniIntro 2.4s 0.4s both;
+      }
 
-@keyframes omniIntro {
-  0% {
-    opacity: 0;
-    transform: translateY(-50%) scale(1.4);
-  }
-  25%,
-  65% {
-    opacity: 1;
-    transform: translateY(-50%) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-50%) scale(0.8);
-  }
-}
+      @keyframes omniIntro {
+        0% {
+          opacity: 0;
+          transform: translateY(-50%) scale(1.4);
+        }
+        25%,
+        65% {
+          opacity: 1;
+          transform: translateY(-50%) scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-50%) scale(0.8);
+        }
+      }
 
-/* ---------- Pie: mensaje + botón ---------- */
+      /* ---------- Pie: mensaje + botón ---------- */
 
-.omni-foot {
-  position: relative;
-  z-index: 6;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  padding: 4px 14px 24px;
-  text-align: center;
-  background: radial-gradient(
-    ellipse at 50% 0%,
-    rgba(120, 8, 28, 0.45),
-    transparent 70%
-  );
-}
+      .omni-foot {
+        position: relative;
+        z-index: 6;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        padding: 4px 14px 24px;
+        text-align: center;
+        background: radial-gradient(
+          ellipse at 50% 0%,
+          rgba(120, 8, 28, 0.45),
+          transparent 70%
+        );
+      }
 
-.omni-message {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  max-width: 100%;
-  opacity: 0;
-  transform: translateY(40px);
-}
+      .omni-message {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        max-width: 100%;
+        opacity: 0;
+        transform: translateY(40px);
+      }
 
-.omni-name {
-  color: #fff;
-  font-size: clamp(20px, 5.6vw, 36px);
-  font-weight: 900;
-  letter-spacing: 0.18em;
-  margin-right: -0.18em;
-  text-shadow:
-    0 0 18px rgba(255, 36, 72, 0.7),
-    0 2px 8px #000;
-}
+      .omni-name {
+        color: #fff;
+        font-size: clamp(20px, 5.6vw, 36px);
+        font-weight: 900;
+        letter-spacing: 0.18em;
+        margin-right: -0.18em;
+        text-shadow:
+          0 0 18px rgba(255, 36, 72, 0.7),
+          0 2px 8px #000;
+      }
 
-.omni-message strong {
-  color: #ffcf4d;
-  font-size: clamp(14px, 4vw, 28px);
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  text-shadow:
-    0 0 10px #ff9c00,
-    0 0 30px #ff4500,
-    0 3px 8px #000;
-}
+      .omni-message strong {
+        color: #ffcf4d;
+        font-size: clamp(14px, 4vw, 28px);
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-shadow:
+          0 0 10px #ff9c00,
+          0 0 30px #ff4500,
+          0 3px 8px #000;
+      }
 
-.omni-level {
-  color: #ffcf4d;
-  font-size: clamp(14px, 4vw, 20px);
-  letter-spacing: 0.35em;
-  margin-right: -0.35em;
-}
+      .omni-level {
+        color: #ffcf4d;
+        font-size: clamp(14px, 4vw, 20px);
+        letter-spacing: 0.35em;
+        margin-right: -0.35em;
+      }
 
-.hero-slot.playing .omni-message {
-  animation: omniMessage 1s 4.8s ease-out forwards;
-}
+      .hero-slot.playing .omni-message {
+        animation: omniMessage 1s 4.8s ease-out forwards;
+      }
 
-@keyframes omniMessage {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+      @keyframes omniMessage {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-/* Botón repetir */
-.omni-replay {
-  min-height: 46px;
-  padding: 12px 22px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 30px;
-  background: rgba(0, 0, 0, 0.7);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  white-space: nowrap;
-  cursor: pointer;
-  touch-action: manipulation;
-  opacity: 0;
-  pointer-events: none;
-  transition:
-    opacity 0.6s,
-    background 0.2s,
-    transform 0.2s;
-}
+      /* Botón repetir */
+      .omni-replay {
+        min-height: 46px;
+        padding: 12px 22px;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 30px;
+        background: rgba(0, 0, 0, 0.7);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        white-space: nowrap;
+        cursor: pointer;
+        touch-action: manipulation;
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 0.6s,
+          background 0.2s,
+          transform 0.2s;
+      }
 
-.hero-slot.ready .omni-replay {
-  opacity: 1;
-  pointer-events: auto;
-}
+      .hero-slot.ready .omni-replay {
+        opacity: 1;
+        pointer-events: auto;
+      }
 
-.omni-replay:hover {
-  background: #bd102e;
-}
+      .omni-replay:hover {
+        background: #bd102e;
+      }
 
-.omni-replay:active {
-  transform: scale(0.95);
-}
+      .omni-replay:active {
+        transform: scale(0.95);
+      }
 
-/* Sacudida de cámara */
-.hero-slot.shaking .omni-universe {
-  animation: omniShake 0.45s linear;
-}
+      /* Sacudida de cámara */
+      .hero-slot.shaking .omni-universe {
+        animation: omniShake 0.45s linear;
+      }
 
-@keyframes omniShake {
-  0%,
-  100% {
-    transform: translate(0);
-  }
-  15% {
-    transform: translate(-6px, 4px);
-  }
-  30% {
-    transform: translate(5px, -5px);
-  }
-  45% {
-    transform: translate(-5px, -2px);
-  }
-  60% {
-    transform: translate(4px, 4px);
-  }
-  80% {
-    transform: translate(-2px, 2px);
-  }
-}
+      @keyframes omniShake {
+        0%,
+        100% {
+          transform: translate(0);
+        }
+        15% {
+          transform: translate(-6px, 4px);
+        }
+        30% {
+          transform: translate(5px, -5px);
+        }
+        45% {
+          transform: translate(-5px, -2px);
+        }
+        60% {
+          transform: translate(4px, 4px);
+        }
+        80% {
+          transform: translate(-2px, 2px);
+        }
+      }
 
-/* Estado final directo (reducir movimiento) */
-.hero-slot.done .omni-title,
-.hero-slot.done .omni-message,
-.hero-slot.done .omni-character {
-  opacity: 1;
-  transform: none;
-}
+      /* Estado final directo (reducir movimiento) */
+      .hero-slot.done .omni-title,
+      .hero-slot.done .omni-message,
+      .hero-slot.done .omni-character {
+        opacity: 1;
+        transform: none;
+      }
 
-.hero-slot.done .omni-aura {
-  opacity: 0.5;
-}
+      .hero-slot.done .omni-aura {
+        opacity: 0.5;
+      }
 
-@media (prefers-reduced-motion: reduce) {
-  .hero-slot .omni-character img,
-  .hero-slot .omni-aura,
-  .hero-slot .omni-ember {
-    animation: none !important;
-  }
-}
+      @media (prefers-reduced-motion: reduce) {
+        .hero-slot .omni-character img,
+        .hero-slot .omni-aura,
+        .hero-slot .omni-ember {
+          animation: none !important;
+        }
+      }
 
-@media (max-width: 380px) {
-  .omni-head {
-    padding-top: 20px;
-  }
-  .omni-small {
-    letter-spacing: 0.35em;
-    margin-right: -0.35em;
-  }
-}
-
+      @media (max-width: 380px) {
+        .omni-head {
+          padding-top: 20px;
+        }
+        .omni-small {
+          letter-spacing: 0.35em;
+          margin-right: -0.35em;
+        }
+      }
     </style>
   </head>
   <body>
@@ -2198,7 +2194,7 @@
           <!-- Mensaje final + botón -->
           <div class="omni-foot">
             <div class="omni-message">
-              <strong>TE DICE FELIZ CUMPLEAÑOS  </strong>
+              <strong>TE DICE FELIZ CUMPLEAÑOS </strong>
               <span class="omni-name">AXXEL JHAEL</span>
               <strong>NIVEL 10 DESBLOQUEADO</strong>
               <span class="omni-level">★ ★ ★ ★ ★</span>
@@ -2250,9 +2246,15 @@
 
     <!-- Visor de fotos a pantalla completa -->
     <div id="gbox" role="dialog" aria-modal="true" aria-label="Visor de fotos">
-      <button class="gb-btn" id="gb-close" type="button" aria-label="Cerrar">✕</button>
-      <button class="gb-btn" id="gb-prev" type="button" aria-label="Anterior">◀</button>
-      <button class="gb-btn" id="gb-next" type="button" aria-label="Siguiente">▶</button>
+      <button class="gb-btn" id="gb-close" type="button" aria-label="Cerrar">
+        ✕
+      </button>
+      <button class="gb-btn" id="gb-prev" type="button" aria-label="Anterior">
+        ◀
+      </button>
+      <button class="gb-btn" id="gb-next" type="button" aria-label="Siguiente">
+        ▶
+      </button>
       <img id="gb-img" alt="" />
       <div class="gcap" id="gb-cap"></div>
       <div class="gnum" id="gb-num"></div>
@@ -2730,7 +2732,7 @@
         playHeroExperience();
       }
 
-function launchConfetti() {
+      function launchConfetti() {
         const colors = ["#E1EBED", "#ffffff", "#8fe3ff", "#b4c4c9", "#e5303a"];
         const iv = setInterval(() => {
           const c = document.createElement("div");
@@ -2795,50 +2797,171 @@ function launchConfetti() {
       /* ================= FOTOS ================= */
       // t = leyenda · y = etiqueta opcional (edad) sobre la foto
       const fotos = [
-        { t: "Tus primeros meses: el inicio de nuestra gran aventura 👶", url: "img/axxelbb1-primeros-meses-jugando.jpeg" },
-        { t: "Tus primeros gateos, descubriendo el mundo paso a paso 👣", url: "img/axxelbb1gateando.jpeg" },
-        { t: "Esa sonrisa que ilumina hasta mis días más oscuros 🌟", url: "img/axxelbb1sonrisa.jpeg" },
-        { t: "Mi bebé hermoso, el regalo más grande de la vida 🎀", url: "img/axxelbb2hermoso.jpeg" },
-        { t: "Tus primeros pasos: el comienzo de un camino brillante 🚶", url: "img/axxelbb3primerospasos.jpeg" },
-        { t: "Explorando nuevos sabores en tus primeros bocados 🍼", url: "img/axxelbb4comiendo.jpeg" },
+        {
+          t: "Tus primeros meses: el inicio de nuestra gran aventura 👶",
+          url: "img/axxelbb1-primeros-meses-jugando.jpeg",
+        },
+        {
+          t: "Tus primeros gateos, descubriendo el mundo paso a paso 👣",
+          url: "img/axxelbb1gateando.jpeg",
+        },
+        {
+          t: "Esa sonrisa que ilumina hasta mis días más oscuros 🌟",
+          url: "img/axxelbb1sonrisa.jpeg",
+        },
+        {
+          t: "Mi bebé hermoso, el regalo más grande de la vida 🎀",
+          url: "img/axxelbb2hermoso.jpeg",
+        },
+        {
+          t: "Tus primeros pasos: el comienzo de un camino brillante 🚶",
+          url: "img/axxelbb3primerospasos.jpeg",
+        },
+        {
+          t: "Explorando nuevos sabores en tus primeros bocados 🍼",
+          url: "img/axxelbb4comiendo.jpeg",
+        },
 
-        { t: "Celebrando tus 10 meses de pura felicidad 🎂", url: "img/axxelbb5-1-10meses.jpeg", y: "10 meses" },
-        { t: "10 meses transformando nuestro mundo con tu alegría ✨", url: "img/axxelbb5-10meses.jpeg", y: "10 meses" },
-        { t: "Mi príncipe y mi princesa: mis dos tesoros más valiosos 👑", url: "img/axxelbb6-mi-principe-y-mi-princesa.jpeg" },
-        { t: "¡Cuidado mundo! Aquí llega mi pequeño y valiente Thor ⚡", url: "img/axxelbb6mi-pequenio-thor.jpeg" },
-        { t: "Casi un año... 11 meses de puro amor y aprendizaje 🎂", url: "img/axxelbb7-11meses.jpeg", y: "11 meses" },
-        { t: "Explorando el mundo con esa curiosidad que tanto amo 🌍", url: "img/axxelbb8-explorandoelmundo.jpeg" },
-        { t: "Compartiendo momentos inolvidables al lado de Papi 🎮", url: "img/axxelbb9-con-papi.jpeg" },
+        {
+          t: "Celebrando tus 10 meses de pura felicidad 🎂",
+          url: "img/axxelbb5-1-10meses.jpeg",
+          y: "10 meses",
+        },
+        {
+          t: "10 meses transformando nuestro mundo con tu alegría ✨",
+          url: "img/axxelbb5-10meses.jpeg",
+          y: "10 meses",
+        },
+        {
+          t: "Mi príncipe y mi princesa: mis dos tesoros más valiosos 👑",
+          url: "img/axxelbb6-mi-principe-y-mi-princesa.jpeg",
+        },
+        {
+          t: "¡Cuidado mundo! Aquí llega mi pequeño y valiente Thor ⚡",
+          url: "img/axxelbb6mi-pequenio-thor.jpeg",
+        },
+        {
+          t: "Casi un año... 11 meses de puro amor y aprendizaje 🎂",
+          url: "img/axxelbb7-11meses.jpeg",
+          y: "11 meses",
+        },
+        {
+          t: "Explorando el mundo con esa curiosidad que tanto amo 🌍",
+          url: "img/axxelbb8-explorandoelmundo.jpeg",
+        },
+        {
+          t: "Compartiendo momentos inolvidables al lado de Papi 🎮",
+          url: "img/axxelbb9-con-papi.jpeg",
+        },
 
-        { t: "Un desayuno sorpresa para un niño que se merece todo 🍽️", url: "img/axxelbb10-desayuno-sorpresa.jpeg" },
-        { t: "Devorando un algodón de azúcar y disfrutando la dulzura de la niñez 🍬", url: "img/axxelbb11-comiendo-algodon-de-azucar.jpeg" },
-        { t: "Te amo con todas mis fuerzas, hijo mío 🤗", url: "img/axxelbb11-te-amo.jpeg" },
-        { t: "Ese momento divertido cuando intentabas asustarme... ¡Casi lo logras! 😆", url: "img/axxelbb12-me-queria-asustar.jpeg" },
-        { t: "Decirte que te amo es poco para lo que siento 💙", url: "img/axxelbb12-te-amo.jpeg" },
-        { t: "Enfocado y estudioso, construyendo tus sueños desde pequeño 📚", url: "img/axxelbb13-estudiso.jpeg" },
-        { t: "¡Uy, qué miedo! Jejeje... Siempre sacándome una carcajada 👻", url: "img/axxelbb14uyyy-miedo-jejej.jpeg" },
-        { t: "Mi Spiderman y su hermanita, la Mujer Maravilla: mi equipo de héroes 🕷️", url: "img/axxelbb15-mi-spider-su-hermanita-mujer-maravilla.jpeg" },
-        { t: "Mi Spiderman favorito junto a su mayor fan: su papá 🕸️", url: "img/axxelbb15-mi-spiderman-y-papa.jpeg" },
+        {
+          t: "Un desayuno sorpresa para un niño que se merece todo 🍽️",
+          url: "img/axxelbb10-desayuno-sorpresa.jpeg",
+        },
+        {
+          t: "Devorando un algodón de azúcar y disfrutando la dulzura de la niñez 🍬",
+          url: "img/axxelbb11-comiendo-algodon-de-azucar.jpeg",
+        },
+        {
+          t: "Te amo con todas mis fuerzas, hijo mío 🤗",
+          url: "img/axxelbb11-te-amo.jpeg",
+        },
+        {
+          t: "Ese momento divertido cuando intentabas asustarme... ¡Casi lo logras! 😆",
+          url: "img/axxelbb12-me-queria-asustar.jpeg",
+        },
+        {
+          t: "Decirte que te amo es poco para lo que siento 💙",
+          url: "img/axxelbb12-te-amo.jpeg",
+        },
+        {
+          t: "Enfocado y estudioso, construyendo tus sueños desde pequeño 📚",
+          url: "img/axxelbb13-estudiso.jpeg",
+        },
+        {
+          t: "¡Uy, qué miedo! Jejeje... Siempre sacándome una carcajada 👻",
+          url: "img/axxelbb14uyyy-miedo-jejej.jpeg",
+        },
+        {
+          t: "Mi Spiderman y su hermanita, la Mujer Maravilla: mi equipo de héroes 🕷️",
+          url: "img/axxelbb15-mi-spider-su-hermanita-mujer-maravilla.jpeg",
+        },
+        {
+          t: "Mi Spiderman favorito junto a su mayor fan: su papá 🕸️",
+          url: "img/axxelbb15-mi-spiderman-y-papa.jpeg",
+        },
 
-        { t: "Esa sonrisa auténtica que refleja la pureza de tu corazón 😊", url: "img/axxelbb16sonrisa-autentica.jpeg" },
-        { t: "No hay nada mejor que un helado y una buena charla con Papi 🍦", url: "img/axxelbb17-comiendo-helado-con-papi.jpeg" },
-        { t: "La felicidad completa: compartiendo con Papi y tu hermana 💫", url: "img/axxelbb18-compartiendo-con-papi-y-hermana1.jpeg" },
-        { t: "Creando recuerdos que guardaremos siempre en el alma", url: "img/axxelbb18-compartiendo-con-papi-y-hermana-2.jpeg" },
-        { t: "Verlos juntos es mi mayor recompensa en la vida", url: "img/axxelbb18-compartiendo-con-papi-y-hermana-3.jpeg" },
-        { t: "Días de risas, juegos y mucho amor en familia ❤️", url: "img/axxelbb18-compartiendo-con-papi-y-hermana-4.jpeg" },
+        {
+          t: "Esa sonrisa auténtica que refleja la pureza de tu corazón 😊",
+          url: "img/axxelbb16sonrisa-autentica.jpeg",
+        },
+        {
+          t: "No hay nada mejor que un helado y una buena charla con Papi 🍦",
+          url: "img/axxelbb17-comiendo-helado-con-papi.jpeg",
+        },
+        {
+          t: "La felicidad completa: compartiendo con Papi y tu hermana 💫",
+          url: "img/axxelbb18-compartiendo-con-papi-y-hermana1.jpeg",
+        },
+        {
+          t: "Creando recuerdos que guardaremos siempre en el alma",
+          url: "img/axxelbb18-compartiendo-con-papi-y-hermana-2.jpeg",
+        },
+        {
+          t: "Verlos juntos es mi mayor recompensa en la vida",
+          url: "img/axxelbb18-compartiendo-con-papi-y-hermana-3.jpeg",
+        },
+        {
+          t: "Días de risas, juegos y mucho amor en familia ❤️",
+          url: "img/axxelbb18-compartiendo-con-papi-y-hermana-4.jpeg",
+        },
 
-        { t: "Haciendo lo que más le gusta: ¡disfrutar de un buen helado! 🍦", url: "img/axxelbb19comiendo-helado-le-encanta.jpeg" },
-        { t: "Aprendiendo a rodar por la vida en tu monopatín 🛹", url: "img/axxelbb20aprendiendo-monopatin.jpeg" },
-        { t: "Disfrutando de un lindo paseito y de la brisa en la cara 🌬️", url: "img/axxelbb20paseito.jpeg" },
-        { t: "Porque un solo helado nunca es suficiente para tanta alegría 🍨", url: "img/axxelbb21-comiendo-mas-helado.jpeg" },
-        { t: "Amo cada una de tus locuras; tú le das color a mi vida 🧭", url: "img/axxelbb22amo-tus-locuras.jpeg" },
-        { t: "Tus ocurrencias son el motor que me hace sonreír cada día 🚀", url: "img/axxelbb22amo-tus-locuras-1.jpeg" },
-        { t: "Él es inmensamente feliz con su súper helado 🍦", url: "img/axxelbb23-el-feliz-con-su-super-helado.jpeg" },
+        {
+          t: "Haciendo lo que más le gusta: ¡disfrutar de un buen helado! 🍦",
+          url: "img/axxelbb19comiendo-helado-le-encanta.jpeg",
+        },
+        {
+          t: "Aprendiendo a rodar por la vida en tu monopatín 🛹",
+          url: "img/axxelbb20aprendiendo-monopatin.jpeg",
+        },
+        {
+          t: "Disfrutando de un lindo paseito y de la brisa en la cara 🌬️",
+          url: "img/axxelbb20paseito.jpeg",
+        },
+        {
+          t: "Porque un solo helado nunca es suficiente para tanta alegría 🍨",
+          url: "img/axxelbb21-comiendo-mas-helado.jpeg",
+        },
+        {
+          t: "Amo cada una de tus locuras; tú le das color a mi vida 🧭",
+          url: "img/axxelbb22amo-tus-locuras.jpeg",
+        },
+        {
+          t: "Tus ocurrencias son el motor que me hace sonreír cada día 🚀",
+          url: "img/axxelbb22amo-tus-locuras-1.jpeg",
+        },
+        {
+          t: "Él es inmensamente feliz con su súper helado 🍦",
+          url: "img/axxelbb23-el-feliz-con-su-super-helado.jpeg",
+        },
 
-        { t: "Me detengo a mirar cómo has crecido, mi chiquitín hermoso 🌱", url: "img/axxelbb24-como-has-crecido.jpeg" },
-        { t: "Nunca dejes de sonreír, el mundo necesita tu luz ☀️", url: "img/axxelbb26-nunca-dejes-de-reir.jpeg" },
-        { t: "Te estás haciendo grande, pero siempre serás mi niño 💙", url: "img/axxelbb26-te-estas-creciendo.jpeg" },
-        { t: "¡Nivel 10 desbloqueado! Juntos somos el mejor equipo 🥳", url: "img/axxel-y-papa.jpeg", y: "10 años" },
+        {
+          t: "Me detengo a mirar cómo has crecido, mi chiquitín hermoso 🌱",
+          url: "img/axxelbb24-como-has-crecido.jpeg",
+        },
+        {
+          t: "Nunca dejes de sonreír, el mundo necesita tu luz ☀️",
+          url: "img/axxelbb26-nunca-dejes-de-reir.jpeg",
+        },
+        {
+          t: "Te estás haciendo grande, pero siempre serás mi niño 💙",
+          url: "img/axxelbb26-te-estas-creciendo.jpeg",
+        },
+        {
+          t: "¡Nivel 10 desbloqueado! Juntos somos el mejor equipo 🥳",
+          url: "img/axxel-y-papa.jpeg",
+          y: "10 años",
+        },
       ];
 
       // at = índice de la primera foto de cada fase
@@ -2912,7 +3035,14 @@ function launchConfetti() {
           ph.appendChild(mk("span", "zoom", "⤢"));
 
           const cap = mk("div", "cap");
-          cap.append(mk("small", null, "Fase " + ROMAN[f.fase] + " · " + fases[f.fase].n), mk("h3", null, f.t));
+          cap.append(
+            mk(
+              "small",
+              null,
+              "Fase " + ROMAN[f.fase] + " · " + fases[f.fase].n,
+            ),
+            mk("h3", null, f.t),
+          );
           frame.append(ph, cap);
           s.appendChild(frame);
           slider.appendChild(s);
@@ -3012,7 +3142,9 @@ function launchConfetti() {
         $("gb-img").src = g.url;
         $("gb-img").alt = g.t;
         $("gb-cap").textContent = g.t;
-        $("gb-num").textContent = `${pad2(gbi + 1)} / ${pad2(list.length)} · Fase ${ROMAN[g.fase]} · ${fases[g.fase].n}` + (g.y ? ` · ${g.y}` : "");
+        $("gb-num").textContent =
+          `${pad2(gbi + 1)} / ${pad2(list.length)} · Fase ${ROMAN[g.fase]} · ${fases[g.fase].n}` +
+          (g.y ? ` · ${g.y}` : "");
         [1, -1].forEach((d) => {
           const nx = list[(gbi + d + list.length) % list.length];
           if (nx) new Image().src = nx.url;
@@ -3057,15 +3189,20 @@ function launchConfetti() {
       });
       let tx = null,
         ty = null;
-      gb.addEventListener("touchstart", (e) => {
-        tx = e.touches[0].clientX;
-        ty = e.touches[0].clientY;
-      }, { passive: true });
+      gb.addEventListener(
+        "touchstart",
+        (e) => {
+          tx = e.touches[0].clientX;
+          ty = e.touches[0].clientY;
+        },
+        { passive: true },
+      );
       gb.addEventListener("touchend", (e) => {
         if (tx === null) return;
         const dx = e.changedTouches[0].clientX - tx,
           dy = e.changedTouches[0].clientY - ty;
-        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) pasoGb(dx < 0 ? 1 : -1);
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy))
+          pasoGb(dx < 0 ? 1 : -1);
         else if (dy > 90 && Math.abs(dy) > Math.abs(dx)) cerrarGaleria();
         tx = ty = null;
       });
